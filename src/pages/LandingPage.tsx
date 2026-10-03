@@ -752,9 +752,13 @@ function DashboardPreview({ view = "Dashboard" }: { view?: PreviewView }) {
 function MegaMenuPanel({
   menuKey,
   onClose,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   menuKey: string
   onClose: () => void
+  onMouseEnter: () => void
+  onMouseLeave: () => void
 }) {
   const def = megaMenus[menuKey]
   if (!def) return null
@@ -762,6 +766,8 @@ function MegaMenuPanel({
     <div
       role="dialog"
       aria-label={`${menuKey} mega menu`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-border bg-white shadow-[0_16px_48px_-8px_rgba(11,31,58,0.14)]"
     >
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
@@ -867,6 +873,9 @@ export default function LandingPage({ onNavigate }: Props) {
   const [activeMega, setActiveMega] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const headerRef = useRef<HTMLElement>(null)
+  // Timer ref for the delayed close — prevents flicker when cursor moves
+  // from a trigger button into the mega panel (or between triggers).
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const workflow = useInView()
 
   // Section scroll tracking
@@ -887,30 +896,49 @@ export default function LandingPage({ onNavigate }: Props) {
     return () => observer.disconnect()
   }, [])
 
-  // Close mega menu on outside click / ESC
-  const closeMega = useCallback(() => setActiveMega(null), [])
+  // ── Hover helpers ──────────────────────────────────────────────────────────
+  // Cancel any pending close so moving cursor into the panel keeps it open.
+  const cancelClose = useCallback(() => {
+    if (closeTimerRef.current !== null) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+  }, [])
 
+  // Open a specific menu immediately (also cancels any pending close).
+  const openMega = useCallback((label: string) => {
+    cancelClose()
+    setActiveMega(label)
+  }, [cancelClose])
+
+  // Schedule a close after a short delay so the cursor can travel from the
+  // trigger into the mega panel without the menu disappearing mid-flight.
+  const scheduleClose = useCallback(() => {
+    cancelClose()
+    closeTimerRef.current = setTimeout(() => {
+      setActiveMega(null)
+      closeTimerRef.current = null
+    }, 200)
+  }, [cancelClose])
+
+  // Hard close (ESC, link click, etc.) — immediate, no delay.
+  const closeMega = useCallback(() => {
+    cancelClose()
+    setActiveMega(null)
+  }, [cancelClose])
+
+  // ESC key support
   useEffect(() => {
     if (!activeMega) return
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeMega()
     }
-    const handleClick = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        closeMega()
-      }
-    }
     document.addEventListener("keydown", handleKey)
-    document.addEventListener("mousedown", handleClick)
-    return () => {
-      document.removeEventListener("keydown", handleKey)
-      document.removeEventListener("mousedown", handleClick)
-    }
+    return () => document.removeEventListener("keydown", handleKey)
   }, [activeMega, closeMega])
 
-  const toggleMega = (label: string) => {
-    setActiveMega((prev) => (prev === label ? null : label))
-  }
+  // Clean up timer on unmount
+  useEffect(() => () => { if (closeTimerRef.current !== null) clearTimeout(closeTimerRef.current) }, [])
 
   return (
     <div className="min-w-0 overflow-x-hidden bg-white font-sans text-text-primary scroll-smooth">
@@ -938,7 +966,11 @@ export default function LandingPage({ onNavigate }: Props) {
                     type="button"
                     aria-expanded={isMegaOpen}
                     aria-haspopup="dialog"
-                    onClick={() => toggleMega(item.label)}
+                    // Hover → open; hover-leave → schedule close (cursor may travel into panel)
+                    onMouseEnter={() => openMega(item.label)}
+                    onMouseLeave={scheduleClose}
+                    // Keyboard / click also works for accessibility
+                    onClick={() => setActiveMega(prev => prev === item.label ? null : item.label)}
                     className={`mega-trigger inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
                       isMegaOpen || isActive
                         ? "bg-surface text-navy-800"
@@ -952,7 +984,7 @@ export default function LandingPage({ onNavigate }: Props) {
                         isMegaOpen ? "rotate-180 text-gold-600" : ""
                       }`}
                     />
-                    {/* Gold underline for active */}
+                    {/* Gold underline for active section */}
                     {isActive && (
                       <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
                     )}
@@ -1005,9 +1037,14 @@ export default function LandingPage({ onNavigate }: Props) {
           </button>
         </div>
 
-        {/* ── Mega menu panel (desktop) ── */}
+        {/* ── Mega menu panel (desktop) — hover-driven ── */}
         {activeMega && megaMenus[activeMega] && (
-          <MegaMenuPanel menuKey={activeMega} onClose={closeMega} />
+          <MegaMenuPanel
+            menuKey={activeMega}
+            onClose={closeMega}
+            onMouseEnter={cancelClose}
+            onMouseLeave={scheduleClose}
+          />
         )}
 
         {/* ── Mobile nav ── */}
