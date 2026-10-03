@@ -1,0 +1,10 @@
+{
+  "description": "Enterprise ERP platform streamlining asset management, maintenance, field service, and operational workflows for industrial organizations and technicians.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
