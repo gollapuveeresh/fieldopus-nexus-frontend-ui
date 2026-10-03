@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -14,6 +15,7 @@ import {
   Building2,
   Check,
   CheckCircle2,
+  ChevronDown,
   CircleCheck,
   ClipboardList,
   Database,
@@ -39,14 +41,254 @@ interface Props {
 }
 
 type Icon = ElementType
-const navigation = [
-  { label: "Product", href: "#product" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Modules", href: "#modules" },
-  { label: "Features", href: "#features" },
-  { label: "Resources", href: "#workflow" },
-  { label: "About", href: "#about" },
+
+// ─── Mega-menu data ────────────────────────────────────────────────────────
+interface MegaMenuItem {
+  icon: Icon
+  title: string
+  description: string
+  href: string
+}
+interface MegaMenuColumn {
+  heading: string
+  items: MegaMenuItem[]
+}
+interface MegaMenuFeatured {
+  title: string
+  subtitle: string
+  description: string
+  cta: string
+  ctaHref: string
+}
+interface MegaMenuDef {
+  columns: MegaMenuColumn[]
+  featured: MegaMenuFeatured
+}
+
+const megaMenus: Record<string, MegaMenuDef> = {
+  Product: {
+    columns: [
+      {
+        heading: "Overview",
+        items: [
+          {
+            icon: Boxes,
+            title: "Asset Management",
+            description: "Know the condition and history of every critical asset.",
+            href: "#modules",
+          },
+          {
+            icon: Wrench,
+            title: "Service Management",
+            description: "Deliver consistent service from intake to resolution.",
+            href: "#modules",
+          },
+          {
+            icon: ClipboardList,
+            title: "Work Order Management",
+            description: "Plan, assign, and track work with complete clarity.",
+            href: "#modules",
+          },
+          {
+            icon: Package,
+            title: "Inventory Management",
+            description: "Keep essential parts and stock moving efficiently.",
+            href: "#modules",
+          },
+        ],
+      },
+      {
+        heading: "Capabilities",
+        items: [
+          {
+            icon: Settings2,
+            title: "Maintenance Management",
+            description: "Stay ahead of downtime with proactive maintenance.",
+            href: "#modules",
+          },
+          {
+            icon: Users,
+            title: "Workforce Management",
+            description: "Give every team the context to do their best work.",
+            href: "#modules",
+          },
+          {
+            icon: BarChart3,
+            title: "Analytics & Reporting",
+            description: "Turn operational data into confident decisions.",
+            href: "#modules",
+          },
+          {
+            icon: ShieldCheck,
+            title: "Audit & Traceability",
+            description: "Maintain a complete history of all operational activities.",
+            href: "#modules",
+          },
+        ],
+      },
+    ],
+    featured: {
+      title: "FieldOps Nexus Platform",
+      subtitle: "Enterprise ERP",
+      description: "Connected service, asset, and field operations in one enterprise platform.",
+      cta: "Explore Platform",
+      ctaHref: "#product",
+    },
+  },
+  Solutions: {
+    columns: [
+      {
+        heading: "By Industry",
+        items: [
+          {
+            icon: Factory,
+            title: "Manufacturing",
+            description: "Keep production-critical assets and operations moving.",
+            href: "#solutions",
+          },
+          {
+            icon: Building2,
+            title: "Facilities Management",
+            description: "Coordinate spaces, people, and service delivery.",
+            href: "#solutions",
+          },
+          {
+            icon: Wrench,
+            title: "Service & Maintenance",
+            description: "Deliver responsive service wherever work happens.",
+            href: "#solutions",
+          },
+          {
+            icon: HardHat,
+            title: "Infrastructure",
+            description: "Maintain the systems that communities depend on.",
+            href: "#solutions",
+          },
+        ],
+      },
+      {
+        heading: "By Use Case",
+        items: [
+          {
+            icon: Warehouse,
+            title: "Enterprise Operations",
+            description: "Unify complex operations across your organization.",
+            href: "#solutions",
+          },
+          {
+            icon: Gauge,
+            title: "SLA Management",
+            description: "Monitor and enforce service level agreements at scale.",
+            href: "#solutions",
+          },
+          {
+            icon: Layers3,
+            title: "Multi-Site Management",
+            description: "Bring sites, teams, and structures into one connected view.",
+            href: "#solutions",
+          },
+          {
+            icon: Database,
+            title: "Connected Data",
+            description: "Connect operational information across teams and locations.",
+            href: "#solutions",
+          },
+        ],
+      },
+    ],
+    featured: {
+      title: "Built for Complex Operations",
+      subtitle: "Enterprise Solutions",
+      description: "Purpose-built flexibility for the environments where reliability matters most.",
+      cta: "View All Solutions",
+      ctaHref: "#solutions",
+    },
+  },
+  Modules: {
+    columns: [
+      {
+        heading: "Core Modules",
+        items: [
+          {
+            icon: Building2,
+            title: "Organization Management",
+            description: "Bring sites, teams, and structures into one connected view.",
+            href: "#modules",
+          },
+          {
+            icon: Boxes,
+            title: "Asset Management",
+            description: "Know the condition and history of every critical asset.",
+            href: "#modules",
+          },
+          {
+            icon: ClipboardList,
+            title: "Work Order Management",
+            description: "Plan, assign, and track work with complete clarity.",
+            href: "#modules",
+          },
+          {
+            icon: FileCheck2,
+            title: "Service Requests",
+            description: "Structured intake and triage for every service request.",
+            href: "#modules",
+          },
+        ],
+      },
+      {
+        heading: "Operations",
+        items: [
+          {
+            icon: Settings2,
+            title: "Maintenance Planning",
+            description: "Stay ahead of downtime with proactive maintenance.",
+            href: "#modules",
+          },
+          {
+            icon: Package,
+            title: "Inventory & Spare Parts",
+            description: "Keep essential parts and stock moving efficiently.",
+            href: "#modules",
+          },
+          {
+            icon: Radio,
+            title: "Technician Dispatch",
+            description: "Assign and track technicians in real time.",
+            href: "#modules",
+          },
+          {
+            icon: BarChart3,
+            title: "Analytics & Reporting",
+            description: "Turn operational data into confident decisions.",
+            href: "#modules",
+          },
+        ],
+      },
+    ],
+    featured: {
+      title: "Everything Your Enterprise Needs",
+      subtitle: "8 Connected Modules",
+      description: "Manage your organization's operational lifecycle through connected modules built for modern enterprise teams.",
+      cta: "See All Modules",
+      ctaHref: "#modules",
+    },
+  },
+}
+
+
+
+// All nav items in order
+const allNavItems = [
+  { label: "Product", hasMega: true, href: "#product" },
+  { label: "Solutions", hasMega: true, href: "#solutions" },
+  { label: "Modules", hasMega: true, href: "#modules" },
+  { label: "Features", hasMega: false, href: "#features" },
+  { label: "Resources", hasMega: false, href: "#workflow" },
+  { label: "About", hasMega: false, href: "#about" },
 ]
+
+// For section-active tracking (legacy compat)
+const navigation = allNavItems.map(n => ({ label: n.label, href: n.href }))
 const modules: {
   title: string
   description: string
@@ -506,11 +748,128 @@ function DashboardPreview({ view = "Dashboard" }: { view?: PreviewView }) {
   )
 }
 
+// ─── Mega Menu Panel ─────────────────────────────────────────────────────────
+function MegaMenuPanel({
+  menuKey,
+  onClose,
+}: {
+  menuKey: string
+  onClose: () => void
+}) {
+  const def = megaMenus[menuKey]
+  if (!def) return null
+  return (
+    <div
+      role="dialog"
+      aria-label={`${menuKey} mega menu`}
+      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-border bg-white shadow-[0_16px_48px_-8px_rgba(11,31,58,0.14)]"
+    >
+      <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr_280px]">
+          {/* Columns */}
+          {def.columns.map((col, ci) => (
+            <div key={ci}>
+              <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
+                {col.heading}
+              </p>
+              <ul className="space-y-1" role="list">
+                {col.items.map((item) => {
+                  const ItemIcon = item.icon as Icon
+                  return (
+                    <li key={item.title}>
+                      <a
+                        href={item.href}
+                        onClick={onClose}
+                        className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-surface"
+                      >
+                        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-text-secondary shadow-sm transition-colors duration-150 group-hover:border-gold-500/40 group-hover:bg-gold-50 group-hover:text-gold-600">
+                          <ItemIcon size={17} strokeWidth={1.7} />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-[13.5px] font-semibold leading-snug text-navy-800 group-hover:text-navy-900">
+                            {item.title}
+                          </span>
+                          <span className="mt-0.5 block text-xs leading-relaxed text-text-secondary">
+                            {item.description}
+                          </span>
+                        </span>
+                        <span className="ml-auto mt-1 shrink-0 text-text-secondary opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
+                          <ArrowRight size={13} />
+                        </span>
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))}
+
+          {/* Featured */}
+          <div className="flex flex-col justify-between rounded-xl border border-border bg-surface p-5">
+            <div>
+              <span className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
+                <span className="h-px w-4 bg-gold-500" />
+                {def.featured.subtitle}
+              </span>
+              <h3 className="mt-2 text-base font-bold leading-snug text-navy-800">
+                {def.featured.title}
+              </h3>
+              <p className="mt-2 text-xs leading-relaxed text-text-secondary">
+                {def.featured.description}
+              </p>
+            </div>
+            {/* Mini platform preview */}
+            <div className="my-4 overflow-hidden rounded-lg border border-border bg-white p-3 shadow-sm">
+              <div className="mb-2 flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-border" />
+                <span className="size-1.5 rounded-full bg-border" />
+                <span className="size-1.5 rounded-full bg-border" />
+                <span className="ml-2 text-[9px] font-bold text-navy-800">
+                  FieldOps <span className="text-gold-600">Nexus</span>
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-1">
+                {[["Assets", "2,846"], ["Open WO", "128"], ["SLA", "98%"]].map(([lbl, val]) => (
+                  <div key={lbl} className="rounded bg-surface p-1.5 text-center">
+                    <p className="text-[8px] text-text-secondary">{lbl}</p>
+                    <p className="text-[10px] font-bold text-navy-800">{val}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 flex h-8 items-end gap-0.5">
+                {[40, 55, 45, 70, 60, 85, 65].map((h, i) => (
+                  <span
+                    key={i}
+                    className={`flex-1 rounded-t-sm ${i === 5 ? "bg-gold-500" : "bg-navy-800/15"}`}
+                    style={{ height: `${h}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+            <a
+              href={def.featured.ctaHref}
+              onClick={onClose}
+              className="landing-button inline-flex items-center justify-center gap-2 rounded-lg bg-navy-800 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-navy-700"
+            >
+              {def.featured.cta} <ArrowRight size={13} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function LandingPage({ onNavigate }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [previewView, setPreviewView] = useState<PreviewView>("Dashboard")
   const [activeSection, setActiveSection] = useState("")
+  const [activeMega, setActiveMega] = useState<string | null>(null)
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+  const headerRef = useRef<HTMLElement>(null)
   const workflow = useInView()
+
+  // Section scroll tracking
   useEffect(() => {
     if (!("IntersectionObserver" in window)) return
     const observer = new IntersectionObserver(
@@ -527,49 +886,113 @@ export default function LandingPage({ onNavigate }: Props) {
     })
     return () => observer.disconnect()
   }, [])
+
+  // Close mega menu on outside click / ESC
+  const closeMega = useCallback(() => setActiveMega(null), [])
+
+  useEffect(() => {
+    if (!activeMega) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMega()
+    }
+    const handleClick = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        closeMega()
+      }
+    }
+    document.addEventListener("keydown", handleKey)
+    document.addEventListener("mousedown", handleClick)
+    return () => {
+      document.removeEventListener("keydown", handleKey)
+      document.removeEventListener("mousedown", handleClick)
+    }
+  }, [activeMega, closeMega])
+
+  const toggleMega = (label: string) => {
+    setActiveMega((prev) => (prev === label ? null : label))
+  }
+
   return (
     <div className="min-w-0 overflow-x-hidden bg-white font-sans text-text-primary scroll-smooth">
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg">
-        <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-6 px-5 lg:px-8">
-          <a href="#top" aria-label="FieldOps Nexus home">
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg"
+      >
+        <div className="relative mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-6 px-5 lg:px-8">
+          <a href="#top" aria-label="FieldOps Nexus home" onClick={closeMega}>
             <Brand />
           </a>
+
+          {/* ── Desktop nav ── */}
           <nav
             aria-label="Main navigation"
-            className="hidden items-center gap-6 xl:flex xl:gap-8"
+            className="hidden items-center gap-1 xl:flex"
           >
-            {navigation.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                aria-current={
-                  activeSection === item.href ? "location" : undefined
-                }
-                className={`landing-nav-link text-[13px] font-medium transition-colors hover:text-navy-800 ${
-                  activeSection === item.href
-                    ? "is-active text-navy-800"
-                    : "text-text-secondary"
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
+            {allNavItems.map((item) => {
+              const isActive = activeSection === item.href
+              const isMegaOpen = activeMega === item.label
+              if (item.hasMega) {
+                return (
+                  <button
+                    key={item.label}
+                    type="button"
+                    aria-expanded={isMegaOpen}
+                    aria-haspopup="dialog"
+                    onClick={() => toggleMega(item.label)}
+                    className={`mega-trigger inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                      isMegaOpen || isActive
+                        ? "bg-surface text-navy-800"
+                        : "text-text-secondary hover:bg-surface hover:text-navy-800"
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform duration-200 ${
+                        isMegaOpen ? "rotate-180 text-gold-600" : ""
+                      }`}
+                    />
+                    {/* Gold underline for active */}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
+                    )}
+                  </button>
+                )
+              }
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeMega}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`landing-nav-link rounded-md px-3 py-2 text-[13px] font-medium transition-colors hover:bg-surface hover:text-navy-800 ${
+                    isActive ? "is-active text-navy-800" : "text-text-secondary"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              )
+            })}
           </nav>
+
           <div className="hidden items-center gap-5 xl:flex">
             <button
               type="button"
-              onClick={() => onNavigate("login")}
+              onClick={() => { closeMega(); onNavigate("login") }}
               className="text-[13px] font-semibold text-navy-800 hover:text-gold-600"
             >
               Sign In
             </button>
             <a
               href={demoLink}
+              onClick={closeMega}
               className="landing-button inline-flex items-center gap-2 rounded-lg bg-navy-800 px-5 py-3 text-[13px] font-semibold text-white transition-colors hover:bg-navy-700"
             >
               Get Started <ArrowUpRight size={15} />
             </a>
           </div>
+
+          {/* Mobile hamburger */}
           <button
             type="button"
             className="flex size-10 items-center justify-center rounded-lg text-navy-800 xl:hidden"
@@ -581,21 +1004,79 @@ export default function LandingPage({ onNavigate }: Props) {
             {menuOpen ? <X size={23} /> : <Menu size={23} />}
           </button>
         </div>
+
+        {/* ── Mega menu panel (desktop) ── */}
+        {activeMega && megaMenus[activeMega] && (
+          <MegaMenuPanel menuKey={activeMega} onClose={closeMega} />
+        )}
+
+        {/* ── Mobile nav ── */}
         {menuOpen && (
           <nav
             id="mobile-navigation"
             aria-label="Mobile navigation"
             className="border-t border-border bg-white px-5 pb-6 pt-3 shadow-xl xl:hidden"
           >
-            {navigation.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="block border-b border-border/60 py-3 text-sm font-medium text-navy-800"
-              >
-                {item.label}
-              </a>
+            {allNavItems.map((item) => (
+              <div key={item.label}>
+                {item.hasMega ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpanded((prev) =>
+                          prev === item.label ? null : item.label
+                        )
+                      }
+                      className="flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium text-navy-800"
+                      aria-expanded={mobileExpanded === item.label}
+                    >
+                      {item.label}
+                      <ChevronDown
+                        size={15}
+                        className={`transition-transform duration-200 ${
+                          mobileExpanded === item.label ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {mobileExpanded === item.label && megaMenus[item.label] && (
+                      <div className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4">
+                        {megaMenus[item.label].columns.map((col, ci) => (
+                          <div key={ci} className="mt-3">
+                            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gold-600">
+                              {col.heading}
+                            </p>
+                            {col.items.map((mItem) => (
+                              <a
+                                key={mItem.title}
+                                href={mItem.href}
+                                onClick={() => {
+                                  setMenuOpen(false)
+                                  setMobileExpanded(null)
+                                }}
+                                className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
+                              >
+                                <span className="text-text-secondary">
+                                  <ArrowRight size={12} />
+                                </span>
+                                {mItem.title}
+                              </a>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <a
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block border-b border-border/60 py-3 text-sm font-medium text-navy-800"
+                  >
+                    {item.label}
+                  </a>
+                )}
+              </div>
             ))}
             <div className="mt-5 flex gap-3">
               <button
