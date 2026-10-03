@@ -143,7 +143,22 @@ export default function App() {
     return page;
   })();
 
-  if (resolvedPage === 'landing') return <LandingPage onNavigate={navigate} />;
+  const PUBLIC_PAGES = new Set<Page>([
+    'landing',
+    'asset-management',
+    'service-management',
+    'work-order-management',
+    'inventory-management',
+    'maintenance-management',
+    'workforce-management',
+    'analytics-reporting',
+    'audit-traceability',
+    'manufacturing',
+    'facilities',
+    'enterprise-operations',
+  ]);
+
+  if (PUBLIC_PAGES.has(resolvedPage)) return <LandingPage page={resolvedPage} onNavigate={navigate} />;
   if (resolvedPage === 'login') return <LoginPage onLogin={handleLogin} onNavigate={navigate} />;
   if (resolvedPage === 'client-register') return <ClientRegistrationPage onRegister={handleLogin} onNavigate={navigate} />;
   if (resolvedPage === 'forgot-password') return <ForgotPasswordPage onNavigate={navigate} />;

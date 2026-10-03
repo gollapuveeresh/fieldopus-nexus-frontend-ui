@@ -35,9 +35,11 @@ import {
   X,
 } from "lucide-react"
 import type { Page } from "../types"
+import MarketingPages from "./MarketingPages"
 
 interface Props {
   onNavigate: (page: Page) => void
+  page?: Page
 }
 
 type Icon = ElementType
@@ -48,6 +50,7 @@ interface MegaMenuItem {
   title: string
   description: string
   href: string
+  page?: Page
 }
 interface MegaMenuColumn {
   heading: string
@@ -76,24 +79,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Asset Management",
             description: "Know the condition and history of every critical asset.",
             href: "#modules",
+            page: "asset-management",
           },
           {
             icon: Wrench,
             title: "Service Management",
             description: "Deliver consistent service from intake to resolution.",
             href: "#modules",
+            page: "service-management",
           },
           {
             icon: ClipboardList,
             title: "Work Order Management",
             description: "Plan, assign, and track work with complete clarity.",
             href: "#modules",
+            page: "work-order-management",
           },
           {
             icon: Package,
             title: "Inventory Management",
             description: "Keep essential parts and stock moving efficiently.",
             href: "#modules",
+            page: "inventory-management",
           },
         ],
       },
@@ -105,24 +112,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Maintenance Management",
             description: "Stay ahead of downtime with proactive maintenance.",
             href: "#modules",
+            page: "maintenance-management",
           },
           {
             icon: Users,
             title: "Workforce Management",
             description: "Give every team the context to do their best work.",
             href: "#modules",
+            page: "workforce-management",
           },
           {
             icon: BarChart3,
             title: "Analytics & Reporting",
             description: "Turn operational data into confident decisions.",
             href: "#modules",
+            page: "analytics-reporting",
           },
           {
             icon: ShieldCheck,
             title: "Audit & Traceability",
             description: "Maintain a complete history of all operational activities.",
             href: "#modules",
+            page: "audit-traceability",
           },
         ],
       },
@@ -145,24 +156,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Manufacturing",
             description: "Keep production-critical assets and operations moving.",
             href: "#solutions",
+            page: "manufacturing",
           },
           {
             icon: Building2,
             title: "Facilities Management",
             description: "Coordinate spaces, people, and service delivery.",
             href: "#solutions",
+            page: "facilities",
           },
           {
             icon: Wrench,
             title: "Service & Maintenance",
             description: "Deliver responsive service wherever work happens.",
             href: "#solutions",
+            page: "maintenance-management",
           },
           {
             icon: HardHat,
-            title: "Infrastructure",
+            title: "Enterprise Operations",
             description: "Maintain the systems that communities depend on.",
             href: "#solutions",
+            page: "enterprise-operations",
           },
         ],
       },
@@ -523,7 +538,7 @@ function useInView() {
   return { ref, visible }
 }
 
-function Reveal({
+export function Reveal({
   children,
   className = "",
   delay = 0,
@@ -754,11 +769,13 @@ function MegaMenuPanel({
   onClose,
   onMouseEnter,
   onMouseLeave,
+  onNavigate,
 }: {
   menuKey: string
   onClose: () => void
   onMouseEnter: () => void
   onMouseLeave: () => void
+  onNavigate: (page: Page) => void
 }) {
   const def = megaMenus[menuKey]
   if (!def) return null
@@ -785,7 +802,15 @@ function MegaMenuPanel({
                     <li key={item.title}>
                       <a
                         href={item.href}
-                        onClick={onClose}
+                        onClick={(e) => {
+                          if (item.page) {
+                            e.preventDefault()
+                            onClose()
+                            onNavigate(item.page)
+                          } else {
+                            onClose()
+                          }
+                        }}
                         className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-surface"
                       >
                         <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-text-secondary shadow-sm transition-colors duration-150 group-hover:border-gold-500/40 group-hover:bg-gold-50 group-hover:text-gold-600">
@@ -866,7 +891,7 @@ function MegaMenuPanel({
   )
 }
 
-export default function LandingPage({ onNavigate }: Props) {
+export default function LandingPage({ onNavigate, page }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [previewView, setPreviewView] = useState<PreviewView>("Dashboard")
   const [activeSection, setActiveSection] = useState("")
@@ -1044,6 +1069,7 @@ export default function LandingPage({ onNavigate }: Props) {
             onClose={closeMega}
             onMouseEnter={cancelClose}
             onMouseLeave={scheduleClose}
+            onNavigate={onNavigate}
           />
         )}
 
@@ -1087,9 +1113,16 @@ export default function LandingPage({ onNavigate }: Props) {
                               <a
                                 key={mItem.title}
                                 href={mItem.href}
-                                onClick={() => {
-                                  setMenuOpen(false)
-                                  setMobileExpanded(null)
+                                onClick={(e) => {
+                                  if (mItem.page) {
+                                    e.preventDefault()
+                                    setMenuOpen(false)
+                                    setMobileExpanded(null)
+                                    onNavigate(mItem.page)
+                                  } else {
+                                    setMenuOpen(false)
+                                    setMobileExpanded(null)
+                                  }
                                 }}
                                 className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
                               >
@@ -1138,6 +1171,7 @@ export default function LandingPage({ onNavigate }: Props) {
         )}
       </header>
 
+      {(!page || page === "landing") ? (
       <main id="top">
         <section
           className="relative isolate overflow-hidden bg-navy-900 text-white"
@@ -1553,6 +1587,9 @@ export default function LandingPage({ onNavigate }: Props) {
           </Reveal>
         </section>
       </main>
+      ) : (
+        <MarketingPages page={page} onNavigate={onNavigate} />
+      )}
 
       <footer className="bg-navy-950 text-white">
         <div className="mx-auto max-w-7xl px-5 pb-8 pt-16 lg:px-8">
