@@ -1,5 +1,8 @@
 export type Page =
   | 'landing'
+  | 'features'
+  | 'resources'
+  | 'about'
   | 'asset-management'
   | 'service-management'
   | 'work-order-management'

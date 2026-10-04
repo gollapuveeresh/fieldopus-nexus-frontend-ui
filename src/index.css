@@ -157,19 +157,6 @@ input[type="checkbox"] {
 .landing-hero-delay-3 { animation-delay: 300ms; }
 
 .landing-nav-link { position: relative; }
-.landing-nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 100%;
-  bottom: -10px;
-  height: 2px;
-  background: var(--color-gold-500);
-  transition: right 220ms ease;
-}
-.landing-nav-link:hover::after,
-.landing-nav-link:focus-visible::after,
-.landing-nav-link.is-active::after { right: 0; }
 .landing-button { transition: background-color 220ms ease, transform 220ms ease; }
 .landing-button:hover { transform: translateY(-2px); }
 .landing-button svg { transition: transform 220ms ease; }

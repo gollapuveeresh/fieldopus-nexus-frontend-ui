@@ -293,13 +293,13 @@ const megaMenus: Record<string, MegaMenuDef> = {
 
 
 // All nav items in order
-const allNavItems = [
+const allNavItems: { label: string; hasMega: boolean; href: string; page?: Page }[] = [
   { label: "Product", hasMega: true, href: "#product" },
   { label: "Solutions", hasMega: true, href: "#solutions" },
   { label: "Modules", hasMega: true, href: "#modules" },
-  { label: "Features", hasMega: false, href: "#features" },
-  { label: "Resources", hasMega: false, href: "#workflow" },
-  { label: "About", hasMega: false, href: "#about" },
+  { label: "Features", hasMega: false, href: "#features", page: "features" },
+  { label: "Resources", hasMega: false, href: "#resources", page: "resources" },
+  { label: "About", hasMega: false, href: "#about", page: "about" },
 ]
 
 // For section-active tracking (legacy compat)
@@ -903,8 +903,17 @@ export default function LandingPage({ onNavigate, page }: Props) {
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const workflow = useInView()
 
-  // Section scroll tracking
+  // Scroll to top whenever page prop changes
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }, [page])
+
+  // Section scroll tracking - only active when on the main landing page
+  useEffect(() => {
+    if (page && page !== "landing") {
+      setActiveSection("")
+      return
+    }
     if (!("IntersectionObserver" in window)) return
     const observer = new IntersectionObserver(
       (entries) => {
@@ -919,7 +928,42 @@ export default function LandingPage({ onNavigate, page }: Props) {
       if (section) observer.observe(section)
     })
     return () => observer.disconnect()
-  }, [])
+  }, [page])
+
+  // Determine exactly ONE active navbar item from current route/page
+  const activeNavLabel = (() => {
+    if (page === "features") return "Features"
+    if (page === "resources") return "Resources"
+    if (page === "about") return "About"
+    if (
+      page === "asset-management" ||
+      page === "service-management" ||
+      page === "work-order-management" ||
+      page === "inventory-management" ||
+      page === "maintenance-management" ||
+      page === "workforce-management" ||
+      page === "analytics-reporting" ||
+      page === "audit-traceability"
+    ) {
+      return "Product"
+    }
+    if (
+      page === "manufacturing" ||
+      page === "facilities" ||
+      page === "enterprise-operations"
+    ) {
+      return "Solutions"
+    }
+    if (!page || page === "landing") {
+      if (activeSection === "#features") return "Features"
+      if (activeSection === "#resources" || activeSection === "#workflow") return "Resources"
+      if (activeSection === "#about") return "About"
+      if (activeSection === "#product") return "Product"
+      if (activeSection === "#solutions") return "Solutions"
+      if (activeSection === "#modules") return "Modules"
+    }
+    return null
+  })()
 
   // ── Hover helpers ──────────────────────────────────────────────────────────
   // Cancel any pending close so moving cursor into the panel keeps it open.
@@ -972,7 +1016,16 @@ export default function LandingPage({ onNavigate, page }: Props) {
         className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg"
       >
         <div className="relative mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-6 px-5 lg:px-8">
-          <a href="#top" aria-label="FieldOps Nexus home" onClick={closeMega}>
+          <a
+            href="#top"
+            aria-label="FieldOps Nexus home"
+            onClick={(e) => {
+              e.preventDefault()
+              closeMega()
+              onNavigate("landing")
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }}
+          >
             <Brand />
           </a>
 
@@ -982,8 +1035,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
             className="hidden items-center gap-1 xl:flex"
           >
             {allNavItems.map((item) => {
-              const isActive = activeSection === item.href
+              const isItemActive = activeNavLabel === item.label
               const isMegaOpen = activeMega === item.label
+
               if (item.hasMega) {
                 return (
                   <button
@@ -991,13 +1045,15 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     type="button"
                     aria-expanded={isMegaOpen}
                     aria-haspopup="dialog"
-                    // Hover → open; hover-leave → schedule close (cursor may travel into panel)
+                    // Hover → open; hover-leave → schedule close
                     onMouseEnter={() => openMega(item.label)}
                     onMouseLeave={scheduleClose}
                     // Keyboard / click also works for accessibility
                     onClick={() => setActiveMega(prev => prev === item.label ? null : item.label)}
-                    className={`mega-trigger inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
-                      isMegaOpen || isActive
+                    className={`mega-trigger relative inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                      isItemActive
+                        ? "font-semibold text-navy-800 bg-surface/60"
+                        : isMegaOpen
                         ? "bg-surface text-navy-800"
                         : "text-text-secondary hover:bg-surface hover:text-navy-800"
                     }`}
@@ -1009,25 +1065,37 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         isMegaOpen ? "rotate-180 text-gold-600" : ""
                       }`}
                     />
-                    {/* Gold underline for active section */}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
+                    {/* Exactly ONE gold underline for active item */}
+                    {isItemActive && (
+                      <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#F5C451] rounded-full" />
                     )}
                   </button>
                 )
               }
+
               return (
-                <a
+                <button
                   key={item.label}
-                  href={item.href}
-                  onClick={closeMega}
-                  aria-current={isActive ? "location" : undefined}
-                  className={`landing-nav-link rounded-md px-3 py-2 text-[13px] font-medium transition-colors hover:bg-surface hover:text-navy-800 ${
-                    isActive ? "is-active text-navy-800" : "text-text-secondary"
+                  type="button"
+                  onClick={() => {
+                    closeMega()
+                    if (item.page) {
+                      onNavigate(item.page)
+                    }
+                  }}
+                  aria-current={isItemActive ? "page" : undefined}
+                  className={`landing-nav-link relative rounded-md px-3 py-2 text-[13px] font-medium transition-colors hover:bg-surface hover:text-navy-800 ${
+                    isItemActive
+                      ? "font-semibold text-navy-800 bg-surface/60"
+                      : "text-text-secondary"
                   }`}
                 >
                   {item.label}
-                </a>
+                  {/* Exactly ONE gold underline for active item */}
+                  {isItemActive && (
+                    <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#F5C451] rounded-full" />
+                  )}
+                </button>
               )
             })}
           </nav>
@@ -1080,74 +1148,87 @@ export default function LandingPage({ onNavigate, page }: Props) {
             aria-label="Mobile navigation"
             className="border-t border-border bg-white px-5 pb-6 pt-3 shadow-xl xl:hidden"
           >
-            {allNavItems.map((item) => (
-              <div key={item.label}>
-                {item.hasMega ? (
-                  <>
+            {allNavItems.map((item) => {
+              const isMobileActive = activeNavLabel === item.label
+              return (
+                <div key={item.label}>
+                  {item.hasMega ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMobileExpanded((prev) =>
+                            prev === item.label ? null : item.label
+                          )
+                        }
+                        className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium ${
+                          isMobileActive ? "text-gold-600 font-semibold" : "text-navy-800"
+                        }`}
+                        aria-expanded={mobileExpanded === item.label}
+                      >
+                        {item.label}
+                        <ChevronDown
+                          size={15}
+                          className={`transition-transform duration-200 ${
+                            mobileExpanded === item.label ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {mobileExpanded === item.label && megaMenus[item.label] && (
+                        <div className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4">
+                          {megaMenus[item.label].columns.map((col, ci) => (
+                            <div key={ci} className="mt-3">
+                              <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gold-600">
+                                {col.heading}
+                              </p>
+                              {col.items.map((mItem) => (
+                                <a
+                                  key={mItem.title}
+                                  href={mItem.href}
+                                  onClick={(e) => {
+                                    if (mItem.page) {
+                                      e.preventDefault()
+                                      setMenuOpen(false)
+                                      setMobileExpanded(null)
+                                      onNavigate(mItem.page)
+                                    } else {
+                                      setMenuOpen(false)
+                                      setMobileExpanded(null)
+                                    }
+                                  }}
+                                  className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
+                                >
+                                  <span className="text-text-secondary">
+                                    <ArrowRight size={12} />
+                                  </span>
+                                  {mItem.title}
+                                </a>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
                     <button
                       type="button"
-                      onClick={() =>
-                        setMobileExpanded((prev) =>
-                          prev === item.label ? null : item.label
-                        )
-                      }
-                      className="flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium text-navy-800"
-                      aria-expanded={mobileExpanded === item.label}
+                      onClick={() => {
+                        setMenuOpen(false)
+                        if (item.page) {
+                          onNavigate(item.page)
+                        }
+                      }}
+                      className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-left text-sm font-medium ${
+                        isMobileActive ? "text-gold-600 font-semibold" : "text-navy-800"
+                      }`}
                     >
-                      {item.label}
-                      <ChevronDown
-                        size={15}
-                        className={`transition-transform duration-200 ${
-                          mobileExpanded === item.label ? "rotate-180" : ""
-                        }`}
-                      />
+                      <span>{item.label}</span>
+                      <ArrowRight size={14} className="text-text-secondary" />
                     </button>
-                    {mobileExpanded === item.label && megaMenus[item.label] && (
-                      <div className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4">
-                        {megaMenus[item.label].columns.map((col, ci) => (
-                          <div key={ci} className="mt-3">
-                            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gold-600">
-                              {col.heading}
-                            </p>
-                            {col.items.map((mItem) => (
-                              <a
-                                key={mItem.title}
-                                href={mItem.href}
-                                onClick={(e) => {
-                                  if (mItem.page) {
-                                    e.preventDefault()
-                                    setMenuOpen(false)
-                                    setMobileExpanded(null)
-                                    onNavigate(mItem.page)
-                                  } else {
-                                    setMenuOpen(false)
-                                    setMobileExpanded(null)
-                                  }
-                                }}
-                                className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
-                              >
-                                <span className="text-text-secondary">
-                                  <ArrowRight size={12} />
-                                </span>
-                                {mItem.title}
-                              </a>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <a
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="block border-b border-border/60 py-3 text-sm font-medium text-navy-800"
-                  >
-                    {item.label}
-                  </a>
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              )
+            })}
             <div className="mt-5 flex gap-3">
               <button
                 type="button"
@@ -1605,29 +1686,29 @@ export default function LandingPage({ onNavigate, page }: Props) {
               {
                 title: "Platform",
                 links: [
-                  ["Organization", "#modules"],
-                  ["Assets", "#modules"],
-                  ["Service", "#modules"],
-                  ["Work Orders", "#modules"],
-                  ["Analytics", "#modules"],
+                  { label: "Features", page: "features" as Page },
+                  { label: "Asset Management", page: "asset-management" as Page },
+                  { label: "Service Management", page: "service-management" as Page },
+                  { label: "Work Orders", page: "work-order-management" as Page },
+                  { label: "Analytics", page: "analytics-reporting" as Page },
                 ],
               },
               {
                 title: "Solutions",
                 links: [
-                  ["Enterprise", "#solutions"],
-                  ["Manufacturing", "#solutions"],
-                  ["Facilities", "#solutions"],
-                  ["Maintenance", "#solutions"],
+                  { label: "Enterprise Operations", page: "enterprise-operations" as Page },
+                  { label: "Manufacturing", page: "manufacturing" as Page },
+                  { label: "Facilities Management", page: "facilities" as Page },
+                  { label: "Maintenance", page: "maintenance-management" as Page },
                 ],
               },
               {
                 title: "Company",
                 links: [
-                  ["About", "#about"],
-                  ["Contact", contactLink],
-                  ["Careers", careersLink],
-                  ["Resources", "#workflow"],
+                  { label: "About Us", page: "about" as Page },
+                  { label: "Resources", page: "resources" as Page },
+                  { label: "Contact Sales", href: contactLink },
+                  { label: "Careers", href: careersLink },
                 ],
               },
             ].map((col) => (
@@ -1636,14 +1717,25 @@ export default function LandingPage({ onNavigate, page }: Props) {
                   {col.title}
                 </h3>
                 <div className="flex flex-col gap-3">
-                  {col.links.map(([label, href]) => (
-                    <a
-                      key={label}
-                      href={href}
-                      className="w-fit text-sm text-white/45 transition-colors hover:text-gold-400"
-                    >
-                      {label}
-                    </a>
+                  {col.links.map((link) => (
+                    link.page ? (
+                      <button
+                        key={link.label}
+                        type="button"
+                        onClick={() => onNavigate(link.page)}
+                        className="w-fit text-left text-sm text-white/45 transition-colors hover:text-gold-400"
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        className="w-fit text-sm text-white/45 transition-colors hover:text-gold-400"
+                      >
+                        {link.label}
+                      </a>
+                    )
                   ))}
                 </div>
               </div>

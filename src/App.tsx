@@ -145,6 +145,9 @@ export default function App() {
 
   const PUBLIC_PAGES = new Set<Page>([
     'landing',
+    'features',
+    'resources',
+    'about',
     'asset-management',
     'service-management',
     'work-order-management',
