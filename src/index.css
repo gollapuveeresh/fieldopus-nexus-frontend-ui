@@ -219,3 +219,43 @@ input[type="checkbox"] {
     animation: none;
   }
 }
+
+/* ─── Connected Operations Card Marquee — Left → Right ────────────────────── */
+/*
+ * The track contains two identical segments (Set A + Set B), each with identical width W.
+ * Moving from translate3d(-50%, 0, 0) to translate3d(0%, 0, 0) shifts the track
+ * in the positive X direction (LEFT → RIGHT).
+ * When it reaches 0%, Set A exactly occupies the coordinates Set B occupied at -50%.
+ * This produces an infinite seamless conveyor with zero visual jump or blank space.
+ */
+@keyframes ops-cards-marquee-ltr {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+.ops-cards-marquee-ltr {
+  display: flex;
+  width: max-content;
+  animation: ops-cards-marquee-ltr 36s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ops-cards-marquee-ltr {
+    animation: none;
+    transform: none;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+  }
+  .ops-cards-marquee-ltr > .ops-marquee-clone {
+    display: none;
+  }
+}
+
