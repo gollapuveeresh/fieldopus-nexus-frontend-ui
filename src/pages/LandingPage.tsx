@@ -14,7 +14,6 @@ import {
   Boxes,
   Building2,
   Check,
-  CheckCircle2,
   ChevronDown,
   CircleCheck,
   ClipboardList,
@@ -645,6 +644,167 @@ function AssetsVideoSection() {
         </div>
       )}
     </section>
+  )
+}
+
+
+interface CapabilityPanel {
+  id: string
+  title: string
+  subtitle: string
+  description: string
+  icon: ElementType
+  highlight: string
+}
+
+const CAPABILITY_PANELS: CapabilityPanel[] = [
+  {
+    id: "connected-assets",
+    title: "CONNECTED ASSETS",
+    subtitle: "Enterprise Registry",
+    description: "Connected asset context across sites and operations.",
+    icon: Boxes,
+    highlight: "Real-time Telemetry & Health",
+  },
+  {
+    id: "live-service",
+    title: "LIVE SERVICE",
+    subtitle: "Orchestration & SLA",
+    description: "Service activity organized around operational priorities.",
+    icon: Activity,
+    highlight: "Intelligent Triage & Dispatch",
+  },
+  {
+    id: "operational-control",
+    title: "OPERATIONAL CONTROL",
+    subtitle: "Unified Visibility",
+    description: "One connected view for operational decision-making.",
+    icon: Settings2,
+    highlight: "Cross-Site Command & Control",
+  },
+]
+
+export function HeroOperationalIntelligence() {
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReducedMotion(mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mediaQuery.addEventListener?.("change", handler)
+    return () => mediaQuery.removeEventListener?.("change", handler)
+  }, [])
+
+  return (
+    <div
+      className="landing-hero-enter landing-hero-delay-2 mt-10 w-full max-w-5xl lg:max-w-6xl select-none"
+      role="region"
+      aria-label="FieldOps Nexus Operational Intelligence: Connected Assets, Live Service, and Operational Control"
+    >
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/[0.12] bg-gradient-to-b from-[#102445]/90 via-[#0B1F3B]/95 to-[#061224]/98 p-5 sm:p-7 md:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] backdrop-blur-xl ring-1 ring-inset ring-white/[0.06]">
+        {/* Subtle grid background texture */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, #FFFFFF 1px, transparent 0)`,
+            backgroundSize: "24px 24px",
+          }}
+        />
+
+        {/* Ambient background illumination */}
+        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 size-96 rounded-full bg-[#F5C451]/[0.07] blur-3xl" />
+
+        {/* ── Header ── */}
+        <div className="relative mb-6 sm:mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.09] pb-4 sm:pb-5">
+          <div className="flex items-center gap-3">
+            <span className="relative flex size-2.5">
+              {!reducedMotion && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F5C451] opacity-75" />
+              )}
+              <span className="relative inline-flex size-2.5 rounded-full bg-[#F5C451] shadow-[0_0_10px_#F5C451]" />
+            </span>
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white/95">
+              Operational Intelligence
+            </span>
+            <span className="hidden sm:inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium tracking-wide text-white/50">
+              CORE CAPABILITIES
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-white/80">
+            <span className="text-[11px] font-medium text-white/60">LIVE SYSTEM</span>
+            <span className="relative flex size-2">
+              {!reducedMotion && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10B981] opacity-75" />
+              )}
+              <span className="relative inline-flex size-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981]" />
+            </span>
+          </div>
+        </div>
+
+        {/* ── Three Capability Panels Grid ── */}
+        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 z-10">
+          {/* Decorative subtle ambient connecting line behind panels (desktop) */}
+          <div className="hidden md:block absolute top-1/2 left-10 right-10 -translate-y-1/2 h-px border-t border-dashed border-white/[0.08] -z-0" />
+
+          {CAPABILITY_PANELS.map((panel) => {
+            const PanelIcon = panel.icon
+
+            return (
+              <div
+                key={panel.id}
+                className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.09] bg-[#162A4B]/40 p-5 sm:p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#F5C451]/40 hover:bg-[#162A4B]/75 hover:shadow-[0_15px_35px_rgba(0,0,0,0.45)] cursor-default"
+              >
+                {/* Top: Icon + Subtitle */}
+                <div>
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-[#162A4B]/80 text-white/80 shadow-sm transition-all duration-300 group-hover:border-[#F5C451]/50 group-hover:bg-[#162A4B] group-hover:text-[#F5C451] group-hover:shadow-[0_0_16px_rgba(245,196,81,0.25)]">
+                      <PanelIcon size={24} strokeWidth={2} />
+                    </div>
+                    <span className="rounded-md border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-[10px] font-mono font-medium tracking-wide text-white/40 group-hover:text-white/60 transition-colors">
+                      {panel.subtitle}
+                    </span>
+                  </div>
+
+                  {/* Heading */}
+                  <h3 className="text-base sm:text-lg font-bold tracking-wider text-white group-hover:text-[#F5C451] transition-colors duration-300">
+                    {panel.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/65 group-hover:text-white/85 transition-colors duration-300">
+                    {panel.description}
+                  </p>
+                </div>
+
+                {/* Bottom Highlight Feature Pill */}
+                <div className="mt-6 pt-4 border-t border-white/[0.07] flex items-center justify-between text-[11px] text-white/45 group-hover:text-white/70 transition-colors">
+                  <span className="font-medium tracking-tight">
+                    {panel.highlight}
+                  </span>
+                  <span className="size-1.5 rounded-full bg-white/20 group-hover:bg-[#F5C451] transition-colors" />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* ── Bottom Subdued System Signal ── */}
+        <div className="relative mt-6 sm:mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-4 text-xs text-white/40">
+          <div className="flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-[#F5C451] shadow-[0_0_6px_#F5C451]" />
+            <span className="font-medium tracking-wide">
+              Unified Operational Intelligence Platform
+            </span>
+          </div>
+          <div className="font-mono text-[11px] text-white/35">
+            CONNECTED CAPABILITIES &bull; FIELD TO ENTERPRISE
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -1423,67 +1583,32 @@ export default function LandingPage({ onNavigate, page }: Props) {
           className="relative isolate overflow-hidden bg-navy-900 text-white"
           aria-labelledby="hero-title"
         >
-          <div className="pointer-events-none absolute -right-40 -top-64 size-[700px] rounded-full border border-white/5" />
-          <div className="pointer-events-none absolute -right-24 -top-48 size-[550px] rounded-full border border-white/5" />
           <div className="pointer-events-none absolute -bottom-60 left-1/4 size-[500px] rounded-full bg-navy-500/15 blur-3xl" />
-          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-20 lg:min-h-[690px] lg:grid-cols-[.94fr_1.06fr] lg:gap-10 lg:px-8 lg:py-24">
-            <div className="max-w-xl">
+          <div className="relative mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
               <div className="landing-hero-enter">
                 <Eyebrow light>Enterprise operations platform</Eyebrow>
               </div>
               <h1
                 id="hero-title"
-                className="landing-hero-enter text-[clamp(2.7rem,5vw,4.6rem)] font-bold leading-[1.08] tracking-tight"
+                className="landing-hero-enter mt-6 max-w-3xl text-[clamp(2.7rem,5vw,4.6rem)] font-bold leading-[1.08] tracking-tight"
               >
                 Enterprise Operations.
                 <br />
                 <span className="text-gold-400">Connected.</span> Simplified.
               </h1>
-              <p className="landing-hero-enter landing-hero-delay-1 mt-7 max-w-lg text-base leading-relaxed text-white/65 lg:text-lg">
+              <p className="landing-hero-enter landing-hero-delay-1 mt-7 max-w-xl text-base leading-relaxed text-white/65 lg:text-lg">
                 A unified ERP platform designed to connect organizations,
                 assets, people, service operations, and business workflows in
                 one centralized system.
               </p>
-              <div className="landing-hero-enter landing-hero-delay-2 mt-9 flex flex-wrap gap-3">
-                <a
-                  href="#modules"
-                  className="landing-button inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-gold-500 px-6 text-sm font-bold text-navy-900 transition-colors hover:bg-gold-400"
-                >
-                  Explore Platform <ArrowRight size={16} />
-                </a>
-                <a
-                  href={demoLink}
-                  className="landing-button inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/25 px-6 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-                >
-                  Request a Demo <ArrowUpRight size={16} />
-                </a>
-              </div>
+              <HeroOperationalIntelligence />
               <div className="landing-hero-enter landing-hero-delay-2 mt-12 flex items-center gap-3 border-t border-white/10 pt-6 text-xs text-white/45">
                 <span className="flex size-7 items-center justify-center rounded-md border border-gold-500/30 text-gold-400">
                   <Check size={15} />
                 </span>{" "}
                 One connected view of your entire operation
               </div>
-            </div>
-            <div className="landing-hero-enter landing-hero-delay-3 relative mx-auto w-full max-w-[610px] lg:translate-x-5">
-              <div className="absolute -inset-5 rounded-3xl bg-gold-500/10 blur-3xl" />
-              <div className="relative rotate-[1deg] shadow-2xl shadow-black/30 transition-transform duration-500 hover:rotate-0">
-                <DashboardPreview />
-              </div>
-              <div className="absolute -bottom-5 -left-4 hidden items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 shadow-xl sm:flex">
-                <span className="flex size-9 items-center justify-center rounded-lg bg-gold-50 text-gold-600">
-                  <CheckCircle2 size={19} />
-                </span>
-                <span>
-                  <strong className="block text-xs text-navy-800">
-                    Everything in sync
-                  </strong>
-                  <small className="text-[10px] text-text-secondary">
-                    Across teams, assets & sites
-                  </small>
-                </span>
-              </div>
-            </div>
+
           </div>
         </section>
 
