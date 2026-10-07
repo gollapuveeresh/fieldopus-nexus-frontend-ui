@@ -36,6 +36,8 @@ import {
 } from "lucide-react"
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
+import fieldNexusVideo from "../assets/fieldnexusvideo.mp4"
+
 
 interface Props {
   onNavigate: (page: Page) => void
@@ -538,6 +540,45 @@ function useInView() {
   return { ref, visible }
 }
 
+// ─── Assets Video Section ─────────────────────────────────────────────────
+function AssetsVideoSection() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    // Attempt autoplay — muted is required for autoplay in modern browsers.
+    const playPromise = video.play()
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay was prevented — video stays paused on its first frame.
+      })
+    }
+  }, [])
+
+  return (
+    <section
+      aria-label="Asset Management video showcase"
+      className="w-full bg-[#0B1F3B] assets-video-section-enter"
+    >
+      {/* Full-width cinematic video — normal document flow, 100% visible, natural aspect ratio */}
+      <video
+        ref={videoRef}
+        src={fieldNexusVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-label="FieldOps Nexus Asset Management product showcase"
+        className="block w-full h-auto aspect-video object-contain"
+        style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
+        preload="metadata"
+      />
+    </section>
+  )
+}
+
+
 export function Reveal({
   children,
   className = "",
@@ -1010,7 +1051,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
   useEffect(() => () => { if (closeTimerRef.current !== null) clearTimeout(closeTimerRef.current) }, [])
 
   return (
-    <div className="min-w-0 overflow-x-hidden bg-white font-sans text-text-primary scroll-smooth">
+    <div className="min-w-0 overflow-x-clip bg-white font-sans text-text-primary scroll-smooth">
       <header
         ref={headerRef}
         className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg"
@@ -1254,6 +1295,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
       {(!page || page === "landing") ? (
       <main id="top">
+        {/* ── Assets Video Section ── */}
+        <AssetsVideoSection />
+
         <section
           className="relative isolate overflow-hidden bg-navy-900 text-white"
           aria-labelledby="hero-title"

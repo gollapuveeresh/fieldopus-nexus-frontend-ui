@@ -202,3 +202,20 @@ input[type="checkbox"] {
 @media (prefers-reduced-motion: reduce) {
   .mega-menu-panel { animation: none; }
 }
+
+/* ─── Assets Video Section ───────────────────────────────────────────────── */
+/* Opacity-only fade: no transform = no competing stacking context during animation */
+@keyframes assets-video-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.assets-video-section-enter {
+  animation: assets-video-enter 600ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assets-video-section-enter {
+    animation: none;
+  }
+}
