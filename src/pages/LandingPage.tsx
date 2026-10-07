@@ -543,6 +543,7 @@ function useInView() {
 // ─── Assets Video Section ─────────────────────────────────────────────────
 function AssetsVideoSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
@@ -562,18 +563,36 @@ function AssetsVideoSection() {
       className="w-full bg-[#0B1F3B] assets-video-section-enter"
     >
       {/* Full-width cinematic video — normal document flow, 100% visible, natural aspect ratio */}
-      <video
-        ref={videoRef}
-        src={fieldNexusVideo}
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-label="FieldOps Nexus Asset Management product showcase"
-        className="block w-full h-auto aspect-video object-contain"
-        style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
-        preload="metadata"
-      />
+      {!hasError ? (
+        <video
+          ref={videoRef}
+          src={fieldNexusVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-label="FieldOps Nexus Asset Management product showcase"
+          className="block w-full h-auto aspect-video object-contain"
+          style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
+          preload="metadata"
+          onError={() => setHasError(true)}
+        />
+      ) : (
+        <div
+          className="flex w-full aspect-video flex-col items-center justify-center bg-[#071426] px-6 text-center text-white"
+          style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
+        >
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-gold-500/10 border border-gold-500/30 text-gold-400 mb-4">
+            <Activity size={28} strokeWidth={2.2} />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+            Asset Management <span className="text-gold-400">Operations</span>
+          </h2>
+          <p className="mt-2 max-w-md text-sm text-white/60">
+            Real-time telemetry, preventive maintenance, and lifecycle traceability for enterprise equipment.
+          </p>
+        </div>
+      )}
     </section>
   )
 }
