@@ -673,6 +673,30 @@ export function Reveal({
   )
 }
 
+function ConnectedOperationsHeading() {
+  const { ref, visible } = useInView()
+  return (
+    <div
+      ref={ref}
+      className={`mb-6 transition-all duration-700 ease-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      }`}
+    >
+      <p className="text-xs font-bold uppercase tracking-widest text-[#0B1F3B]">
+        Connected Across{" "}
+        <span
+          className={`inline-block text-[#F5C451] transition-all duration-500 ease-out ${
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
+          }`}
+          style={{ transitionDelay: "180ms" }}
+        >
+          Your Operation
+        </span>
+      </p>
+    </div>
+  )
+}
+
 function Brand({ light = false }: { light?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 whitespace-nowrap">
@@ -1480,10 +1504,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
               })}
             </div>
             {/* ── Connected Operations Card Marquee (LEFT → RIGHT) ── */}
-            <Reveal className="mt-14 border-t border-border pt-8">
-              <p className="mb-6 text-xs font-semibold uppercase tracking-widest text-text-secondary">
-                Connected across your operation
-              </p>
+            <div className="mt-14 border-t border-border pt-8">
+              <ConnectedOperationsHeading />
 
               {/* Overflow container with subtle edge masks, background connector line, and paused-on-hover interaction */}
               <div
@@ -1495,7 +1517,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 <div className="pointer-events-none absolute inset-y-0 right-0 z-30 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
 
                 {/* Subtle continuous gold connector line running horizontally behind cards */}
-                <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/30 z-0" />
+                <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/25 z-0" />
 
                 {/* Continuous LEFT → RIGHT moving card track */}
                 <div
@@ -1508,35 +1530,38 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       return (
                         <div
                           key={`set-a-${op.title}`}
-                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between overflow-hidden rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_8px_24px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.015] hover:border-[#F5C451]/50 hover:shadow-[0_16px_36px_rgba(11,31,59,0.12)] cursor-default select-none"
                         >
                           {/* Top: icon container & sequence index */}
                           <div className="flex items-center justify-between">
-                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
-                              <OpIcon size={20} strokeWidth={1.75} />
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 ease-out group-hover/card:bg-[#F5C451] group-hover/card:text-[#0B1F3B] group-hover/card:shadow-[0_4px_14px_rgba(245,196,81,0.30)]">
+                              <OpIcon size={20} strokeWidth={1.8} className="transition-transform duration-300 ease-out group-hover/card:-translate-y-0.5" />
                             </div>
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#162A4B]/40 transition-colors duration-300 group-hover/card:text-[#0B1F3B]">
                               0{i + 1}
                             </span>
                           </div>
 
                           {/* Middle: operation name & descriptor */}
                           <div>
-                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B] transition-colors duration-200 group-hover/card:text-[#040D1A]">
                               {op.title}
                             </h3>
-                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                            <p className="mt-1 text-xs text-[#162A4B]/70 leading-snug line-clamp-1 transition-colors duration-200 group-hover/card:text-[#162A4B]/95">
                               {op.desc}
                             </p>
                           </div>
 
                           {/* Bottom: operational capability label + subtle gold indicator */}
-                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
-                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-[#162A4B]/60 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
                               Operational Capability
                             </span>
-                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                            <span className="size-1.5 rounded-full bg-[#E2E8F0] transition-colors duration-300 group-hover/card:bg-[#F5C451]" />
                           </div>
+
+                          {/* Bottom gold accent line */}
+                          <div className="absolute inset-x-6 bottom-0 h-[2px] rounded-full bg-[#F5C451] opacity-20 transition-all duration-300 ease-out group-hover/card:opacity-100" />
                         </div>
                       )
                     })}
@@ -1549,42 +1574,45 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       return (
                         <div
                           key={`set-b-${op.title}`}
-                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between overflow-hidden rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_8px_24px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.015] hover:border-[#F5C451]/50 hover:shadow-[0_16px_36px_rgba(11,31,59,0.12)] cursor-default select-none"
                         >
                           {/* Top: icon container & sequence index */}
                           <div className="flex items-center justify-between">
-                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
-                              <OpIcon size={20} strokeWidth={1.75} />
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 ease-out group-hover/card:bg-[#F5C451] group-hover/card:text-[#0B1F3B] group-hover/card:shadow-[0_4px_14px_rgba(245,196,81,0.30)]">
+                              <OpIcon size={20} strokeWidth={1.8} className="transition-transform duration-300 ease-out group-hover/card:-translate-y-0.5" />
                             </div>
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#162A4B]/40 transition-colors duration-300 group-hover/card:text-[#0B1F3B]">
                               0{i + 1}
                             </span>
                           </div>
 
                           {/* Middle: operation name & descriptor */}
                           <div>
-                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B] transition-colors duration-200 group-hover/card:text-[#040D1A]">
                               {op.title}
                             </h3>
-                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                            <p className="mt-1 text-xs text-[#162A4B]/70 leading-snug line-clamp-1 transition-colors duration-200 group-hover/card:text-[#162A4B]/95">
                               {op.desc}
                             </p>
                           </div>
 
                           {/* Bottom: operational capability label + subtle gold indicator */}
-                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
-                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-[#162A4B]/60 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
                               Operational Capability
                             </span>
-                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                            <span className="size-1.5 rounded-full bg-[#E2E8F0] transition-colors duration-300 group-hover/card:bg-[#F5C451]" />
                           </div>
+
+                          {/* Bottom gold accent line */}
+                          <div className="absolute inset-x-6 bottom-0 h-[2px] rounded-full bg-[#F5C451] opacity-20 transition-all duration-300 ease-out group-hover/card:opacity-100" />
                         </div>
                       )
                     })}
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
 
