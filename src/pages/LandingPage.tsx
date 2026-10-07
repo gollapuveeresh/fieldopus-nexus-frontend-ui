@@ -24,6 +24,7 @@ import {
   Gauge,
   HardHat,
   Layers3,
+  MapPin,
   Menu,
   Package,
   Radio,
@@ -45,6 +46,55 @@ interface Props {
 }
 
 type Icon = ElementType
+
+interface ConnectedOpItem {
+  title: string
+  icon: Icon
+  desc: string
+}
+
+const connectedOperations: ConnectedOpItem[] = [
+  {
+    title: "Organizations",
+    icon: Building2,
+    desc: "Enterprise hierarchy & business units",
+  },
+  {
+    title: "Sites",
+    icon: MapPin,
+    desc: "Multi-facility & plant locations",
+  },
+  {
+    title: "Assets",
+    icon: Boxes,
+    desc: "Equipment registry & lifecycle",
+  },
+  {
+    title: "Work Orders",
+    icon: ClipboardList,
+    desc: "Job dispatch & execution tracking",
+  },
+  {
+    title: "Service Requests",
+    icon: Settings2,
+    desc: "Intake routing & SLA triage",
+  },
+  {
+    title: "Maintenance",
+    icon: Wrench,
+    desc: "Preventive & corrective schedules",
+  },
+  {
+    title: "Inventory",
+    icon: Package,
+    desc: "Parts catalog & stock management",
+  },
+  {
+    title: "Reports",
+    icon: BarChart3,
+    desc: "Operational BI & audit analytics",
+  },
+]
 
 // ─── Mega-menu data ────────────────────────────────────────────────────────
 interface MegaMenuItem {
@@ -1429,29 +1479,110 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 )
               })}
             </div>
-            <Reveal className="mt-12 border-t border-border pt-7">
-              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-text-secondary">
+            {/* ── Connected Operations Card Marquee (LEFT → RIGHT) ── */}
+            <Reveal className="mt-14 border-t border-border pt-8">
+              <p className="mb-6 text-xs font-semibold uppercase tracking-widest text-text-secondary">
                 Connected across your operation
               </p>
-              <div className="flex flex-wrap gap-x-7 gap-y-4 text-sm font-medium text-navy-800">
-                {[
-                  "Organizations",
-                  "Sites",
-                  "Assets",
-                  "Work Orders",
-                  "Service Requests",
-                  "Maintenance",
-                  "Inventory",
-                  "Reports",
-                ].map((capability) => (
-                  <span
-                    key={capability}
-                    className="inline-flex items-center gap-2"
-                  >
-                    <span className="size-1.5 rounded-full bg-gold-500" />
-                    {capability}
-                  </span>
-                ))}
+
+              {/* Overflow container with subtle edge masks, background connector line, and paused-on-hover interaction */}
+              <div
+                className="group relative overflow-hidden py-4 -my-4"
+                aria-label="Connected operations capability cards"
+              >
+                {/* Left & right edge fade masks */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 z-30 w-16 sm:w-28 bg-gradient-to-r from-white via-white/80 to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 z-30 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
+
+                {/* Subtle continuous gold connector line running horizontally behind cards */}
+                <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/30 z-0" />
+
+                {/* Continuous LEFT → RIGHT moving card track */}
+                <div
+                  className="ops-cards-marquee-ltr group-hover:[animation-play-state:paused] active:[animation-play-state:paused]"
+                >
+                  {/* SET A */}
+                  <div className="flex gap-6 shrink-0 pr-6">
+                    {connectedOperations.map((op, i) => {
+                      const OpIcon = op.icon
+                      return (
+                        <div
+                          key={`set-a-${op.title}`}
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                        >
+                          {/* Top: icon container & sequence index */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
+                              <OpIcon size={20} strokeWidth={1.75} />
+                            </div>
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                              0{i + 1}
+                            </span>
+                          </div>
+
+                          {/* Middle: operation name & descriptor */}
+                          <div>
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                              {op.title}
+                            </h3>
+                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                              {op.desc}
+                            </p>
+                          </div>
+
+                          {/* Bottom: operational capability label + subtle gold indicator */}
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                              Operational Capability
+                            </span>
+                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* SET B — exact duplicate for seamless infinite loop */}
+                  <div className="ops-marquee-clone flex gap-6 shrink-0 pr-6" aria-hidden="true">
+                    {connectedOperations.map((op, i) => {
+                      const OpIcon = op.icon
+                      return (
+                        <div
+                          key={`set-b-${op.title}`}
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                        >
+                          {/* Top: icon container & sequence index */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
+                              <OpIcon size={20} strokeWidth={1.75} />
+                            </div>
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                              0{i + 1}
+                            </span>
+                          </div>
+
+                          {/* Middle: operation name & descriptor */}
+                          <div>
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                              {op.title}
+                            </h3>
+                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                              {op.desc}
+                            </p>
+                          </div>
+
+                          {/* Bottom: operational capability label + subtle gold indicator */}
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                              Operational Capability
+                            </span>
+                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             </Reveal>
           </div>
