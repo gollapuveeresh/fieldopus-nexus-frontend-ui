@@ -845,14 +845,17 @@ function MegaMenuPanel({
       aria-label={`${menuKey} mega menu`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-border bg-white shadow-[0_16px_48px_-8px_rgba(11,31,58,0.14)]"
+      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
     >
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr_280px]">
           {/* Columns */}
           {def.columns.map((col, ci) => (
-            <div key={ci}>
-              <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
+            <div
+              key={ci}
+              className={ci < def.columns.length ? "lg:pr-8 lg:border-r lg:border-[rgba(248,250,252,0.10)]" : ""}
+            >
+              <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
                 {col.heading}
               </p>
               <ul className="space-y-1" role="list">
@@ -871,20 +874,20 @@ function MegaMenuPanel({
                             onClose()
                           }
                         }}
-                        className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-surface"
+                        className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-[#162A4B]"
                       >
-                        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-text-secondary shadow-sm transition-colors duration-150 group-hover:border-gold-500/40 group-hover:bg-gold-50 group-hover:text-gold-600">
+                        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-[rgba(248,250,252,0.10)] bg-[#162A4B] text-[#CBD5E1] transition-colors duration-150 group-hover:border-[#F5C451]/40 group-hover:text-[#F5C451]">
                           <ItemIcon size={17} strokeWidth={1.7} />
                         </span>
                         <span className="min-w-0">
-                          <span className="block text-[13.5px] font-semibold leading-snug text-navy-800 group-hover:text-navy-900">
+                          <span className="block text-[13.5px] font-semibold leading-snug text-[#F8FAFC]">
                             {item.title}
                           </span>
-                          <span className="mt-0.5 block text-xs leading-relaxed text-text-secondary">
+                          <span className="mt-0.5 block text-xs leading-relaxed text-[#94A3B8]">
                             {item.description}
                           </span>
                         </span>
-                        <span className="ml-auto mt-1 shrink-0 text-text-secondary opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
+                        <span className="ml-auto mt-1 shrink-0 text-[#F5C451] opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
                           <ArrowRight size={13} />
                         </span>
                       </a>
@@ -896,34 +899,34 @@ function MegaMenuPanel({
           ))}
 
           {/* Featured */}
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-surface p-5">
+          <div className="flex flex-col justify-between rounded-xl border border-[rgba(248,250,252,0.12)] bg-[#162A4B] p-5">
             <div>
-              <span className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
-                <span className="h-px w-4 bg-gold-500" />
+              <span className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
+                <span className="h-px w-4 bg-[#F5C451]" />
                 {def.featured.subtitle}
               </span>
-              <h3 className="mt-2 text-base font-bold leading-snug text-navy-800">
+              <h3 className="mt-2 text-base font-bold leading-snug text-[#F8FAFC]">
                 {def.featured.title}
               </h3>
-              <p className="mt-2 text-xs leading-relaxed text-text-secondary">
+              <p className="mt-2 text-xs leading-relaxed text-[#94A3B8]">
                 {def.featured.description}
               </p>
             </div>
             {/* Mini platform preview */}
-            <div className="my-4 overflow-hidden rounded-lg border border-border bg-white p-3 shadow-sm">
+            <div className="my-4 overflow-hidden rounded-lg border border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] p-3 shadow-inner">
               <div className="mb-2 flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-border" />
-                <span className="size-1.5 rounded-full bg-border" />
-                <span className="size-1.5 rounded-full bg-border" />
-                <span className="ml-2 text-[9px] font-bold text-navy-800">
-                  FieldOps <span className="text-gold-600">Nexus</span>
+                <span className="size-1.5 rounded-full bg-white/20" />
+                <span className="size-1.5 rounded-full bg-white/20" />
+                <span className="size-1.5 rounded-full bg-white/20" />
+                <span className="ml-2 text-[9px] font-bold text-[#F8FAFC]">
+                  FieldOps <span className="text-[#F5C451]">Nexus</span>
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-1">
                 {[["Assets", "2,846"], ["Open WO", "128"], ["SLA", "98%"]].map(([lbl, val]) => (
-                  <div key={lbl} className="rounded bg-surface p-1.5 text-center">
-                    <p className="text-[8px] text-text-secondary">{lbl}</p>
-                    <p className="text-[10px] font-bold text-navy-800">{val}</p>
+                  <div key={lbl} className="rounded border border-[rgba(248,250,252,0.06)] bg-[#162A4B] p-1.5 text-center">
+                    <p className="text-[8px] text-[#94A3B8]">{lbl}</p>
+                    <p className="text-[10px] font-bold text-[#F8FAFC]">{val}</p>
                   </div>
                 ))}
               </div>
@@ -931,7 +934,7 @@ function MegaMenuPanel({
                 {[40, 55, 45, 70, 60, 85, 65].map((h, i) => (
                   <span
                     key={i}
-                    className={`flex-1 rounded-t-sm ${i === 5 ? "bg-gold-500" : "bg-navy-800/15"}`}
+                    className={`flex-1 rounded-t-sm ${i === 5 ? "bg-[#F5C451]" : "bg-white/10"}`}
                     style={{ height: `${h}%` }}
                   />
                 ))}
@@ -940,9 +943,9 @@ function MegaMenuPanel({
             <a
               href={def.featured.ctaHref}
               onClick={onClose}
-              className="landing-button inline-flex items-center justify-center gap-2 rounded-lg bg-navy-800 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-navy-700"
+              className="landing-button inline-flex items-center justify-center gap-2 rounded-lg bg-[#F5C451] px-4 py-2.5 text-xs font-bold text-[#0B1F3B] transition-colors hover:bg-gold-400"
             >
-              {def.featured.cta} <ArrowRight size={13} />
+              {def.featured.cta} <ArrowRight size={13} className="text-[#0B1F3B]" />
             </a>
           </div>
         </div>
