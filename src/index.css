@@ -257,5 +257,8 @@ input[type="checkbox"] {
   .ops-cards-marquee-ltr > .ops-marquee-clone {
     display: none;
   }
+  .ops-cards-marquee-ltr .group\/card:hover {
+    transform: none !important;
+  }
 }
 

@@ -344,18 +344,19 @@ const megaMenus: Record<string, MegaMenuDef> = {
 
 
 
-// All nav items in order
-const allNavItems: { label: string; hasMega: boolean; href: string; page?: Page }[] = [
-  { label: "Product", hasMega: true, href: "#product" },
-  { label: "Solutions", hasMega: true, href: "#solutions" },
-  { label: "Modules", hasMega: true, href: "#modules" },
-  { label: "Features", hasMega: false, href: "#features", page: "features" },
+// All nav items in order.
+// hasMega: true  → opens a mega menu panel on hover.
+// sectionId: the landing-page section id to scroll to when clicked.
+// page: navigate to this App page (replaces landing page view).
+const allNavItems: { label: string; hasMega: boolean; href: string; sectionId?: string; page?: Page }[] = [
+  { label: "Product",   hasMega: true,  href: "#product",   sectionId: "product" },
+  { label: "Solutions", hasMega: true,  href: "#solutions", sectionId: "solutions" },
+  { label: "Modules",   hasMega: true,  href: "#modules",   sectionId: "modules" },
+  { label: "Features",  hasMega: false, href: "#features",  page: "features" },
   { label: "Resources", hasMega: false, href: "#resources", page: "resources" },
-  { label: "About", hasMega: false, href: "#about", page: "about" },
+  { label: "About",     hasMega: false, href: "#about",     page: "about" },
 ]
 
-// For section-active tracking (legacy compat)
-const navigation = allNavItems.map(n => ({ label: n.label, href: n.href }))
 const modules: {
   title: string
   description: string
@@ -673,6 +674,30 @@ export function Reveal({
   )
 }
 
+function ConnectedOperationsHeading() {
+  const { ref, visible } = useInView()
+  return (
+    <div
+      ref={ref}
+      className={`mb-6 transition-all duration-700 ease-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      }`}
+    >
+      <p className="text-xs font-bold uppercase tracking-widest text-[#0B1F3B]">
+        Connected Across{" "}
+        <span
+          className={`inline-block text-[#F5C451] transition-all duration-500 ease-out ${
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
+          }`}
+          style={{ transitionDelay: "180ms" }}
+        >
+          Your Operation
+        </span>
+      </p>
+    </div>
+  )
+}
+
 function Brand({ light = false }: { light?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 whitespace-nowrap">
@@ -880,12 +905,14 @@ function MegaMenuPanel({
   onMouseEnter,
   onMouseLeave,
   onNavigate,
+  onCtaClick,
 }: {
   menuKey: string
   onClose: () => void
   onMouseEnter: () => void
   onMouseLeave: () => void
   onNavigate: (page: Page) => void
+  onCtaClick: (sectionId: string) => void
 }) {
   const def = megaMenus[menuKey]
   if (!def) return null
@@ -992,7 +1019,11 @@ function MegaMenuPanel({
             </div>
             <a
               href={def.featured.ctaHref}
-              onClick={onClose}
+              onClick={(e) => {
+                e.preventDefault()
+                onClose()
+                onCtaClick(def.featured.ctaHref.replace("#", ""))
+              }}
               className="landing-button inline-flex items-center justify-center gap-2 rounded-lg bg-[#F5C451] px-4 py-2.5 text-xs font-bold text-[#0B1F3B] transition-colors hover:bg-gold-400"
             >
               {def.featured.cta} <ArrowRight size={13} className="text-[#0B1F3B]" />
@@ -1007,7 +1038,6 @@ function MegaMenuPanel({
 export default function LandingPage({ onNavigate, page }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [previewView, setPreviewView] = useState<PreviewView>("Dashboard")
-  const [activeSection, setActiveSection] = useState("")
   const [activeMega, setActiveMega] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const headerRef = useRef<HTMLElement>(null)
@@ -1021,60 +1051,62 @@ export default function LandingPage({ onNavigate, page }: Props) {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [page])
 
-  // Section scroll tracking - only active when on the main landing page
-  useEffect(() => {
-    if (page && page !== "landing") {
-      setActiveSection("")
-      return
-    }
-    if (!("IntersectionObserver" in window)) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`)
-        })
-      },
-      { rootMargin: "-25% 0px -60% 0px" },
-    )
-    navigation.forEach(({ href }) => {
-      const section = document.querySelector(href)
-      if (section) observer.observe(section)
-    })
-    return () => observer.disconnect()
-  }, [page])
+  // NOTE: There is intentionally NO IntersectionObserver or scroll-spy here.
+  // The Home page is a single page — scrolling through its sections must never
+  // change the global navbar active state. Active state is derived exclusively
+  // from the `page` prop (i.e. an explicit user navigation action).
 
-  // Determine exactly ONE active navbar item from current route/page
+  // Scroll to a landing-page section, accounting for the sticky 76px navbar.
+  const scrollToSection = useCallback((sectionId: string) => {
+    const el = document.getElementById(sectionId)
+    if (!el) return
+    const navH = 76
+    const top = el.getBoundingClientRect().top + window.scrollY - navH
+    window.scrollTo({ top, behavior: "smooth" })
+  }, [])
+
+  // Navigate to landing page then (after the React render + scroll-to-top
+  // effect) smooth-scroll to the target section.
+  const navigateToLandingSection = useCallback(
+    (sectionId: string) => {
+      if (!page || page === "landing") {
+        // Already on landing page — just scroll.
+        scrollToSection(sectionId)
+      } else {
+        // Go to landing; the useEffect below will fire the scroll once rendered.
+        onNavigate("landing")
+        // Schedule the scroll after the page transition and scroll-to-top settle.
+        setTimeout(() => scrollToSection(sectionId), 120)
+      }
+    },
+    [page, onNavigate, scrollToSection],
+  )
+
+  // Determine exactly ONE active navbar item — derived ONLY from the current
+  // route (`page` prop). Scrolling the Home page must never affect this value.
+  // The Home page itself has no dedicated nav item, so `null` is returned for
+  // `page === 'landing'` (or undefined), keeping every nav item un-highlighted.
   const activeNavLabel = (() => {
-    if (page === "features") return "Features"
-    if (page === "resources") return "Resources"
-    if (page === "about") return "About"
+    // Dedicated page routes — each maps to exactly one nav label.
+    if (page === "features")   return "Features"
+    if (page === "resources")  return "Resources"
+    if (page === "about")      return "About"
     if (
-      page === "asset-management" ||
-      page === "service-management" ||
+      page === "asset-management"      ||
+      page === "service-management"    ||
       page === "work-order-management" ||
-      page === "inventory-management" ||
+      page === "inventory-management"  ||
       page === "maintenance-management" ||
-      page === "workforce-management" ||
-      page === "analytics-reporting" ||
+      page === "workforce-management"  ||
+      page === "analytics-reporting"   ||
       page === "audit-traceability"
-    ) {
-      return "Product"
-    }
+    ) return "Product"
     if (
-      page === "manufacturing" ||
-      page === "facilities" ||
+      page === "manufacturing"        ||
+      page === "facilities"           ||
       page === "enterprise-operations"
-    ) {
-      return "Solutions"
-    }
-    if (!page || page === "landing") {
-      if (activeSection === "#features") return "Features"
-      if (activeSection === "#resources" || activeSection === "#workflow") return "Resources"
-      if (activeSection === "#about") return "About"
-      if (activeSection === "#product") return "Product"
-      if (activeSection === "#solutions") return "Solutions"
-      if (activeSection === "#modules") return "Modules"
-    }
+    ) return "Solutions"
+    // Home page (landing) and any unrecognised page: nothing is active.
     return null
   })()
 
@@ -1161,8 +1193,16 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     // Hover → open; hover-leave → schedule close
                     onMouseEnter={() => openMega(item.label)}
                     onMouseLeave={scheduleClose}
-                    // Keyboard / click also works for accessibility
-                    onClick={() => setActiveMega(prev => prev === item.label ? null : item.label)}
+                    // Click: toggle mega panel open/closed; also scroll to the
+                    // corresponding landing section when the panel is already open
+                    // (i.e. second click) or when no panel is open.
+                    onClick={() => {
+                      const alreadyOpen = activeMega === item.label
+                      setActiveMega(alreadyOpen ? null : item.label)
+                      if (alreadyOpen && item.sectionId) {
+                        navigateToLandingSection(item.sectionId)
+                      }
+                    }}
                     className={`mega-trigger relative inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
                       isItemActive
                         ? "font-semibold text-navy-800 bg-surface/60"
@@ -1194,6 +1234,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     closeMega()
                     if (item.page) {
                       onNavigate(item.page)
+                    } else if (item.sectionId) {
+                      navigateToLandingSection(item.sectionId)
                     }
                   }}
                   aria-current={isItemActive ? "page" : undefined}
@@ -1251,6 +1293,10 @@ export default function LandingPage({ onNavigate, page }: Props) {
             onMouseEnter={cancelClose}
             onMouseLeave={scheduleClose}
             onNavigate={onNavigate}
+            onCtaClick={(sectionId) => {
+              closeMega()
+              navigateToLandingSection(sectionId)
+            }}
           />
         )}
 
@@ -1299,14 +1345,15 @@ export default function LandingPage({ onNavigate, page }: Props) {
                                   key={mItem.title}
                                   href={mItem.href}
                                   onClick={(e) => {
+                                    e.preventDefault()
+                                    setMenuOpen(false)
+                                    setMobileExpanded(null)
                                     if (mItem.page) {
-                                      e.preventDefault()
-                                      setMenuOpen(false)
-                                      setMobileExpanded(null)
                                       onNavigate(mItem.page)
                                     } else {
-                                      setMenuOpen(false)
-                                      setMobileExpanded(null)
+                                      // No dedicated page — scroll to section on landing
+                                      const sectionId = mItem.href.replace("#", "")
+                                      navigateToLandingSection(sectionId)
                                     }
                                   }}
                                   className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
@@ -1329,6 +1376,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         setMenuOpen(false)
                         if (item.page) {
                           onNavigate(item.page)
+                        } else if (item.sectionId) {
+                          navigateToLandingSection(item.sectionId)
                         }
                       }}
                       className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-left text-sm font-medium ${
@@ -1480,10 +1529,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
               })}
             </div>
             {/* ── Connected Operations Card Marquee (LEFT → RIGHT) ── */}
-            <Reveal className="mt-14 border-t border-border pt-8">
-              <p className="mb-6 text-xs font-semibold uppercase tracking-widest text-text-secondary">
-                Connected across your operation
-              </p>
+            <div className="mt-14 border-t border-border pt-8">
+              <ConnectedOperationsHeading />
 
               {/* Overflow container with subtle edge masks, background connector line, and paused-on-hover interaction */}
               <div
@@ -1495,7 +1542,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 <div className="pointer-events-none absolute inset-y-0 right-0 z-30 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
 
                 {/* Subtle continuous gold connector line running horizontally behind cards */}
-                <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/30 z-0" />
+                <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/25 z-0" />
 
                 {/* Continuous LEFT → RIGHT moving card track */}
                 <div
@@ -1508,35 +1555,38 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       return (
                         <div
                           key={`set-a-${op.title}`}
-                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between overflow-hidden rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_8px_24px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.015] hover:border-[#F5C451]/50 hover:shadow-[0_16px_36px_rgba(11,31,59,0.12)] cursor-default select-none"
                         >
                           {/* Top: icon container & sequence index */}
                           <div className="flex items-center justify-between">
-                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
-                              <OpIcon size={20} strokeWidth={1.75} />
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 ease-out group-hover/card:bg-[#F5C451] group-hover/card:text-[#0B1F3B] group-hover/card:shadow-[0_4px_14px_rgba(245,196,81,0.30)]">
+                              <OpIcon size={20} strokeWidth={1.8} className="transition-transform duration-300 ease-out group-hover/card:-translate-y-0.5" />
                             </div>
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#162A4B]/40 transition-colors duration-300 group-hover/card:text-[#0B1F3B]">
                               0{i + 1}
                             </span>
                           </div>
 
                           {/* Middle: operation name & descriptor */}
                           <div>
-                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B] transition-colors duration-200 group-hover/card:text-[#040D1A]">
                               {op.title}
                             </h3>
-                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                            <p className="mt-1 text-xs text-[#162A4B]/70 leading-snug line-clamp-1 transition-colors duration-200 group-hover/card:text-[#162A4B]/95">
                               {op.desc}
                             </p>
                           </div>
 
                           {/* Bottom: operational capability label + subtle gold indicator */}
-                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
-                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-[#162A4B]/60 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
                               Operational Capability
                             </span>
-                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                            <span className="size-1.5 rounded-full bg-[#E2E8F0] transition-colors duration-300 group-hover/card:bg-[#F5C451]" />
                           </div>
+
+                          {/* Bottom gold accent line */}
+                          <div className="absolute inset-x-6 bottom-0 h-[2px] rounded-full bg-[#F5C451] opacity-20 transition-all duration-300 ease-out group-hover/card:opacity-100" />
                         </div>
                       )
                     })}
@@ -1549,42 +1599,45 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       return (
                         <div
                           key={`set-b-${op.title}`}
-                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_10px_30px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#F5C451]/60 hover:shadow-[0_18px_38px_rgba(11,31,59,0.12)] cursor-default select-none"
+                          className="group/card relative z-10 flex h-[162px] w-[260px] sm:w-[280px] shrink-0 flex-col justify-between overflow-hidden rounded-[18px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 text-left shadow-[0_8px_24px_rgba(11,31,59,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.015] hover:border-[#F5C451]/50 hover:shadow-[0_16px_36px_rgba(11,31,59,0.12)] cursor-default select-none"
                         >
                           {/* Top: icon container & sequence index */}
                           <div className="flex items-center justify-between">
-                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 group-hover/card:bg-[#162A4B] group-hover/card:text-[#F5C451] group-hover/card:shadow-[0_0_14px_rgba(245,196,81,0.25)]">
-                              <OpIcon size={20} strokeWidth={1.75} />
+                            <div className="flex size-11 items-center justify-center rounded-xl bg-[#0B1F3B] text-[#F8FAFC] shadow-sm transition-all duration-300 ease-out group-hover/card:bg-[#F5C451] group-hover/card:text-[#0B1F3B] group-hover/card:shadow-[0_4px_14px_rgba(245,196,81,0.30)]">
+                              <OpIcon size={20} strokeWidth={1.8} className="transition-transform duration-300 ease-out group-hover/card:-translate-y-0.5" />
                             </div>
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary/40 transition-colors duration-200 group-hover/card:text-[#F5C451]">
+                            <span className="text-[10px] font-bold tracking-widest uppercase text-[#162A4B]/40 transition-colors duration-300 group-hover/card:text-[#0B1F3B]">
                               0{i + 1}
                             </span>
                           </div>
 
                           {/* Middle: operation name & descriptor */}
                           <div>
-                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B]">
+                            <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#0B1F3B] transition-colors duration-200 group-hover/card:text-[#040D1A]">
                               {op.title}
                             </h3>
-                            <p className="mt-1 text-xs text-text-secondary leading-snug line-clamp-1">
+                            <p className="mt-1 text-xs text-[#162A4B]/70 leading-snug line-clamp-1 transition-colors duration-200 group-hover/card:text-[#162A4B]/95">
                               {op.desc}
                             </p>
                           </div>
 
                           {/* Bottom: operational capability label + subtle gold indicator */}
-                          <div className="flex items-center justify-between border-t border-[#E2E8F0]/80 pt-2.5">
-                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-text-secondary/70 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
+                            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-[#162A4B]/60 transition-colors duration-200 group-hover/card:text-[#0B1F3B]">
                               Operational Capability
                             </span>
-                            <span className="h-[2px] w-4 rounded-full bg-[#E2E8F0] transition-all duration-300 group-hover/card:w-7 group-hover/card:bg-[#F5C451]" />
+                            <span className="size-1.5 rounded-full bg-[#E2E8F0] transition-colors duration-300 group-hover/card:bg-[#F5C451]" />
                           </div>
+
+                          {/* Bottom gold accent line */}
+                          <div className="absolute inset-x-6 bottom-0 h-[2px] rounded-full bg-[#F5C451] opacity-20 transition-all duration-300 ease-out group-hover/card:opacity-100" />
                         </div>
                       )
                     })}
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
 
