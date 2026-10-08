@@ -37,7 +37,9 @@ import {
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
 import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
-import workflowVisual from "../assets/workflow-visual.jpg"
+import leftPanelVisual from "../assets/fieldops-left-panel.jpg"
+import centerPanelVisual from "../assets/fieldops-center-panel.jpg"
+import rightPanelVisual from "../assets/fieldops-right-panel.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -660,44 +662,9 @@ function AssetsVideoSection() {
 }
 
 
-interface CapabilityPanel {
-  id: string
-  title: string
-  subtitle: string
-  description: string
-  icon: ElementType
-  highlight: string
-}
-
-const CAPABILITY_PANELS: CapabilityPanel[] = [
-  {
-    id: "connected-assets",
-    title: "CONNECTED ASSETS",
-    subtitle: "Enterprise Registry",
-    description: "Connected asset context across sites and operations.",
-    icon: Boxes,
-    highlight: "Real-time Telemetry & Health",
-  },
-  {
-    id: "live-service",
-    title: "LIVE SERVICE",
-    subtitle: "Orchestration & SLA",
-    description: "Service activity organized around operational priorities.",
-    icon: Activity,
-    highlight: "Intelligent Triage & Dispatch",
-  },
-  {
-    id: "operational-control",
-    title: "OPERATIONAL CONTROL",
-    subtitle: "Unified Visibility",
-    description: "One connected view for operational decision-making.",
-    icon: Settings2,
-    highlight: "Cross-Site Command & Control",
-  },
-]
-
 export function HeroOperationalIntelligence() {
   const [reducedMotion, setReducedMotion] = useState(false)
+  const [isEntered, setIsEntered] = useState(false)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -706,14 +673,21 @@ export function HeroOperationalIntelligence() {
 
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
     mediaQuery.addEventListener?.("change", handler)
-    return () => mediaQuery.removeEventListener?.("change", handler)
+
+    // Trigger one-time entrance transition on mount
+    const timer = setTimeout(() => setIsEntered(true), 80)
+
+    return () => {
+      mediaQuery.removeEventListener?.("change", handler)
+      clearTimeout(timer)
+    }
   }, [])
 
   return (
     <div
       className="landing-hero-enter landing-hero-delay-2 mt-10 w-full max-w-5xl lg:max-w-6xl select-none"
       role="region"
-      aria-label="FieldOps Nexus Operational Intelligence: Connected Assets, Live Service, and Operational Control"
+      aria-label="FieldOps Nexus Operational Intelligence"
     >
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/[0.12] bg-gradient-to-b from-[#102445]/90 via-[#0B1F3B]/95 to-[#061224]/98 p-5 sm:p-7 md:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] backdrop-blur-xl ring-1 ring-inset ring-white/[0.06]">
         {/* Subtle grid background texture */}
@@ -756,27 +730,120 @@ export function HeroOperationalIntelligence() {
           </div>
         </div>
 
-        {/* ── Workflow Visual Grid Replacement ── */}
-        <div className="relative z-10 w-full rounded-2xl border border-white/[0.09] bg-[#162A4B]/40 p-1.5 sm:p-2.5 shadow-[0_15px_35px_rgba(0,0,0,0.45)] overflow-hidden">
-          <div className="group relative overflow-hidden rounded-xl bg-[#061224] transition-all duration-500 hover:shadow-[0_0_30px_rgba(245,196,81,0.1)]">
-            {/* Subtle glow / gold accent */}
-            <div className="absolute inset-0 z-0 bg-gradient-to-tr from-[#061224] via-transparent to-[#F5C451]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* ── 3-Panel Convergent GateSphere-Inspired Composition ── */}
+        <div className="relative z-10 w-full py-2">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-5 items-center">
             
-            <img
-              src={workflowVisual}
-              alt="FieldOps Nexus Workflow Overview"
-              className="w-full h-auto max-h-[500px] object-cover opacity-90 transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
-              onError={(e) => {
-                const target = e.currentTarget;
-                if (!target.dataset.failed) {
-                  target.dataset.failed = "true";
-                  target.src = "/workflow-visual.jpg";
-                }
-              }}
-            />
+            {/* LEFT SUPPORTING VISUAL (Span 3) */}
+            <div
+              className={`md:col-span-3 transition-all duration-1000 cubic-bezier(0.22, 1, 0.36, 1) ${
+                reducedMotion || isEntered
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
+              }`}
+            >
+              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
+                  <img
+                    src={leftPanelVisual}
+                    alt="Service Request & Inspection"
+                    className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.failed) {
+                        target.dataset.failed = "true";
+                        target.src = "/fieldops-left-panel.jpg";
+                      }
+                    }}
+                  />
+                  {/* UI Overlay badge */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between rounded-lg border border-white/10 bg-[#0B1F3B]/80 px-2.5 py-1.5 backdrop-blur-md">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#F5C451]">
+                      SERVICE REQUEST
+                    </span>
+                    <span className="size-1.5 rounded-full bg-[#F5C451]" />
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-[#061224]/85 p-2 backdrop-blur-md">
+                    <p className="text-[11px] font-bold text-white tracking-wide">Inspection & Triage</p>
+                    <p className="text-[9.5px] text-white/60">Asset ID: GEN-401</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            {/* Subtle inner border to frame it */}
-            <div className="pointer-events-none absolute inset-0 z-20 rounded-xl border border-white/[0.05] group-hover:border-[#F5C451]/30 transition-colors duration-500" />
+            {/* CENTER HERO MAIN VISUAL (Span 6) */}
+            <div
+              className={`md:col-span-6 transition-all duration-1000 delay-100 cubic-bezier(0.22, 1, 0.36, 1) ${
+                reducedMotion || isEntered
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-[0.96]"
+              }`}
+            >
+              <div className="group relative overflow-hidden rounded-2xl border border-[#F5C451]/30 bg-[#162A4B]/70 p-2.5 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-300 hover:border-[#F5C451]/60 hover:shadow-[0_20px_50px_rgba(245,196,81,0.15)]">
+                <div className="relative aspect-[16/11] overflow-hidden rounded-xl bg-[#061224]">
+                  <img
+                    src={centerPanelVisual}
+                    alt="FieldOps Nexus Central Command Dashboard"
+                    className="w-full h-full object-cover opacity-95 transition-all duration-500 group-hover:scale-[1.02] group-hover:opacity-100"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.failed) {
+                        target.dataset.failed = "true";
+                        target.src = "/fieldops-center-panel.jpg";
+                      }
+                    }}
+                  />
+                  {/* Subtle inner framing gold line */}
+                  <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/10 group-hover:border-[#F5C451]/40 transition-colors duration-300" />
+
+                  {/* Center Hero Overlay Tag */}
+                  <div className="absolute top-3 left-3 flex items-center gap-2 rounded-lg border border-[#F5C451]/40 bg-[#0B1F3B]/90 px-3 py-1.5 backdrop-blur-md shadow-md">
+                    <span className="size-2 rounded-full bg-[#F5C451] shadow-[0_0_8px_#F5C451]" />
+                    <span className="text-[11px] font-bold tracking-wider uppercase text-white">
+                      FieldOps Nexus Command
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT SUPPORTING VISUAL (Span 3) */}
+            <div
+              className={`md:col-span-3 transition-all duration-1000 cubic-bezier(0.22, 1, 0.36, 1) ${
+                reducedMotion || isEntered
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
+              }`}
+            >
+              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
+                  <img
+                    src={rightPanelVisual}
+                    alt="Work Order Completion & Supervisor Review"
+                    className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.failed) {
+                        target.dataset.failed = "true";
+                        target.src = "/fieldops-right-panel.jpg";
+                      }
+                    }}
+                  />
+                  {/* UI Overlay badge */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between rounded-lg border border-white/10 bg-[#0B1F3B]/80 px-2.5 py-1.5 backdrop-blur-md">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#10B981]">
+                      WORK ORDER CLOSED
+                    </span>
+                    <span className="size-1.5 rounded-full bg-[#10B981]" />
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-[#061224]/85 p-2 backdrop-blur-md">
+                    <p className="text-[11px] font-bold text-white tracking-wide">Supervisor Review</p>
+                    <p className="text-[9.5px] text-white/60">Verification Completed</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1597,12 +1664,6 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 one centralized system.
               </p>
               <HeroOperationalIntelligence />
-              <div className="landing-hero-enter landing-hero-delay-2 mt-12 flex items-center gap-3 border-t border-white/10 pt-6 text-xs text-white/45">
-                <span className="flex size-7 items-center justify-center rounded-md border border-gold-500/30 text-gold-400">
-                  <Check size={15} />
-                </span>{" "}
-                One connected view of your entire operation
-              </div>
 
           </div>
         </section>
