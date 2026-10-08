@@ -1373,24 +1373,26 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         navigateToLandingSection(item.sectionId)
                       }
                     }}
-                    className={`mega-trigger group relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] transition-all duration-200 ease-out ${
+                    className={`mega-trigger group relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] transition-colors duration-180 ease-out ${
                       isItemActive || isMegaOpen
-                        ? "bg-[#F8FAFC] font-semibold text-[#0B1F3B]"
-                        : "font-medium text-[#162A4B] hover:bg-[#F8FAFC] hover:text-[#0B1F3B]"
+                        ? "font-semibold text-[#0B1F3B]"
+                        : "font-medium text-[#162A4B] hover:text-[#B88A00]"
                     }`}
                   >
                     <span>{item.label}</span>
                     <ChevronDown
                       size={14}
-                      className={`transition-all duration-200 ${
+                      className={`transition-all duration-180 ease-out ${
                         isMegaOpen
-                          ? "rotate-180 text-[#F5C451]"
-                          : "text-[#162A4B] group-hover:text-[#0B1F3B]"
+                          ? "rotate-180 text-[#B88A00]"
+                          : isItemActive
+                          ? "text-[#0B1F3B]"
+                          : "text-[#162A4B] group-hover:text-[#B88A00]"
                       }`}
                     />
                     {/* Exactly ONE gold underline for active item / open trigger */}
                     {(isItemActive || isMegaOpen) && (
-                      <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-full bg-[#F5C451]" />
+                      <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-[2px] bg-[#F5C451]" />
                     )}
                   </button>
                 )
@@ -1409,16 +1411,16 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     }
                   }}
                   aria-current={isItemActive ? "page" : undefined}
-                  className={`landing-nav-link relative inline-flex items-center justify-center rounded-lg px-3 py-2 text-[15px] transition-all duration-200 ease-out ${
+                  className={`landing-nav-link relative inline-flex items-center justify-center rounded-lg px-3 py-2 text-[15px] transition-colors duration-180 ease-out ${
                     isItemActive
-                      ? "bg-[#F8FAFC] font-semibold text-[#0B1F3B]"
-                      : "font-medium text-[#162A4B] hover:bg-[#F8FAFC] hover:text-[#0B1F3B]"
+                      ? "font-semibold text-[#0B1F3B]"
+                      : "font-medium text-[#162A4B] hover:text-[#B88A00]"
                   }`}
                 >
                   <span>{item.label}</span>
                   {/* Exactly ONE gold underline for active item */}
                   {isItemActive && (
-                    <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-full bg-[#F5C451]" />
+                    <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-[2px] bg-[#F5C451]" />
                   )}
                 </button>
               )
@@ -1429,16 +1431,17 @@ export default function LandingPage({ onNavigate, page }: Props) {
             <button
               type="button"
               onClick={() => { closeMega(); onNavigate("login") }}
-              className="text-[15px] font-semibold text-[#0B1F3B] transition-colors duration-200 hover:text-gold-600"
+              className="text-[15px] font-semibold text-[#0B1F3B] transition-colors duration-180 ease-out hover:text-[#B88A00]"
             >
               Sign In
             </button>
             <a
               href={demoLink}
               onClick={closeMega}
-              className="landing-button inline-flex items-center gap-2 rounded-lg bg-[#0B1F3B] px-5 py-2.5 text-[14px] font-semibold text-[#F8FAFC] transition-colors hover:bg-navy-700"
+              className="group inline-flex items-center gap-2 rounded-lg border border-transparent bg-[#0B1F3B] px-5 py-2.5 text-[14px] font-semibold text-[#F8FAFC] transition-all duration-180 ease-out hover:bg-[#162A4B] hover:border-[rgba(245,196,81,0.45)] hover:text-[#F8FAFC]"
             >
-              Get Started <ArrowUpRight size={15} />
+              <span>Get Started</span>
+              <ArrowUpRight size={15} className="text-[#F8FAFC] transition-colors duration-180 ease-out group-hover:text-[#F5C451]" />
             </a>
           </div>
 
@@ -1490,8 +1493,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
                             prev === item.label ? null : item.label
                           )
                         }
-                        className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium ${
-                          isMobileActive ? "text-gold-600 font-semibold" : "text-navy-800"
+                        className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium transition-colors duration-180 ${
+                          isMobileActive ? "text-[#0B1F3B] font-semibold" : "text-[#162A4B] hover:text-[#B88A00]"
                         }`}
                         aria-expanded={mobileExpanded === item.label}
                       >
@@ -1499,7 +1502,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         <ChevronDown
                           size={15}
                           className={`transition-transform duration-200 ${
-                            mobileExpanded === item.label ? "rotate-180" : ""
+                            mobileExpanded === item.label ? "rotate-180 text-[#B88A00]" : "text-[#162A4B]"
                           }`}
                         />
                       </button>
@@ -1507,7 +1510,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         <div className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4">
                           {megaMenus[item.label].columns.map((col, ci) => (
                             <div key={ci} className="mt-3">
-                              <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gold-600">
+                              <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#B88A00]">
                                 {col.heading}
                               </p>
                               {col.items.map((mItem) => (
@@ -1526,7 +1529,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                                       navigateToLandingSection(sectionId)
                                     }
                                   }}
-                                  className="flex items-center gap-2 py-1.5 text-sm text-navy-800 hover:text-gold-600"
+                                  className="flex items-center gap-2 py-1.5 text-sm text-[#162A4B] hover:text-[#B88A00] transition-colors duration-180"
                                 >
                                   <span className="text-text-secondary">
                                     <ArrowRight size={12} />
@@ -1550,8 +1553,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
                           navigateToLandingSection(item.sectionId)
                         }
                       }}
-                      className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-left text-sm font-medium ${
-                        isMobileActive ? "text-gold-600 font-semibold" : "text-navy-800"
+                      className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-left text-sm font-medium transition-colors duration-180 ${
+                        isMobileActive ? "text-[#0B1F3B] font-semibold" : "text-[#162A4B] hover:text-[#B88A00]"
                       }`}
                     >
                       <span>{item.label}</span>
@@ -1568,14 +1571,14 @@ export default function LandingPage({ onNavigate, page }: Props) {
                   setMenuOpen(false)
                   onNavigate("login")
                 }}
-                className="flex-1 rounded-lg border border-border px-4 py-3 text-sm font-semibold text-navy-800"
+                className="flex-1 rounded-lg border border-border px-4 py-3 text-sm font-semibold text-[#0B1F3B] transition-colors duration-180 hover:text-[#B88A00]"
               >
                 Sign In
               </button>
               <a
                 href={demoLink}
                 onClick={() => setMenuOpen(false)}
-                className="flex-1 rounded-lg bg-navy-800 px-4 py-3 text-center text-sm font-semibold text-white"
+                className="flex-1 rounded-lg border border-transparent bg-[#0B1F3B] px-4 py-3 text-center text-sm font-semibold text-[#F8FAFC] transition-all duration-180 hover:bg-[#162A4B] hover:border-[rgba(245,196,81,0.45)]"
               >
                 Get Started
               </a>
