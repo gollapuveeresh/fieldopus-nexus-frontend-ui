@@ -37,6 +37,7 @@ import {
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
 import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
+import workflowVisual from "../assets/workflow-visual.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -761,10 +762,17 @@ export function HeroOperationalIntelligence() {
             {/* Subtle glow / gold accent */}
             <div className="absolute inset-0 z-0 bg-gradient-to-tr from-[#061224] via-transparent to-[#F5C451]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
-            <img 
-              src="/workflow-visual.jpg" 
+            <img
+              src={workflowVisual}
               alt="FieldOps Nexus Workflow Overview"
               className="w-full h-auto max-h-[500px] object-cover opacity-90 transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.dataset.failed) {
+                  target.dataset.failed = "true";
+                  target.src = "/workflow-visual.jpg";
+                }
+              }}
             />
 
             {/* Subtle inner border to frame it */}
