@@ -1093,7 +1093,7 @@ function MegaMenuPanel({
       aria-label={`${menuKey} mega menu`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
+      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-[rgba(248,250,252,0.10)] bg-[#061326] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
     >
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr_280px]">
