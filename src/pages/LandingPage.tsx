@@ -755,51 +755,21 @@ export function HeroOperationalIntelligence() {
           </div>
         </div>
 
-        {/* ── Three Capability Panels Grid ── */}
-        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 z-10">
-          {/* Decorative subtle ambient connecting line behind panels (desktop) */}
-          <div className="hidden md:block absolute top-1/2 left-10 right-10 -translate-y-1/2 h-px border-t border-dashed border-white/[0.08] -z-0" />
+        {/* ── Workflow Visual Grid Replacement ── */}
+        <div className="relative z-10 w-full rounded-2xl border border-white/[0.09] bg-[#162A4B]/40 p-1.5 sm:p-2.5 shadow-[0_15px_35px_rgba(0,0,0,0.45)] overflow-hidden">
+          <div className="group relative overflow-hidden rounded-xl bg-[#061224] transition-all duration-500 hover:shadow-[0_0_30px_rgba(245,196,81,0.1)]">
+            {/* Subtle glow / gold accent */}
+            <div className="absolute inset-0 z-0 bg-gradient-to-tr from-[#061224] via-transparent to-[#F5C451]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <img 
+              src="/workflow-visual.jpg" 
+              alt="FieldOps Nexus Workflow Overview"
+              className="w-full h-auto max-h-[500px] object-cover opacity-90 transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+            />
 
-          {CAPABILITY_PANELS.map((panel) => {
-            const PanelIcon = panel.icon
-
-            return (
-              <div
-                key={panel.id}
-                className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.09] bg-[#162A4B]/40 p-5 sm:p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#F5C451]/40 hover:bg-[#162A4B]/75 hover:shadow-[0_15px_35px_rgba(0,0,0,0.45)] cursor-default"
-              >
-                {/* Top: Icon + Subtitle */}
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-[#162A4B]/80 text-white/80 shadow-sm transition-all duration-300 group-hover:border-[#F5C451]/50 group-hover:bg-[#162A4B] group-hover:text-[#F5C451] group-hover:shadow-[0_0_16px_rgba(245,196,81,0.25)]">
-                      <PanelIcon size={24} strokeWidth={2} />
-                    </div>
-                    <span className="rounded-md border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-[10px] font-mono font-medium tracking-wide text-white/40 group-hover:text-white/60 transition-colors">
-                      {panel.subtitle}
-                    </span>
-                  </div>
-
-                  {/* Heading */}
-                  <h3 className="text-base sm:text-lg font-bold tracking-wider text-white group-hover:text-[#F5C451] transition-colors duration-300">
-                    {panel.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/65 group-hover:text-white/85 transition-colors duration-300">
-                    {panel.description}
-                  </p>
-                </div>
-
-                {/* Bottom Highlight Feature Pill */}
-                <div className="mt-6 pt-4 border-t border-white/[0.07] flex items-center justify-between text-[11px] text-white/45 group-hover:text-white/70 transition-colors">
-                  <span className="font-medium tracking-tight">
-                    {panel.highlight}
-                  </span>
-                  <span className="size-1.5 rounded-full bg-white/20 group-hover:bg-[#F5C451] transition-colors" />
-                </div>
-              </div>
-            )
-          })}
+            {/* Subtle inner border to frame it */}
+            <div className="pointer-events-none absolute inset-0 z-20 rounded-xl border border-white/[0.05] group-hover:border-[#F5C451]/30 transition-colors duration-500" />
+          </div>
         </div>
 
         {/* ── Bottom Subdued System Signal ── */}
