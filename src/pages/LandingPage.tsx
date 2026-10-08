@@ -36,7 +36,7 @@ import {
 } from "lucide-react"
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
-import fieldNexusVideo from "../assets/fieldnexusvideo.mp4"
+import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
 
 
 interface Props {
@@ -610,9 +610,14 @@ function AssetsVideoSection() {
   return (
     <section
       aria-label="Asset Management video showcase"
-      className="w-full bg-[#0B1F3B] assets-video-section-enter"
+      className="w-full max-w-none p-0 m-0 bg-[#0B1F3B] assets-video-section-enter"
+      style={{
+        width: "100%",
+        maxWidth: "none",
+        margin: 0,
+        padding: 0,
+      }}
     >
-      {/* Full-width cinematic video — normal document flow, 100% visible, natural aspect ratio */}
       {!hasError ? (
         <video
           ref={videoRef}
@@ -622,16 +627,21 @@ function AssetsVideoSection() {
           loop
           playsInline
           aria-label="FieldOps Nexus Asset Management product showcase"
-          className="block w-full h-auto aspect-video object-contain"
-          style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
+          className="block w-full h-auto"
+          style={{
+            width: "100%",
+            maxWidth: "none",
+            height: "auto",
+            display: "block",
+            borderRadius: 0,
+            margin: 0,
+            padding: 0,
+          }}
           preload="metadata"
           onError={() => setHasError(true)}
         />
       ) : (
-        <div
-          className="flex w-full aspect-video flex-col items-center justify-center bg-[#071426] px-6 text-center text-white"
-          style={{ width: "100%", height: "auto", aspectRatio: "16 / 9" }}
-        >
+        <div className="flex w-full aspect-video flex-col items-center justify-center bg-[#071426] px-6 py-12 text-center text-white">
           <div className="flex size-14 items-center justify-center rounded-2xl bg-gold-500/10 border border-gold-500/30 text-gold-400 mb-4">
             <Activity size={28} strokeWidth={2.2} />
           </div>
