@@ -37,6 +37,7 @@ import {
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
 import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
+import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
 interface Props {
@@ -1326,6 +1327,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
   return (
     <div className="min-w-0 overflow-x-clip bg-white font-sans text-text-primary scroll-smooth">
+      {/* ── Global Nexus Flow Operational Scroll Telemetry ── */}
+      <NexusScrollFlow />
+
       <header
         ref={headerRef}
         className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg"
