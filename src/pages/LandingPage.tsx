@@ -1337,7 +1337,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
           {/* ── Desktop nav ── */}
           <nav
             aria-label="Main navigation"
-            className="hidden items-center gap-1 xl:flex"
+            className="hidden items-center gap-1.5 xl:flex"
           >
             {allNavItems.map((item) => {
               const isItemActive = activeNavLabel === item.label
@@ -1363,24 +1363,24 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         navigateToLandingSection(item.sectionId)
                       }
                     }}
-                    className={`mega-trigger relative inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
-                      isItemActive
-                        ? "font-semibold text-navy-800 bg-surface/60"
-                        : isMegaOpen
-                        ? "bg-surface text-navy-800"
-                        : "text-text-secondary hover:bg-surface hover:text-navy-800"
+                    className={`mega-trigger group relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] transition-all duration-200 ease-out ${
+                      isItemActive || isMegaOpen
+                        ? "bg-[#F8FAFC] font-semibold text-[#0B1F3B]"
+                        : "font-medium text-[#162A4B] hover:bg-[#F8FAFC] hover:text-[#0B1F3B]"
                     }`}
                   >
-                    {item.label}
+                    <span>{item.label}</span>
                     <ChevronDown
                       size={14}
-                      className={`transition-transform duration-200 ${
-                        isMegaOpen ? "rotate-180 text-gold-600" : ""
+                      className={`transition-all duration-200 ${
+                        isMegaOpen
+                          ? "rotate-180 text-[#F5C451]"
+                          : "text-[#162A4B] group-hover:text-[#0B1F3B]"
                       }`}
                     />
-                    {/* Exactly ONE gold underline for active item */}
-                    {isItemActive && (
-                      <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#F5C451] rounded-full" />
+                    {/* Exactly ONE gold underline for active item / open trigger */}
+                    {(isItemActive || isMegaOpen) && (
+                      <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-full bg-[#F5C451]" />
                     )}
                   </button>
                 )
@@ -1399,16 +1399,16 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     }
                   }}
                   aria-current={isItemActive ? "page" : undefined}
-                  className={`landing-nav-link relative rounded-md px-3 py-2 text-[13px] font-medium transition-colors hover:bg-surface hover:text-navy-800 ${
+                  className={`landing-nav-link relative inline-flex items-center justify-center rounded-lg px-3 py-2 text-[15px] transition-all duration-200 ease-out ${
                     isItemActive
-                      ? "font-semibold text-navy-800 bg-surface/60"
-                      : "text-text-secondary"
+                      ? "bg-[#F8FAFC] font-semibold text-[#0B1F3B]"
+                      : "font-medium text-[#162A4B] hover:bg-[#F8FAFC] hover:text-[#0B1F3B]"
                   }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
                   {/* Exactly ONE gold underline for active item */}
                   {isItemActive && (
-                    <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[#F5C451] rounded-full" />
+                    <span className="absolute bottom-0.5 left-2.5 right-2.5 h-[2px] rounded-full bg-[#F5C451]" />
                   )}
                 </button>
               )
@@ -1419,14 +1419,14 @@ export default function LandingPage({ onNavigate, page }: Props) {
             <button
               type="button"
               onClick={() => { closeMega(); onNavigate("login") }}
-              className="text-[13px] font-semibold text-navy-800 hover:text-gold-600"
+              className="text-[15px] font-semibold text-[#0B1F3B] transition-colors duration-200 hover:text-gold-600"
             >
               Sign In
             </button>
             <a
               href={demoLink}
               onClick={closeMega}
-              className="landing-button inline-flex items-center gap-2 rounded-lg bg-navy-800 px-5 py-3 text-[13px] font-semibold text-white transition-colors hover:bg-navy-700"
+              className="landing-button inline-flex items-center gap-2 rounded-lg bg-[#0B1F3B] px-5 py-2.5 text-[14px] font-semibold text-[#F8FAFC] transition-colors hover:bg-navy-700"
             >
               Get Started <ArrowUpRight size={15} />
             </a>
