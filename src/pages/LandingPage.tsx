@@ -37,9 +37,9 @@ import {
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
 import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
-import serviceRequestInspection from "../assets/fieldops-workflow/service-request-inspection.png"
-import fieldOpsCommandDashboard from "../assets/fieldops-workflow/fieldops-command-dashboard.png"
-import workOrderSupervisorReview from "../assets/fieldops-workflow/work-order-supervisor-review.png"
+import serviceRequestInspection from "../assets/left.jpg"
+import fieldOpsCommandDashboard from "../assets/center.jpg"
+import workOrderSupervisorReview from "../assets/right.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
