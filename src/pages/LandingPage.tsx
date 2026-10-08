@@ -37,9 +37,9 @@ import {
 import type { Page } from "../types"
 import MarketingPages from "./MarketingPages"
 import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
-import leftPanelVisual from "../assets/fieldops-left-panel.jpg"
-import centerPanelVisual from "../assets/fieldops-center-panel.jpg"
-import rightPanelVisual from "../assets/fieldops-right-panel.jpg"
+import serviceRequestInspection from "../assets/fieldops-workflow/service-request-inspection.png"
+import fieldOpsCommandDashboard from "../assets/fieldops-workflow/fieldops-command-dashboard.png"
+import workOrderSupervisorReview from "../assets/fieldops-workflow/work-order-supervisor-review.png"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -745,14 +745,14 @@ export function HeroOperationalIntelligence() {
               <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
                   <img
-                    src={leftPanelVisual}
+                    src={serviceRequestInspection}
                     alt="Service Request & Inspection"
                     className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
                     onError={(e) => {
                       const target = e.currentTarget;
                       if (!target.dataset.failed) {
                         target.dataset.failed = "true";
-                        target.src = "/fieldops-left-panel.jpg";
+                        target.src = "/fieldops-workflow/service-request-inspection.png";
                       }
                     }}
                   />
@@ -782,14 +782,14 @@ export function HeroOperationalIntelligence() {
               <div className="group relative overflow-hidden rounded-2xl border border-[#F5C451]/30 bg-[#162A4B]/70 p-2.5 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-300 hover:border-[#F5C451]/60 hover:shadow-[0_20px_50px_rgba(245,196,81,0.15)]">
                 <div className="relative aspect-[16/11] overflow-hidden rounded-xl bg-[#061224]">
                   <img
-                    src={centerPanelVisual}
-                    alt="FieldOps Nexus Central Command Dashboard"
+                    src={fieldOpsCommandDashboard}
+                    alt="FieldOps Nexus Command Dashboard"
                     className="w-full h-full object-cover opacity-95 transition-all duration-500 group-hover:scale-[1.02] group-hover:opacity-100"
                     onError={(e) => {
                       const target = e.currentTarget;
                       if (!target.dataset.failed) {
                         target.dataset.failed = "true";
-                        target.src = "/fieldops-center-panel.jpg";
+                        target.src = "/fieldops-workflow/fieldops-command-dashboard.png";
                       }
                     }}
                   />
@@ -818,14 +818,14 @@ export function HeroOperationalIntelligence() {
               <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
                   <img
-                    src={rightPanelVisual}
+                    src={workOrderSupervisorReview}
                     alt="Work Order Completion & Supervisor Review"
                     className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
                     onError={(e) => {
                       const target = e.currentTarget;
                       if (!target.dataset.failed) {
                         target.dataset.failed = "true";
-                        target.src = "/fieldops-right-panel.jpg";
+                        target.src = "/fieldops-workflow/work-order-supervisor-review.png";
                       }
                     }}
                   />
