@@ -214,124 +214,57 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
         <div className="absolute -top-40 -right-40 size-96 rounded-full bg-gold-500/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-40 -left-40 size-96 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
 
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-7">
-              <Reveal>
-                <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
-                  <Sparkles size={13} className="text-gold-400" />
-                  FIELDOPS NEXUS FEATURES
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 flex flex-col items-center text-center">
+          <div className="max-w-4xl flex flex-col items-center">
+            <Reveal>
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
+                <Sparkles size={13} className="text-gold-400" />
+                FIELDOPS NEXUS FEATURES
+              </div>
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
+                Everything your field operations need.{" "}
+                <span className="text-[#F5C451]">
+                  Connected in one platform.
+                </span>
+              </h1>
+              <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-white/75 leading-relaxed">
+                Bridge the gap between assets, technicians, work orders, inventory, and analytics. 
+                FieldOps Nexus delivers connected operational execution with enterprise-grade traceability and zero workflow fragmentation.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-4">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("feature-grid")
+                    el?.scrollIntoView({ behavior: "smooth" })
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-navy-950 transition-all hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/20"
+                >
+                  Explore Features <ArrowRight size={16} />
+                </button>
+                <button
+                  onClick={() => onNavigate("login")}
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
+                >
+                  Live Platform Demo
+                </button>
+              </div>
+
+              {/* Quick stats strip */}
+              <div className="mt-12 grid grid-cols-3 gap-8 border-t border-white/10 pt-8 max-w-lg mx-auto">
+                <div>
+                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">99.4%</p>
+                  <p className="text-xs text-white/60 mt-0.5">SLA Adherence</p>
                 </div>
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
-                  Everything your field operations need.{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-amber-200">
-                    Connected in one platform.
-                  </span>
-                </h1>
-                <p className="mt-6 max-w-2xl text-base sm:text-lg text-white/75 leading-relaxed">
-                  Bridge the gap between assets, technicians, work orders, inventory, and analytics. 
-                  FieldOps Nexus delivers connected operational execution with enterprise-grade traceability and zero workflow fragmentation.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <button
-                    onClick={() => {
-                      const el = document.getElementById("feature-grid")
-                      el?.scrollIntoView({ behavior: "smooth" })
-                    }}
-                    className="inline-flex items-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-navy-950 transition-all hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/20"
-                  >
-                    Explore Features <ArrowRight size={16} />
-                  </button>
-                  <button
-                    onClick={() => onNavigate("login")}
-                    className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                  >
-                    Live Platform Demo
-                  </button>
+                <div>
+                  <p className="text-2xl sm:text-3xl font-bold text-white">42%</p>
+                  <p className="text-xs text-white/60 mt-0.5">Faster MTTR</p>
                 </div>
-
-                {/* Quick stats strip */}
-                <div className="mt-12 grid grid-cols-3 gap-4 border-t border-white/10 pt-8 max-w-lg">
-                  <div>
-                    <p className="text-2xl sm:text-3xl font-bold text-gold-400">99.4%</p>
-                    <p className="text-xs text-white/60 mt-0.5">SLA Adherence</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">42%</p>
-                    <p className="text-xs text-white/60 mt-0.5">Faster MTTR</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl sm:text-3xl font-bold text-gold-400">100%</p>
-                    <p className="text-xs text-white/60 mt-0.5">Audit Compliance</p>
-                  </div>
+                <div>
+                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">100%</p>
+                  <p className="text-xs text-white/60 mt-0.5">Audit Compliance</p>
                 </div>
-              </Reveal>
-            </div>
-
-            {/* Hero Visual Composition */}
-            <div className="lg:col-span-5">
-              <Reveal direction="left" delay={200}>
-                <UIWindow title="FieldOps Nexus • Operational Hub">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between rounded-lg bg-white p-3 border border-border shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-lg bg-navy-800 text-gold-400">
-                          <Activity size={18} />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-navy-900">Turbine Pump Beta-04</p>
-                          <p className="text-[10px] text-text-secondary">Site: North Refinery • Asset #A-4821</p>
-                        </div>
-                      </div>
-                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-                        Operational
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="rounded-lg bg-white p-3 border border-border">
-                        <div className="flex justify-between items-center text-[10px] text-text-secondary mb-1">
-                          <span>Health Score</span>
-                          <TrendingUp size={12} className="text-emerald-600" />
-                        </div>
-                        <p className="text-lg font-bold text-navy-900">96.8%</p>
-                        <div className="mt-1.5 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                          <div className="h-full bg-emerald-500 rounded-full w-[96%]" />
-                        </div>
-                      </div>
-                      <div className="rounded-lg bg-white p-3 border border-border">
-                        <div className="flex justify-between items-center text-[10px] text-text-secondary mb-1">
-                          <span>Active Work Orders</span>
-                          <Clock size={12} className="text-gold-600" />
-                        </div>
-                        <p className="text-lg font-bold text-navy-900">3 In Progress</p>
-                        <p className="text-[9px] text-gold-600 font-medium mt-0.5">Technicians on site</p>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg bg-white p-3 border border-border">
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-navy-900 mb-2">
-                        Real-Time Connected Flow
-                      </p>
-                      <div className="space-y-1.5">
-                        <div className="flex items-center justify-between text-[10px] p-1.5 rounded bg-surface">
-                          <span className="font-medium text-navy-800">WO-8492: Valve Seal Replacement</span>
-                          <span className="text-emerald-700 font-semibold">Assigned (Tech: Marcus K.)</span>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] p-1.5 rounded bg-surface">
-                          <span className="font-medium text-navy-800">Part Allocated: Gasket Seal #GK-90</span>
-                          <span className="text-navy-600 font-medium">Van 04 Stock</span>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] p-1.5 rounded bg-surface">
-                          <span className="font-medium text-navy-800">Supervisor Sign-off</span>
-                          <span className="text-gold-600 font-semibold">Pending Test Run</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </UIWindow>
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
