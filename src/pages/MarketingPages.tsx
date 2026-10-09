@@ -1120,8 +1120,9 @@ function AboutPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) 
       <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-24 pb-20 lg:pt-32 lg:pb-28">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-7">
+          <div className="grid gap-10 lg:gap-16 lg:grid-cols-12 lg:items-center">
+            {/* ── Left: Text Content ── */}
+            <div className="lg:col-span-6">
               <Reveal>
                 <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
                   <Globe size={13} className="text-gold-400" />
@@ -1133,51 +1134,43 @@ function AboutPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) 
                     Clearer execution.
                   </span>
                 </h1>
-                <p className="mt-6 max-w-2xl text-base sm:text-lg text-white/75 leading-relaxed">
+                <p className="mt-6 max-w-xl text-base sm:text-lg text-white/75 leading-relaxed">
                   FieldOps Nexus is the enterprise platform purpose-built for the teams who maintain critical infrastructure, manufacture essential goods, and manage complex physical operations every day.
                 </p>
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <button
-                    onClick={() => onNavigate("login")}
-                    className="inline-flex items-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-navy-950 transition-all hover:bg-gold-400"
-                  >
-                    Explore Platform <ArrowRight size={16} />
-                  </button>
-                  <button
-                    onClick={() => onNavigate("features")}
-                    className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                  >
-                    View Platform Capabilities
-                  </button>
-                </div>
               </Reveal>
             </div>
 
-            <div className="lg:col-span-5">
-              <Reveal direction="left" delay={200}>
-                <UIWindow title="FieldOps Nexus • Mission & Architecture">
-                  <div className="p-4 space-y-3 text-xs bg-white rounded-lg border border-border">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-gold-600">
-                      OPERATIONAL FOCUS
-                    </p>
-                    <p className="text-sm font-bold text-navy-900 leading-snug">
-                      Built for the physical work that cannot fail.
-                    </p>
-                    <p className="text-text-secondary text-xs leading-relaxed">
-                      We unify asset health, field dispatch, parts availability, and compliance sign-offs into a single real-time truth.
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border">
-                      <div className="p-2 rounded bg-surface text-center">
-                        <p className="text-[9px] text-text-secondary">Core Platform</p>
-                        <p className="font-bold text-navy-900">Field ERP</p>
-                      </div>
-                      <div className="p-2 rounded bg-surface text-center">
-                        <p className="text-[9px] text-text-secondary">Availability</p>
-                        <p className="font-bold text-emerald-600">Enterprise Cloud</p>
-                      </div>
-                    </div>
-                  </div>
-                </UIWindow>
+            {/* ── Right: Industrial Photograph ── */}
+            <div className="lg:col-span-6">
+              <Reveal direction="left" delay={180}>
+                <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-navy-950/40 about-hero-image-wrap">
+                  {/* Subtle left-edge gold accent */}
+                  <div
+                    className="pointer-events-none absolute inset-y-0 left-0 w-[3px] z-10 rounded-l-xl"
+                    style={{ background: "linear-gradient(to bottom, transparent 5%, #F5C451 35%, #F5C451 65%, transparent 95%)", opacity: 0.75 }}
+                    aria-hidden="true"
+                  />
+                  {/* Gradient fade into navy at the left edge for background blending */}
+                  <div
+                    className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10"
+                    style={{ background: "linear-gradient(to right, #0B1F3B 0%, transparent 100%)" }}
+                    aria-hidden="true"
+                  />
+                  {/* Top vignette */}
+                  <div
+                    className="pointer-events-none absolute inset-x-0 top-0 h-12 z-10"
+                    style={{ background: "linear-gradient(to bottom, #0B1F3B 0%, transparent 100%)" }}
+                    aria-hidden="true"
+                  />
+                  <img
+                    src="/about-hero-control-room.jpg"
+                    alt="Operations engineer monitoring industrial plant through wall-mounted SCADA displays in a modern control room overlooking a manufacturing facility"
+                    className="w-full h-full object-cover block"
+                    style={{ aspectRatio: "4/3", maxHeight: "420px", objectPosition: "center 40%" }}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
               </Reveal>
             </div>
           </div>
