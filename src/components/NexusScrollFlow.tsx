@@ -89,6 +89,10 @@ export default function NexusScrollFlow() {
       if (railGlowRef.current) {
         railGlowRef.current.style.opacity = `${0.3 + p * 0.5}`
       }
+      const navSignal = document.getElementById("nexus-nav-scroll-signal")
+      if (navSignal) {
+        navSignal.style.transform = `scaleX(${p})`
+      }
 
       rafIdRef.current = requestAnimationFrame(animate)
     }

@@ -1379,6 +1379,18 @@ export default function LandingPage({ onNavigate, page }: Props) {
         ref={headerRef}
         className="sticky top-0 z-50 border-b border-border/70 bg-white/95 backdrop-blur-lg"
       >
+        {/* ── Top Edge Gold Scroll Signal (synchronized with right-side rail) ── */}
+        <div
+          className="pointer-events-none absolute top-0 inset-x-0 h-[3.5px] bg-[#162A4B]/5 overflow-hidden z-50"
+          aria-hidden="true"
+        >
+          <div
+            id="nexus-nav-scroll-signal"
+            className="h-full w-full origin-left bg-[#F5C451] shadow-[0_0_8px_rgba(245,196,81,0.25)] transition-none will-change-transform"
+            style={{ transform: "scaleX(0)" }}
+          />
+        </div>
+
         <div className="relative mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-6 px-5 lg:px-8">
           <a
             href="#top"
