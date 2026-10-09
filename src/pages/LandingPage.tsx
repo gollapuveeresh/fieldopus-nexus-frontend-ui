@@ -40,6 +40,12 @@ import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
 import serviceRequestInspection from "../assets/left.jpg"
 import fieldOpsCommandDashboard from "../assets/center.jpg"
 import workOrderSupervisorReview from "../assets/right.jpg"
+import workflowServiceRequests from "../assets/workflow-service-requests.jpg"
+import workflowAssetManagement from "../assets/workflow-asset-management.jpg"
+import workflowFieldOperations from "../assets/workflow-field-operations.jpg"
+import workflowInventoryManagement from "../assets/workflow-inventory-management.jpg"
+import workflowApproval from "../assets/workflow-approval.jpg"
+import workflowInsights from "../assets/workflow-insights.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -500,6 +506,83 @@ const contactLink =
   "mailto:hello@fieldopsnexus.com?subject=FieldOps%20Nexus%20inquiry"
 const careersLink =
   "mailto:hello@fieldopsnexus.com?subject=FieldOps%20Nexus%20careers"
+
+interface WorkflowCard {
+  id: string
+  tag: string
+  title: string
+  desc: string
+  badgeTitle: string
+  badgeSubtitle?: string
+  image: string
+  fallback: string
+}
+
+const leftColumnCards: WorkflowCard[] = [
+  {
+    id: "service-requests",
+    tag: "SERVICE REQUESTS",
+    title: "From Request to Resolution",
+    desc: "Raise, track and resolve service requests seamlessly",
+    badgeTitle: "WO #14872",
+    badgeSubtitle: "Completed",
+    image: workflowServiceRequests,
+    fallback: "/workflow-service-requests.jpg",
+  },
+  {
+    id: "field-operations",
+    tag: "FIELD OPERATIONS",
+    title: "Empower Field Technicians",
+    desc: "On-site execution with real-time updates",
+    badgeTitle: "Site Visit • Checklist",
+    badgeSubtitle: "Evidence",
+    image: workflowFieldOperations,
+    fallback: "/workflow-field-operations.jpg",
+  },
+  {
+    id: "approval-workflow",
+    tag: "APPROVAL WORKFLOW",
+    title: "Review & Approve",
+    desc: "Supervisor verification and compliance",
+    badgeTitle: "Supervisor Review",
+    badgeSubtitle: "Approved",
+    image: workflowApproval,
+    fallback: "/workflow-approval.jpg",
+  },
+]
+
+const rightColumnCards: WorkflowCard[] = [
+  {
+    id: "asset-management",
+    tag: "ASSET MANAGEMENT",
+    title: "Complete Asset Visibility",
+    desc: "Monitor asset health, uptime and history",
+    badgeTitle: "Asset Health 92%",
+    badgeSubtitle: "Operational",
+    image: workflowAssetManagement,
+    fallback: "/workflow-asset-management.jpg",
+  },
+  {
+    id: "inventory-management",
+    tag: "INVENTORY MANAGEMENT",
+    title: "Spare Parts & Stock Control",
+    desc: "Track inventory and material consumption",
+    badgeTitle: "Spare Parts: 124",
+    badgeSubtitle: "In Stock",
+    image: workflowInventoryManagement,
+    fallback: "/workflow-inventory-management.jpg",
+  },
+  {
+    id: "operational-insights",
+    tag: "OPERATIONAL INSIGHTS",
+    title: "Real-Time Analytics",
+    desc: "Data-driven decisions for better operations",
+    badgeTitle: "System Uptime",
+    badgeSubtitle: "98.2% Live",
+    image: workflowInsights,
+    fallback: "/workflow-insights.jpg",
+  },
+]
 
 
 function useInView() {
@@ -1727,9 +1810,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
         <section
           id="product"
-          className="scroll-mt-24 overflow-hidden bg-navy-800 py-20 text-white lg:py-28"
+          className="relative py-20 lg:py-28 bg-navy-800 text-white overflow-hidden"
         >
-          <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 lg:grid-cols-[.75fr_1.25fr] lg:gap-16 lg:px-8">
+          <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 lg:grid-cols-[.85fr_1.15fr] lg:gap-14 lg:px-8">
             <Reveal direction="left">
               <Eyebrow light>The product experience</Eyebrow>
               <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[44px]">
@@ -1761,8 +1844,134 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 Explore the Platform <ArrowRight size={17} />
               </a>
             </Reveal>
-            {/* Right side area: intentionally blank deep navy background */}
-            <div className="hidden lg:block min-h-[280px]" aria-hidden="true" />
+
+            {/* ── Automatic Continuous Two-Column Vertical Marquee Workflow Gallery ── */}
+            <div className="relative h-[600px] lg:h-[660px] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#061224]/50 p-3.5 shadow-2xl backdrop-blur-md">
+              {/* Soft Ambient top and bottom fade masks for seamless endless conveyor */}
+              <div className="pointer-events-none absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#0B1F3A] via-[#0B1F3A]/90 to-transparent z-10" />
+              <div className="pointer-events-none absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/90 to-transparent z-10" />
+
+              {/* Two-column vertical conveyor container */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full overflow-hidden">
+                
+                {/* Left Column Vertical Marquee (Set A + Set B seamless loop) */}
+                <div className="nexus-workflow-col-marquee-left">
+                  {[...leftColumnCards, ...leftColumnCards].map((card, idx) => (
+                    <div
+                      key={`${card.id}-${idx}`}
+                      className="group relative flex flex-col overflow-hidden rounded-xl border border-white/[0.1] bg-[#162A4B]/75 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/50 hover:bg-[#162A4B]"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#061224]">
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100"
+                          onError={(e) => {
+                            const target = e.currentTarget
+                            if (!target.dataset.failed) {
+                              target.dataset.failed = "true"
+                              target.src = card.fallback
+                            }
+                          }}
+                        />
+                        {/* Floating glassmorphic telemetry pill */}
+                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between rounded border border-white/15 bg-[#0B1F3B]/90 px-2.5 py-1 backdrop-blur-md shadow-sm">
+                          <span className="text-[9.5px] font-mono font-bold tracking-tight text-white truncate">
+                            {card.badgeTitle}
+                          </span>
+                          {card.badgeSubtitle && (
+                            <span className="ml-1 flex items-center gap-1 text-[8.5px] font-semibold text-[#F5C451]">
+                              <span className="size-1.5 rounded-full bg-[#10B981] shadow-[0_0_6px_#10B981]" />
+                              {card.badgeSubtitle}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-1 flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-[#F5C451]">
+                              {card.tag}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-bold text-white leading-snug">
+                            {card.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-white/65">
+                            {card.desc}
+                          </p>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/[0.07]">
+                          <span className="text-[10px] font-medium text-white/50 group-hover:text-[#F5C451] transition-colors">
+                            Explore workflow
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right Column Vertical Marquee (Staggered offset + seamless loop) */}
+                <div className="nexus-workflow-col-marquee-right sm:pt-6">
+                  {[...rightColumnCards, ...rightColumnCards].map((card, idx) => (
+                    <div
+                      key={`${card.id}-${idx}`}
+                      className="group relative flex flex-col overflow-hidden rounded-xl border border-white/[0.1] bg-[#162A4B]/75 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/50 hover:bg-[#162A4B]"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#061224]">
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100"
+                          onError={(e) => {
+                            const target = e.currentTarget
+                            if (!target.dataset.failed) {
+                              target.dataset.failed = "true"
+                              target.src = card.fallback
+                            }
+                          }}
+                        />
+                        {/* Floating glassmorphic telemetry pill */}
+                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between rounded border border-white/15 bg-[#0B1F3B]/90 px-2.5 py-1 backdrop-blur-md shadow-sm">
+                          <span className="text-[9.5px] font-mono font-bold tracking-tight text-white truncate">
+                            {card.badgeTitle}
+                          </span>
+                          {card.badgeSubtitle && (
+                            <span className="ml-1 flex items-center gap-1 text-[8.5px] font-semibold text-[#F5C451]">
+                              <span className="size-1.5 rounded-full bg-[#10B981] shadow-[0_0_6px_#10B981]" />
+                              {card.badgeSubtitle}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-1 flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-[#F5C451]">
+                              {card.tag}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-bold text-white leading-snug">
+                            {card.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-white/65">
+                            {card.desc}
+                          </p>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/[0.07]">
+                          <span className="text-[10px] font-medium text-white/50 group-hover:text-[#F5C451] transition-colors">
+                            Explore workflow
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </div>
           </div>
         </section>
 
