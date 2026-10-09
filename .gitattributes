@@ -147,6 +147,9 @@
 # ---------------------------------------------------------------------------
 # Landing Workflow Assets (Normal Git Binary Objects - No LFS)
 # ---------------------------------------------------------------------------
-src/assets/left.jpg -filter -diff -merge
-src/assets/center.jpg -filter -diff -merge
-src/assets/right.jpg -filter -diff -merge
+src/assets/*.jpg -filter -diff -merge
+src/assets/*.png -filter -diff -merge
+src/assets/fieldops-workflow/* -filter -diff -merge
+public/*.jpg -filter -diff -merge
+public/*.png -filter -diff -merge
+public/fieldops-workflow/* -filter -diff -merge
