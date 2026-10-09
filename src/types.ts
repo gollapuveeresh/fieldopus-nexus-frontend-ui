@@ -3,6 +3,7 @@ export type Page =
   | 'features'
   | 'resources'
   | 'about'
+  | 'organization-management'
   | 'asset-management'
   | 'service-management'
   | 'work-order-management'

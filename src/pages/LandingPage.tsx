@@ -370,46 +370,55 @@ const modules: {
   title: string
   description: string
   icon: Icon
+  page: Page
 }[] = [
   {
     title: "Organization Management",
     description: "Bring sites, teams, and structures into one connected view.",
     icon: Building2,
+    page: "organization-management",
   },
   {
     title: "Asset Management",
     description: "Know the condition and history of every critical asset.",
     icon: Boxes,
+    page: "asset-management",
   },
   {
     title: "Service Management",
     description: "Deliver consistent service from intake to resolution.",
     icon: Wrench,
+    page: "service-management",
   },
   {
     title: "Work Order Management",
     description: "Plan, assign, and track work with complete clarity.",
     icon: ClipboardList,
+    page: "work-order-management",
   },
   {
     title: "Inventory Management",
     description: "Keep essential parts and stock moving efficiently.",
     icon: Package,
+    page: "inventory-management",
   },
   {
     title: "Workforce Management",
     description: "Give every team the context to do their best work.",
     icon: Users,
+    page: "workforce-management",
   },
   {
     title: "Maintenance Management",
     description: "Stay ahead of downtime with proactive maintenance.",
     icon: Settings2,
+    page: "maintenance-management",
   },
   {
     title: "Analytics & Reporting",
     description: "Turn operational data into confident decisions.",
     icon: BarChart3,
+    page: "analytics-reporting",
   },
 ]
 const steps: {
@@ -1737,9 +1746,10 @@ export default function LandingPage({ onNavigate, page }: Props) {
                   delay={(i % 4) * 70}
                   className="h-full"
                 >
-                  <a
-                    href="#product"
-                    className="group flex h-full min-h-[238px] flex-col rounded-xl border border-border bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg hover:shadow-navy-800/5"
+                  <button
+                    onClick={() => onNavigate(module.page)}
+                    className="group flex h-full min-h-[238px] w-full flex-col rounded-xl border border-border bg-white p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg hover:shadow-navy-800/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+                    aria-label={`View ${module.title} module`}
                   >
                     <div className="mb-7 flex items-start justify-between">
                       <span className="flex size-12 items-center justify-center rounded-lg bg-gold-50 text-gold-600 transition-transform duration-300 group-hover:-translate-y-0.5">
@@ -1762,7 +1772,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       />
                     </span>
-                  </a>
+                  </button>
                 </Reveal>
               ))}
             </div>
