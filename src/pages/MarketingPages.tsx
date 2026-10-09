@@ -470,71 +470,11 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                 </div>
               </Reveal>
             </div>
-            <div className="lg:col-span-6">
-              <Reveal direction="left">
-                <UIWindow title="Asset Profile • CNC Mill Alpha-01">
-                  <div className="space-y-3 text-xs">
-                    <div className="flex justify-between items-center bg-white p-3 rounded-lg border border-border">
-                      <div>
-                        <p className="font-bold text-navy-900">CNC Precision Mill 5-Axis</p>
-                        <p className="text-[10px] text-text-secondary">Serial: #CNC-9904 • Location: Bay 4B</p>
-                      </div>
-                      <span className="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
-                        Operational
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="bg-white p-2.5 rounded border border-border text-center">
-                        <p className="text-[10px] text-text-secondary">Uptime</p>
-                        <p className="text-base font-bold text-navy-900">99.2%</p>
-                      </div>
-                      <div className="bg-white p-2.5 rounded border border-border text-center">
-                        <p className="text-[10px] text-text-secondary">Next PM</p>
-                        <p className="text-base font-bold text-gold-600">14 Days</p>
-                      </div>
-                      <div className="bg-white p-2.5 rounded border border-border text-center">
-                        <p className="text-[10px] text-text-secondary">Total WOs</p>
-                        <p className="text-base font-bold text-navy-900">38</p>
-                      </div>
-                    </div>
-                  </div>
-                </UIWindow>
-              </Reveal>
-            </div>
           </div>
 
           {/* Showcase 2: Dispatch & Work Orders (Visual Left, Text Right) */}
           <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6 order-2 lg:order-1">
-              <Reveal direction="left">
-                <UIWindow title="Work Order Dispatch Board">
-                  <div className="space-y-2 text-xs">
-                    {[
-                      { id: "WO-9021", desc: "Emergency Hydraulic Leak", tech: "Elena Rostova", status: "In Transit", priority: "Critical" },
-                      { id: "WO-9022", desc: "Quarterly HVAC Calibration", tech: "Marcus Chen", status: "In Progress", priority: "Medium" },
-                      { id: "WO-9023", desc: "Generator Load Test", tech: "David Vance", status: "Scheduled", priority: "High" },
-                    ].map((wo) => (
-                      <div key={wo.id} className="flex items-center justify-between p-2.5 rounded-lg bg-white border border-border shadow-sm">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-navy-900">{wo.id}</span>
-                            <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                              wo.priority === "Critical" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-800"
-                            }`}>{wo.priority}</span>
-                          </div>
-                          <p className="text-[10px] text-text-secondary mt-0.5">{wo.desc}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[10px] font-semibold text-navy-800">{wo.tech}</p>
-                          <p className="text-[9px] text-gold-600 font-bold">{wo.status}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </UIWindow>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-6 order-1 lg:order-2">
+            <div className="lg:col-span-6 lg:col-start-7">
               <Reveal>
                 <div className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-2">
                   02 / WORK ORDER ORCHESTRATION
