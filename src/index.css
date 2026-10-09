@@ -262,3 +262,42 @@ input[type="checkbox"] {
   }
 }
 
+/* ─── Continuous Vertical Workflow Card Marquee ────────────────────────────── */
+@keyframes nexus-workflow-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+.nexus-workflow-col-marquee-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: nexus-workflow-marquee 24s linear infinite;
+  will-change: transform;
+}
+
+.nexus-workflow-col-marquee-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: nexus-workflow-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.nexus-workflow-col-marquee-left:hover,
+.nexus-workflow-col-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexus-workflow-col-marquee-left,
+  .nexus-workflow-col-marquee-right {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+

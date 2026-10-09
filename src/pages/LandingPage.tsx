@@ -40,6 +40,12 @@ import fieldNexusVideo from "../assets/Fieldopusneuxs2.mp4"
 import serviceRequestInspection from "../assets/left.jpg"
 import fieldOpsCommandDashboard from "../assets/center.jpg"
 import workOrderSupervisorReview from "../assets/right.jpg"
+import workflowServiceRequests from "../assets/workflow-service-requests.jpg"
+import workflowAssetManagement from "../assets/workflow-asset-management.jpg"
+import workflowFieldOperations from "../assets/workflow-field-operations.jpg"
+import workflowInventoryManagement from "../assets/workflow-inventory-management.jpg"
+import workflowApproval from "../assets/workflow-approval.jpg"
+import workflowInsights from "../assets/workflow-insights.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -500,74 +506,84 @@ const contactLink =
   "mailto:hello@fieldopsnexus.com?subject=FieldOps%20Nexus%20inquiry"
 const careersLink =
   "mailto:hello@fieldopsnexus.com?subject=FieldOps%20Nexus%20careers"
-const previewViews = {
-  Dashboard: {
-    heading: "Operations at a glance",
-    metrics: [
-      ["Active assets", "2,846", "Across sites", Boxes],
-      ["Open work orders", "128", "Awaiting action", ClipboardList],
-      ["SLA performance", "98.2%", "On target", Gauge],
-    ],
-    chart: "Work order activity",
-    status: "Asset status",
-    summary: "Work order summary",
-    summaryDetail: "In progress",
-    activity: ["Inspection completed", "Work order assigned"],
+
+interface WorkflowCard {
+  id: string
+  tag: string
+  title: string
+  desc: string
+  badgeTitle: string
+  badgeSubtitle?: string
+  image: string
+  fallback: string
+}
+
+const leftColumnCards: WorkflowCard[] = [
+  {
+    id: "service-requests",
+    tag: "SERVICE REQUESTS",
+    title: "From Request to Resolution",
+    desc: "Raise, track and resolve service requests seamlessly",
+    badgeTitle: "WO #14872",
+    badgeSubtitle: "Completed",
+    image: workflowServiceRequests,
+    fallback: "/workflow-service-requests.jpg",
   },
-  Assets: {
-    heading: "Asset overview",
-    metrics: [
-      ["Registered assets", "2,846", "Across sites", Boxes],
-      ["Operational", "92%", "Current status", Gauge],
-      ["Under maintenance", "64", "Scheduled work", Settings2],
-    ],
-    chart: "Asset activity",
-    status: "Asset status",
-    summary: "Maintenance summary",
-    summaryDetail: "In progress",
-    activity: ["Asset inspected", "Condition updated"],
+  {
+    id: "field-operations",
+    tag: "FIELD OPERATIONS",
+    title: "Empower Field Technicians",
+    desc: "On-site execution with real-time updates",
+    badgeTitle: "Site Visit • Checklist",
+    badgeSubtitle: "Evidence",
+    image: workflowFieldOperations,
+    fallback: "/workflow-field-operations.jpg",
   },
-  "Work Orders": {
-    heading: "Work order overview",
-    metrics: [
-      ["Open work orders", "128", "Awaiting action", ClipboardList],
-      ["In progress", "64", "Assigned work", Wrench],
-      ["SLA performance", "98.2%", "On target", Gauge],
-    ],
-    chart: "Work order activity",
-    status: "Work status",
-    summary: "Work order summary",
-    summaryDetail: "In progress",
-    activity: ["Work order assigned", "Supervisor review"],
+  {
+    id: "approval-workflow",
+    tag: "APPROVAL WORKFLOW",
+    title: "Review & Approve",
+    desc: "Supervisor verification and compliance",
+    badgeTitle: "Supervisor Review",
+    badgeSubtitle: "Approved",
+    image: workflowApproval,
+    fallback: "/workflow-approval.jpg",
   },
-  "Service Requests": {
-    heading: "Service request overview",
-    metrics: [
-      ["Requests received", "128", "Across sites", FileCheck2],
-      ["In triage", "64", "Needs review", Radio],
-      ["SLA performance", "98.2%", "On target", Gauge],
-    ],
-    chart: "Request activity",
-    status: "Request status",
-    summary: "Service summary",
-    summaryDetail: "In progress",
-    activity: ["Request received", "Triage completed"],
+]
+
+const rightColumnCards: WorkflowCard[] = [
+  {
+    id: "asset-management",
+    tag: "ASSET MANAGEMENT",
+    title: "Complete Asset Visibility",
+    desc: "Monitor asset health, uptime and history",
+    badgeTitle: "Asset Health 92%",
+    badgeSubtitle: "Operational",
+    image: workflowAssetManagement,
+    fallback: "/workflow-asset-management.jpg",
   },
-  Maintenance: {
-    heading: "Maintenance overview",
-    metrics: [
-      ["Maintained assets", "2,846", "Across sites", Boxes],
-      ["Scheduled work", "128", "Upcoming", Settings2],
-      ["Completed", "92%", "On schedule", CircleCheck],
-    ],
-    chart: "Maintenance activity",
-    status: "Plan status",
-    summary: "Schedule summary",
-    summaryDetail: "In progress",
-    activity: ["Inspection completed", "Plan reviewed"],
+  {
+    id: "inventory-management",
+    tag: "INVENTORY MANAGEMENT",
+    title: "Spare Parts & Stock Control",
+    desc: "Track inventory and material consumption",
+    badgeTitle: "Spare Parts: 124",
+    badgeSubtitle: "In Stock",
+    image: workflowInventoryManagement,
+    fallback: "/workflow-inventory-management.jpg",
   },
-} as const
-type PreviewView = keyof typeof previewViews
+  {
+    id: "operational-insights",
+    tag: "OPERATIONAL INSIGHTS",
+    title: "Real-Time Analytics",
+    desc: "Data-driven decisions for better operations",
+    badgeTitle: "System Uptime",
+    badgeSubtitle: "98.2% Live",
+    image: workflowInsights,
+    fallback: "/workflow-insights.jpg",
+  },
+]
+
 
 function useInView() {
   const ref = useRef<HTMLDivElement>(null)
@@ -975,144 +991,6 @@ function SectionHeading({
     </Reveal>
   )
 }
-function DashboardPreview({ view = "Dashboard" }: { view?: PreviewView }) {
-  const content = previewViews[view]
-  return (
-    <div
-      aria-label={`Illustrative FieldOps Nexus ${view} preview with sample data`}
-      role="img"
-      className="w-full overflow-hidden rounded-xl border border-border bg-white text-left shadow-2xl shadow-navy-950/20"
-    >
-      <div className="flex h-10 items-center justify-between border-b border-border bg-white px-4 sm:px-5">
-        <div className="flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-border" />
-          <span className="size-2 rounded-full bg-border" />
-          <span className="size-2 rounded-full bg-border" />
-          <span className="ml-3 text-[10px] font-bold tracking-tight text-navy-800">
-            FieldOps <span className="text-gold-600">Nexus</span>
-          </span>
-        </div>
-        <span className="flex items-center gap-1.5 text-[9px] text-text-secondary">
-          <span className="size-1.5 rounded-full bg-gold-500" /> Product preview
-        </span>
-      </div>
-      <div className="bg-surface p-4 sm:p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="text-[9px] font-semibold uppercase tracking-widest text-text-secondary">
-              Workspace / {view}
-            </p>
-            <p className="mt-1 text-sm font-bold text-navy-800 sm:text-base">
-              {content.heading}
-            </p>
-          </div>
-          <span className="rounded-md border border-border bg-white px-2 py-1 text-[9px] text-text-secondary">
-            Sample data
-          </span>
-        </div>
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          {content.metrics.map(([label, value, note, IconComponent]) => {
-            const MetricIcon = IconComponent as Icon
-            return (
-              <div
-                key={label as string}
-                className="min-w-0 rounded-lg border border-border bg-white p-2.5 sm:p-4"
-              >
-                <div className="mb-3 flex items-center justify-between text-text-secondary">
-                  <span className="truncate text-[8px] font-medium sm:text-[10px]">
-                    {label as string}
-                  </span>
-                  <MetricIcon
-                    size={13}
-                    className="hidden shrink-0 text-gold-600 sm:block"
-                  />
-                </div>
-                <p className="text-lg font-bold tracking-tight text-navy-800 sm:text-2xl">
-                  {value as string}
-                </p>
-                <p className="mt-1 truncate text-[8px] font-medium text-gold-600 sm:text-[9px]">
-                  {note as string}
-                </p>
-              </div>
-            )
-          })}
-        </div>
-        <div className="mt-3 grid grid-cols-[1.35fr_1fr] gap-2 sm:gap-3">
-          <div className="rounded-lg border border-border bg-white p-3 sm:p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-navy-800 sm:text-xs">
-                {content.chart}
-              </span>
-              <span className="text-[8px] text-text-secondary">
-                Last 7 days
-              </span>
-            </div>
-            <div className="mt-5 flex h-20 items-end gap-1.5 sm:h-28 sm:gap-2">
-              {[38, 53, 44, 72, 60, 86, 68, 91, 76, 100, 82, 94].map(
-                (height, i) => (
-                  <span
-                    key={i}
-                    className={`min-w-0 flex-1 rounded-t-sm ${
-                      i === 9 ? "bg-gold-500" : "bg-navy-800/15"
-                    }`}
-                    style={{ height: `${height}%` }}
-                  />
-                ),
-              )}
-            </div>
-            <div className="mt-2 flex justify-between text-[8px] text-text-secondary">
-              <span>Mon</span>
-              <span>Wed</span>
-              <span>Fri</span>
-              <span>Sun</span>
-            </div>
-          </div>
-          <div className="rounded-lg border border-border bg-white p-3 sm:p-4">
-            <span className="text-[10px] font-bold text-navy-800 sm:text-xs">
-              {content.status}
-            </span>
-            <div className="mx-auto my-3 flex size-16 items-center justify-center rounded-full border-[7px] border-navy-800 border-r-gold-500 border-b-gold-500 sm:size-24 sm:border-[10px]">
-              <span className="text-xs font-bold text-navy-800 sm:text-lg">
-                92%
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-2 text-[8px] text-text-secondary">
-              <span className="size-1.5 rounded-full bg-navy-800" /> Operational{" "}
-              <span className="size-1.5 rounded-full bg-gold-500" /> Attention
-            </div>
-          </div>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
-          <div className="rounded-lg border border-border bg-white p-3">
-            <p className="mb-2 text-[10px] font-bold text-navy-800 sm:text-xs">
-              {content.summary}
-            </p>
-            <div className="flex justify-between text-[9px] text-text-secondary">
-              <span>{content.summaryDetail}</span>
-              <span className="font-bold text-navy-800">64</span>
-            </div>
-            <div className="mt-2 h-1.5 rounded-full bg-surface-2">
-              <div className="h-full w-2/3 rounded-full bg-gold-500" />
-            </div>
-          </div>
-          <div className="rounded-lg border border-border bg-white p-3">
-            <p className="mb-2 text-[10px] font-bold text-navy-800 sm:text-xs">
-              Recent activity
-            </p>
-            <p className="truncate text-[9px] text-text-secondary">
-              <span className="mr-1 text-gold-600">●</span>{" "}
-              {content.activity[0]}
-            </p>
-            <p className="mt-1 truncate text-[9px] text-text-secondary">
-              <span className="mr-1 text-gold-600">●</span>{" "}
-              {content.activity[1]}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // ─── Mega Menu Panel ─────────────────────────────────────────────────────────
 function MegaMenuPanel({
@@ -1253,7 +1131,7 @@ function MegaMenuPanel({
 
 export default function LandingPage({ onNavigate, page }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [previewView, setPreviewView] = useState<PreviewView>("Dashboard")
+
   const [activeMega, setActiveMega] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const headerRef = useRef<HTMLElement>(null)
@@ -1932,9 +1810,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
         <section
           id="product"
-          className="scroll-mt-24 overflow-hidden bg-navy-800 py-20 text-white lg:py-28"
+          className="relative py-20 lg:py-28 bg-navy-800 text-white overflow-hidden"
         >
-          <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 lg:grid-cols-[.75fr_1.25fr] lg:gap-16 lg:px-8">
+          <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 lg:grid-cols-[.85fr_1.15fr] lg:gap-14 lg:px-8">
             <Reveal direction="left">
               <Eyebrow light>The product experience</Eyebrow>
               <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[44px]">
@@ -1966,32 +1844,134 @@ export default function LandingPage({ onNavigate, page }: Props) {
                 Explore the Platform <ArrowRight size={17} />
               </a>
             </Reveal>
-            <Reveal direction="scale" className="relative">
-              <div className="absolute -inset-8 rounded-full bg-white/5 blur-3xl" />
-              <div className="relative lg:translate-y-1">
-                <div
-                  aria-label="Explore product previews"
-                  className="mb-4 flex gap-1 overflow-x-auto rounded-lg border border-white/15 bg-white/5 p-1.5"
-                >
-                  {(Object.keys(previewViews) as PreviewView[]).map((view) => (
-                    <button
-                      key={view}
-                      type="button"
-                      aria-pressed={previewView === view}
-                      onClick={() => setPreviewView(view)}
-                      className={`shrink-0 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
-                        previewView === view
-                          ? "bg-white text-navy-800 shadow-sm"
-                          : "text-white/65 hover:bg-white/10 hover:text-white"
-                      }`}
+
+            {/* ── Automatic Continuous Two-Column Vertical Marquee Workflow Gallery ── */}
+            <div className="relative h-[600px] lg:h-[660px] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#061224]/50 p-3.5 shadow-2xl backdrop-blur-md">
+              {/* Soft Ambient top and bottom fade masks for seamless endless conveyor */}
+              <div className="pointer-events-none absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#0B1F3A] via-[#0B1F3A]/90 to-transparent z-10" />
+              <div className="pointer-events-none absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/90 to-transparent z-10" />
+
+              {/* Two-column vertical conveyor container */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full overflow-hidden">
+                
+                {/* Left Column Vertical Marquee (Set A + Set B seamless loop) */}
+                <div className="nexus-workflow-col-marquee-left">
+                  {[...leftColumnCards, ...leftColumnCards].map((card, idx) => (
+                    <div
+                      key={`${card.id}-${idx}`}
+                      className="group relative flex flex-col overflow-hidden rounded-xl border border-white/[0.1] bg-[#162A4B]/75 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/50 hover:bg-[#162A4B]"
                     >
-                      {view}
-                    </button>
+                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#061224]">
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100"
+                          onError={(e) => {
+                            const target = e.currentTarget
+                            if (!target.dataset.failed) {
+                              target.dataset.failed = "true"
+                              target.src = card.fallback
+                            }
+                          }}
+                        />
+                        {/* Floating glassmorphic telemetry pill */}
+                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between rounded border border-white/15 bg-[#0B1F3B]/90 px-2.5 py-1 backdrop-blur-md shadow-sm">
+                          <span className="text-[9.5px] font-mono font-bold tracking-tight text-white truncate">
+                            {card.badgeTitle}
+                          </span>
+                          {card.badgeSubtitle && (
+                            <span className="ml-1 flex items-center gap-1 text-[8.5px] font-semibold text-[#F5C451]">
+                              <span className="size-1.5 rounded-full bg-[#10B981] shadow-[0_0_6px_#10B981]" />
+                              {card.badgeSubtitle}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-1 flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-[#F5C451]">
+                              {card.tag}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-bold text-white leading-snug">
+                            {card.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-white/65">
+                            {card.desc}
+                          </p>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/[0.07]">
+                          <span className="text-[10px] font-medium text-white/50 group-hover:text-[#F5C451] transition-colors">
+                            Explore workflow
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <DashboardPreview view={previewView} />
+
+                {/* Right Column Vertical Marquee (Staggered offset + seamless loop) */}
+                <div className="nexus-workflow-col-marquee-right sm:pt-6">
+                  {[...rightColumnCards, ...rightColumnCards].map((card, idx) => (
+                    <div
+                      key={`${card.id}-${idx}`}
+                      className="group relative flex flex-col overflow-hidden rounded-xl border border-white/[0.1] bg-[#162A4B]/75 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/50 hover:bg-[#162A4B]"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#061224]">
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100"
+                          onError={(e) => {
+                            const target = e.currentTarget
+                            if (!target.dataset.failed) {
+                              target.dataset.failed = "true"
+                              target.src = card.fallback
+                            }
+                          }}
+                        />
+                        {/* Floating glassmorphic telemetry pill */}
+                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between rounded border border-white/15 bg-[#0B1F3B]/90 px-2.5 py-1 backdrop-blur-md shadow-sm">
+                          <span className="text-[9.5px] font-mono font-bold tracking-tight text-white truncate">
+                            {card.badgeTitle}
+                          </span>
+                          {card.badgeSubtitle && (
+                            <span className="ml-1 flex items-center gap-1 text-[8.5px] font-semibold text-[#F5C451]">
+                              <span className="size-1.5 rounded-full bg-[#10B981] shadow-[0_0_6px_#10B981]" />
+                              {card.badgeSubtitle}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-1 flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-[#F5C451]">
+                              {card.tag}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 text-sm sm:text-[15px] font-bold text-white leading-snug">
+                            {card.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-white/65">
+                            {card.desc}
+                          </p>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/[0.07]">
+                          <span className="text-[10px] font-medium text-white/50 group-hover:text-[#F5C451] transition-colors">
+                            Explore workflow
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
 
