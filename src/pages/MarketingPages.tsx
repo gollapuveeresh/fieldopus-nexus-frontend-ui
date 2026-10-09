@@ -214,24 +214,24 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
         <div className="absolute -top-40 -right-40 size-96 rounded-full bg-gold-500/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-40 -left-40 size-96 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
 
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 flex flex-col items-center text-center">
-          <div className="max-w-4xl flex flex-col items-center">
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
+              <div className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6 mx-auto">
                 <Sparkles size={13} className="text-gold-400" />
                 FIELDOPS NEXUS FEATURES
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1] max-w-4xl mx-auto text-balance">
                 Everything your field operations need.{" "}
                 <span className="text-[#F5C451]">
                   Connected in one platform.
                 </span>
               </h1>
-              <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-white/75 leading-relaxed">
+              <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-white/75 leading-relaxed text-balance">
                 Bridge the gap between assets, technicians, work orders, inventory, and analytics. 
                 FieldOps Nexus delivers connected operational execution with enterprise-grade traceability and zero workflow fragmentation.
               </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <div className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4">
                 <button
                   onClick={() => {
                     const el = document.getElementById("feature-grid")
@@ -250,18 +250,18 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
               </div>
 
               {/* Quick stats strip */}
-              <div className="mt-12 grid grid-cols-3 gap-8 border-t border-white/10 pt-8 max-w-lg mx-auto">
-                <div>
+              <div className="mt-12 grid grid-cols-3 gap-4 sm:gap-8 border-t border-white/10 pt-8 max-w-lg mx-auto w-full text-center">
+                <div className="flex flex-col items-center">
                   <p className="text-2xl sm:text-3xl font-bold text-gold-400">99.4%</p>
-                  <p className="text-xs text-white/60 mt-0.5">SLA Adherence</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">SLA Adherence</p>
                 </div>
-                <div>
+                <div className="flex flex-col items-center">
                   <p className="text-2xl sm:text-3xl font-bold text-white">42%</p>
-                  <p className="text-xs text-white/60 mt-0.5">Faster MTTR</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">Faster MTTR</p>
                 </div>
-                <div>
+                <div className="flex flex-col items-center">
                   <p className="text-2xl sm:text-3xl font-bold text-gold-400">100%</p>
-                  <p className="text-xs text-white/60 mt-0.5">Audit Compliance</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">Audit Compliance</p>
                 </div>
               </div>
             </Reveal>
@@ -382,7 +382,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                 <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
                   {workflowSteps[activeStep].desc}
                 </p>
-                <div className="mt-6 flex items-center gap-3">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <button
                     onClick={() => setActiveStep((prev) => (prev > 0 ? prev - 1 : workflowSteps.length - 1))}
                     className="rounded-lg border border-white/20 px-3.5 py-2 text-xs font-semibold text-white hover:bg-white/10"
