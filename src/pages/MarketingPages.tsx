@@ -35,7 +35,9 @@ import {
   Cpu,
   Lock,
   Workflow,
-  Check
+  Check,
+  ChevronUp,
+  Minus
 } from "lucide-react"
 import type { Page } from "../types"
 
@@ -590,58 +592,120 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
 function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) {
   const [activeCategory, setActiveCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
 
   const categories = ["All", "Product Guides", "Documentation", "Industry Insights", "Operational Playbooks"]
 
   const resourceArticles = [
     {
+      slug: "enterprise-asset-lifecycle",
       category: "Operational Playbooks",
       title: "Enterprise Asset Lifecycle & Preventive Maintenance Playbook",
       desc: "A comprehensive framework for structuring asset hierarchies, calculating true MTBF/MTTR, and designing predictive maintenance cycles.",
+      expandedDesc: "Industrial and facilities management organizations face a persistent challenge: the reactive maintenance cycle. Equipment fails without warning, technicians scramble, production halts, and costs spiral. This playbook provides a comprehensive framework for enterprise maintenance teams transitioning from reactive firefighting to precision preventive and predictive maintenance, covering asset hierarchy design, reliability metric automation, and coordinated inventory planning.",
       readTime: "8 min read",
       date: "October 2026",
       featured: true,
       tag: "Best Practice",
+      image: "/workflow-asset-management.jpg",
+      imageAlt: "Industrial asset management and preventive maintenance operations",
+      takeaways: [
+        "Define parent–child asset hierarchies with QR-code tagging",
+        "Automate MTBF and MTTR calculation from work order data",
+        "Design condition-based PM triggers alongside calendar schedules",
+        "Establish min/max inventory safety buffers per asset class",
+      ],
     },
     {
+      slug: "technician-dispatch-routing",
       category: "Product Guides",
       title: "Optimizing Mobile Technician Dispatch & Route Scheduling",
       desc: "How modern operations teams reduce travel time and elevate first-time fix rates using skills-based dispatch algorithms.",
+      expandedDesc: "Dispatch inefficiency is one of the largest hidden costs in field service operations. When the wrong technician is sent to a job—one without the required certifications, tools, or proximity—the result is a wasted trip, a delayed resolution, and a frustrated customer. Modern skills-based dispatch systems eliminate this problem by automatically matching work orders to the best available technician based on a multi-factor scoring model including certifications, GPS proximity, workload balance, and van stock availability.",
       readTime: "6 min read",
       date: "September 2026",
       tag: "Field Workforce",
+      image: "/work-order-technician.jpg",
+      imageAlt: "Field technician inspecting industrial pump assembly with mobile device",
+      takeaways: [
+        "Skills-based technician assignment with certification matching",
+        "Route optimization and travel time reduction for multi-stop routes",
+        "Real-time scheduling and dynamic rescheduling via live GPS",
+        "Mobile app workflows for technicians with offline capability",
+        "Improved first-time fix rates through smarter dispatch scoring",
+      ],
     },
     {
+      slug: "api-erp-integration",
       category: "Documentation",
       title: "FieldOps Nexus API & ERP Integration Architecture",
       desc: "Technical blueprint for synchronizing spare parts, inventory ledger, and work order costs with enterprise ERP backbones.",
+      expandedDesc: "Enterprise organizations running FieldOps Nexus alongside SAP, Oracle, NetSuite, or Microsoft Dynamics require a reliable, bi-directional integration layer to prevent data silos between field operations and the financial backbone. This document describes the canonical integration architecture, key synchronization flows for inventory, purchase orders, work order cost ledgers, and technician timesheets, as well as error handling and reconciliation strategies.",
       readTime: "12 min read",
       date: "August 2026",
       tag: "Architecture",
+      image: "/asset-telemetry-hero.jpg",
+      imageAlt: "Enterprise ERP integration and API architecture for industrial operations",
+      takeaways: [
+        "REST API with OAuth 2.0 authentication and webhook support",
+        "Bi-directional inventory and spare parts synchronization",
+        "Work order cost ledger posting to ERP cost centers",
+        "Automated purchase requisition generation on low stock",
+      ],
     },
     {
+      slug: "continuous-audit-readiness",
       category: "Industry Insights",
       title: "Continuous Audit Readiness: Eliminating Paper Compliance Gaps",
       desc: "Why cryptographic timestamps and immutable operational ledgers protect heavy industrial and facilities operators during audits.",
+      expandedDesc: "Audit preparation has traditionally been one of the most labor-intensive activities in heavy industrial and facilities management. Teams spend weeks manually compiling maintenance records, collecting technician sign-off sheets, and reconciling paper checklists. FieldOps Nexus addresses these gaps through immutable digital audit logging where every action is recorded with a server-generated timestamp that cannot be retroactively altered, eliminating paper-based compliance vulnerabilities.",
       readTime: "5 min read",
       date: "July 2026",
       tag: "Compliance",
+      image: "/workflow-approval.jpg",
+      imageAlt: "Supervisor reviewing and approving field service compliance documentation",
+      takeaways: [
+        "Immutable audit logs with cryptographic timestamps",
+        "Mandatory photo capture for high-risk work order types",
+        "Digital technician and supervisor dual sign-off workflows",
+        "Automated weekly audit log summaries for compliance teams",
+      ],
     },
     {
+      slug: "spare-parts-inventory",
       category: "Operational Playbooks",
       title: "Spare Parts Inventory Control & Van Stock Optimization",
       desc: "Strategies to prevent costly job delays by automating min/max threshold replenishment across mobile field units and central hubs.",
+      expandedDesc: "Inventory shortfalls are among the most preventable causes of job delays in field service operations. When a technician arrives at a job site and discovers the required part is not on their van, the options are poor: wait for a warehouse transfer, order an emergency delivery, or reschedule entirely. A properly implemented min/max replenishment system with separate van stock tracking eliminates phantom availability and ensures the right parts are always on hand.",
       readTime: "7 min read",
       date: "June 2026",
       tag: "Inventory",
+      image: "/workflow-inventory-management.jpg",
+      imageAlt: "Spare parts inventory control and field van stock management",
+      takeaways: [
+        "Min/max threshold replenishment with safety stock buffers",
+        "Separate van stock vs. central warehouse tracking",
+        "ABC analysis for prioritizing inventory control rigor",
+        "Automated low-stock alerts and purchase requisition generation",
+      ],
     },
     {
+      slug: "multi-site-organization",
       category: "Product Guides",
       title: "Setting Up Multi-Site Organization Structures in FieldOps Nexus",
       desc: "Step-by-step guidance on structuring complex enterprise entities, role-based access permissions, and regional reporting zones.",
+      expandedDesc: "Enterprise organizations operating across multiple sites, regions, or business units face a structuring challenge that directly impacts reporting quality, access control accuracy, and day-to-day operational efficiency. This guide walks through configuring FieldOps Nexus to reflect your real-world hierarchy—from the top-level enterprise entity down to individual sites, departments, and technician teams—with granular role-based access control and regional reporting zones.",
       readTime: "10 min read",
       date: "May 2026",
       tag: "Enterprise Config",
+      image: "/workflow-field-operations.jpg",
+      imageAlt: "Multi-site field operations management and enterprise configuration",
+      takeaways: [
+        "Five-level organization hierarchy: Enterprise → Region → Site → Zone → Asset",
+        "Granular RBAC scoped to individual sites and modules",
+        "Regional reporting zones for cross-site KPI aggregation",
+        "Automated weekly performance reports per zone",
+      ],
     },
   ]
 
@@ -669,6 +733,10 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
     const matchesQuery = searchQuery === "" || art.title.toLowerCase().includes(searchQuery.toLowerCase()) || art.desc.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCat && matchesQuery
   })
+
+  const handleToggleExpand = (slug: string) => {
+    setExpandedSlug((prev) => (prev === slug ? null : slug))
+  }
 
   return (
     <div className="w-full bg-white">
@@ -759,7 +827,7 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
                 </div>
                 <div className="mt-8">
                   <button
-                    onClick={() => onNavigate("maintenance-management")}
+                    onClick={() => handleToggleExpand("enterprise-asset-lifecycle")}
                     className="inline-flex items-center gap-2 rounded-lg bg-navy-900 px-6 py-3 text-xs font-bold text-white transition-colors hover:bg-navy-800"
                   >
                     Read Resource <ArrowRight size={14} />
@@ -779,7 +847,7 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => { setActiveCategory(cat); setExpandedSlug(null) }}
                 className={`rounded-lg px-4 py-2 text-xs font-bold transition-all ${
                   activeCategory === cat
                     ? "bg-navy-900 text-gold-400 shadow-sm"
@@ -793,34 +861,117 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
 
           {/* Cards Grid */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredArticles.map((art, idx) => (
-              <Reveal key={art.title} delay={idx * 60}>
-                <div className="group flex flex-col justify-between h-full rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-400 hover:shadow-xl hover:shadow-navy-950/10">
-                  <div>
-                    <div className="flex items-center justify-between mb-3 text-[11px]">
-                      <span className="font-bold text-gold-600 uppercase tracking-wider">{art.category}</span>
-                      <span className="text-text-secondary">{art.readTime}</span>
+            {filteredArticles.map((art, idx) => {
+              const isExpanded = expandedSlug === art.slug
+              return (
+                <Reveal key={art.slug} delay={idx * 60}>
+                  <div
+                    className={`group flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-500 ease-out ${
+                      isExpanded
+                        ? "border-gold-400 shadow-lg shadow-gold-500/10 sm:col-span-2 lg:col-span-1"
+                        : "border-border hover:-translate-y-1.5 hover:border-gold-400 hover:shadow-xl hover:shadow-navy-950/10"
+                    }`}
+                  >
+                    {/* ── Card Image ── */}
+                    <div className="relative overflow-hidden rounded-t-xl">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleExpand(art.slug)}
+                        className="block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 rounded-t-xl"
+                        aria-expanded={isExpanded}
+                        aria-label={isExpanded ? `Collapse ${art.title}` : `Expand ${art.title}`}
+                      >
+                        <img
+                          src={art.image}
+                          alt={art.imageAlt}
+                          className={`w-full object-cover transition-all duration-500 ease-out ${
+                            isExpanded ? "h-56 sm:h-64" : "h-40 sm:h-44"
+                          }`}
+                        />
+                      </button>
+                      {/* Expand/Collapse indicator */}
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); handleToggleExpand(art.slug) }}
+                        className={`absolute top-3 right-3 flex size-7 items-center justify-center rounded-full border transition-all duration-300 ${
+                          isExpanded
+                            ? "bg-gold-500 border-gold-400 text-navy-950 shadow-md shadow-gold-500/30"
+                            : "bg-navy-900/70 border-white/20 text-white/80 backdrop-blur-sm hover:bg-navy-900/90 hover:text-gold-400"
+                        }`}
+                        aria-label={isExpanded ? "Collapse card" : "Expand card"}
+                      >
+                        {isExpanded ? <Minus size={14} strokeWidth={2.5} /> : <ChevronDown size={14} strokeWidth={2.5} />}
+                      </button>
                     </div>
-                    <h4 className="text-base font-bold text-navy-900 group-hover:text-gold-600 transition-colors leading-snug">
-                      {art.title}
-                    </h4>
-                    <p className="mt-3 text-xs text-text-secondary leading-relaxed line-clamp-3">
-                      {art.desc}
-                    </p>
-                  </div>
 
-                  <div className="mt-6 pt-4 border-t border-border flex items-center justify-between text-xs">
-                    <span className="text-text-secondary text-[11px]">{art.date}</span>
-                    <button
-                      onClick={() => onNavigate("asset-management")}
-                      className="inline-flex items-center gap-1 font-bold text-navy-900 group-hover:text-gold-600 group-hover:translate-x-1 transition-all"
-                    >
-                      Read Article <ChevronRight size={14} />
-                    </button>
+                    {/* ── Card Body ── */}
+                    <div className="flex flex-col flex-1 p-5 sm:p-6">
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5 text-[11px]">
+                          <span className="font-bold text-gold-600 uppercase tracking-wider">{art.category}</span>
+                          <span className="text-text-secondary">{art.readTime}</span>
+                        </div>
+                        <h4 className="text-base font-bold text-navy-900 group-hover:text-gold-600 transition-colors leading-snug">
+                          {art.title}
+                        </h4>
+                        <p className={`mt-2.5 text-xs text-text-secondary leading-relaxed ${isExpanded ? "" : "line-clamp-3"}`}>
+                          {isExpanded ? art.expandedDesc : art.desc}
+                        </p>
+                      </div>
+
+                      {/* ── Expanded Content ── */}
+                      <div
+                        className={`overflow-hidden transition-all duration-500 ease-out ${
+                          isExpanded ? "max-h-[600px] opacity-100 mt-5" : "max-h-0 opacity-0 mt-0"
+                        }`}
+                      >
+                        {/* Key Takeaways */}
+                        <div className="rounded-lg border border-border bg-[#F8FAFC] p-4">
+                          <p className="text-[11px] font-bold uppercase tracking-widest text-navy-800 mb-3">
+                            Key Takeaways
+                          </p>
+                          <ul className="space-y-2.5">
+                            {art.takeaways.map((t, i) => (
+                              <li key={i} className="flex items-start gap-2.5">
+                                <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-gold-100 border border-gold-300">
+                                  <span className="size-1.5 rounded-full bg-gold-600" />
+                                </span>
+                                <span className="text-xs text-[#334155] leading-relaxed">{t}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Expanded meta */}
+                        <div className="mt-4 flex items-center gap-3 text-[11px] text-text-secondary">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-navy-900 px-2.5 py-0.5 text-gold-400 font-semibold">
+                            {art.tag}
+                          </span>
+                          <span>{art.date}</span>
+                          <span>•</span>
+                          <span>{art.readTime}</span>
+                        </div>
+                      </div>
+
+                      {/* ── Card Footer ── */}
+                      <div className="mt-auto pt-4 border-t border-border flex items-center justify-between text-xs" style={{ marginTop: isExpanded ? "1rem" : undefined }}>
+                        <span className="text-text-secondary text-[11px]">{art.date}</span>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleToggleExpand(art.slug) }}
+                          className="inline-flex items-center gap-1 font-bold text-navy-900 group-hover:text-gold-600 transition-all"
+                        >
+                          {isExpanded ? (
+                            <>Collapse <ChevronUp size={14} /></>
+                          ) : (
+                            <>Read Article <ChevronRight size={14} /></>
+                          )}
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
