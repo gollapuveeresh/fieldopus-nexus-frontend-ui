@@ -1336,6 +1336,45 @@ interface PageMeta {
 }
 
 const PAGE_DATA: Record<string, PageMeta> = {
+  "organization-management": {
+    title: "Organization Management",
+    subtitle: "Enterprise Hierarchy & Site Configuration",
+    tagline: "Bring sites, teams, zones, and business units into one connected view.",
+    description: "Define and manage your entire organizational structure — from enterprise groups and regional divisions down to individual sites, departments, and teams. Control access boundaries, asset ownership, and workforce allocation with precision.",
+    metrics: [
+      ["12+", "Org Levels Supported", "From enterprise to sub-department"],
+      ["100%", "Role-Based Visibility", "Every team sees what matters to them"],
+      ["Multi-Site", "Hierarchy Control", "Sites, zones, and buildings unified"],
+    ],
+    features: [
+      { title: "Multi-Tier Org Hierarchy", desc: "Configure enterprise groups, regional divisions, sites, buildings, floors, zones, and departments in unlimited depth.", icon: Building2 },
+      { title: "Site & Location Master", desc: "Centralized site records covering address, type, capacity, and linked asset and workforce data.", icon: Database },
+      { title: "Team & Role Assignment", desc: "Allocate technicians, supervisors, and managers to specific organizational nodes with inherited access control.", icon: Users },
+      { title: "Access & Boundary Control", desc: "Role-based visibility rules ensure each team only sees the assets, work orders, and data relevant to their scope.", icon: Lock },
+    ],
+    heroVisual: () => (
+      <UIWindow title="Organization Management">
+        <div className="space-y-2 text-xs">
+          {[
+            { label: "FieldOps Enterprise Group", level: 0, color: "text-navy-900 font-bold" },
+            { label: "↳ Asia Pacific Division", level: 1, color: "text-navy-700 font-semibold" },
+            { label: "    ↳ Singapore Plant 01", level: 2, color: "text-navy-600" },
+            { label: "    ↳ Kuala Lumpur Plant 02", level: 2, color: "text-navy-600" },
+            { label: "↳ EMEA Division", level: 1, color: "text-navy-700 font-semibold" },
+            { label: "    ↳ Frankfurt Facility", level: 2, color: "text-navy-600" },
+          ].map((row) => (
+            <div key={row.label} className={`rounded bg-white px-3 py-1.5 border border-border ${row.color}`}>
+              {row.label}
+            </div>
+          ))}
+          <div className="mt-2 flex gap-2 pt-1 border-t border-border">
+            <span className="rounded-full bg-gold-50 px-2 py-0.5 text-[10px] font-semibold text-gold-700">6 Sites Active</span>
+            <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">All Teams Synced</span>
+          </div>
+        </div>
+      </UIWindow>
+    ),
+  },
   "asset-management": {
     title: "Asset Management",
     subtitle: "Enterprise Asset Tracking & Hierarchy",
@@ -1718,6 +1757,26 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
       {/* ── Hero Section ── */}
       <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-24 pb-20 lg:pt-32 lg:pb-28">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
+        {/* ── Breadcrumb ── */}
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pb-6">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[11px] font-medium text-white/50">
+            <button
+              onClick={() => onNavigate("landing")}
+              className="hover:text-white/80 transition-colors"
+            >
+              Home
+            </button>
+            <ChevronRight size={11} className="text-white/30 shrink-0" />
+            <button
+              onClick={() => onNavigate("landing")}
+              className="hover:text-white/80 transition-colors"
+            >
+              Modules
+            </button>
+            <ChevronRight size={11} className="text-white/30 shrink-0" />
+            <span className="text-white/80">{data.title}</span>
+          </nav>
+        </div>
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
