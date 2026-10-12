@@ -39,6 +39,8 @@ import {
 } from "lucide-react"
 import type { Page } from "../types"
 
+const assetImg = "/asset-telemetry-hero.jpg"
+
 type Icon = ElementType
 
 // ─── Animation Utility ──────────────────────────────────────────────────────
@@ -470,11 +472,49 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                 </div>
               </Reveal>
             </div>
+            
+            <div className="lg:col-span-6 relative h-full min-h-[350px] sm:min-h-[450px]">
+              <Reveal direction="left" delay={100} className="w-full h-full">
+                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl shadow-navy-900/10 group">
+                  <img src={assetImg} alt="Industrial Refinery Asset" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  
+                  <button 
+                    onClick={() => onNavigate("asset-management")}
+                    aria-label="Learn more about Asset Management"
+                    className="absolute bottom-5 sm:bottom-6 right-5 sm:right-6 flex size-10 sm:size-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg transition-all hover:scale-110 hover:bg-gold-400 focus:outline-none focus:ring-4 focus:ring-gold-500/30"
+                  >
+                    <ArrowUpRight size={20} strokeWidth={2.5} />
+                  </button>
+                </div>
+              </Reveal>
+            </div>
           </div>
 
-          {/* Showcase 2: Dispatch & Work Orders (Visual Left, Text Right) */}
+          {/* Showcase 2: Dispatch & Work Orders (Image Left, Text Right) */}
           <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6 lg:col-start-7">
+
+            {/* Left — Image Card */}
+            <div className="lg:col-span-6 relative h-full min-h-[350px] sm:min-h-[450px] order-2 lg:order-1">
+              <Reveal direction="left" delay={100} className="w-full h-full">
+                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl shadow-navy-900/10 group">
+                  <img
+                    src="/work-order-technician.jpg"
+                    alt="Field technician inspecting industrial pump assembly with a tablet"
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <button
+                    onClick={() => onNavigate("work-order-management")}
+                    aria-label="Explore Work Order Management"
+                    className="absolute bottom-5 sm:bottom-6 right-5 sm:right-6 flex size-10 sm:size-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg transition-all hover:scale-110 hover:bg-gold-400 focus:outline-none focus:ring-4 focus:ring-gold-500/30"
+                  >
+                    <ArrowUpRight size={20} strokeWidth={2.5} />
+                  </button>
+                </div>
+              </Reveal>
+            </div>
+
+            {/* Right — Text */}
+            <div className="lg:col-span-6 order-1 lg:order-2">
               <Reveal>
                 <div className="text-xs font-bold uppercase tracking-widest text-gold-600 mb-2">
                   02 / WORK ORDER ORCHESTRATION
@@ -488,7 +528,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                 <ul className="mt-6 space-y-3 text-sm font-medium text-navy-900">
                   <li className="flex items-center gap-3">
                     <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                    Automated technician dispatch matched to certified skills & proximity
+                    Automated technician dispatch matched to certified skills &amp; proximity
                   </li>
                   <li className="flex items-center gap-3">
                     <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
