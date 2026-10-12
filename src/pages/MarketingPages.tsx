@@ -1127,9 +1127,9 @@ function AboutPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) 
                   <Globe size={13} className="text-gold-400" />
                   ABOUT FIELDOPS NEXUS
                 </div>
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1] text-[#F8FAFC]">
                   Connected operations.{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-amber-200">
+                  <span className="text-[#F5C451]">
                     Clearer execution.
                   </span>
                 </h1>
