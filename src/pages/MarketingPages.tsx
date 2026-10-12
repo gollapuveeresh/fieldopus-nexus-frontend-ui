@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   Clock,
+  Calendar,
   Activity,
   AlertCircle,
   TrendingUp,
@@ -591,7 +592,6 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
 // ============================================================================
 function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) {
   const [activeCategory, setActiveCategory] = useState("All")
-  const [searchQuery, setSearchQuery] = useState("")
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
 
   const categories = ["All", "Product Guides", "Documentation", "Industry Insights", "Operational Playbooks"]
@@ -730,117 +730,180 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
 
   const filteredArticles = resourceArticles.filter((art) => {
     const matchesCat = activeCategory === "All" || art.category === activeCategory
-    const matchesQuery = searchQuery === "" || art.title.toLowerCase().includes(searchQuery.toLowerCase()) || art.desc.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCat && matchesQuery
+    return matchesCat
   })
 
   const handleToggleExpand = (slug: string) => {
     setExpandedSlug((prev) => (prev === slug ? null : slug))
   }
 
+  const handleReadFeaturedResource = () => {
+    if (activeCategory !== "All" && activeCategory !== "Operational Playbooks") {
+      setActiveCategory("All")
+    }
+    setExpandedSlug("enterprise-asset-lifecycle")
+    setTimeout(() => {
+      const el = document.getElementById("enterprise-asset-lifecycle") || document.getElementById("resources-discovery")
+      if (el) {
+        const navH = 76
+        const top = el.getBoundingClientRect().top + window.scrollY - navH - 16
+        window.scrollTo({ top, behavior: "smooth" })
+      }
+    }, 50)
+  }
+
   return (
-    <div className="w-full bg-white">
+    <div id="resources" className="w-full bg-white">
       {/* ── Hero Section ── */}
-      <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-24 pb-20 lg:pt-32 lg:pb-28">
+      <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-16 pb-12 sm:pt-20 sm:pb-14 lg:pt-24 lg:pb-18">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-5">
               <BookOpen size={13} className="text-gold-400" />
               FIELDOPS NEXUS RESOURCES
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+            <h1
+              className="font-extrabold tracking-tight leading-[1.1]"
+              style={{ fontSize: "clamp(1.75rem, 4vw + 0.5rem, 3.5rem)" }}
+            >
               Insights and resources for modern field operations.
             </h1>
-            <p className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed">
+            <p className="mt-5 text-[clamp(0.875rem,1.2vw+0.4rem,1.125rem)] text-white/70 leading-relaxed max-w-2xl mx-auto">
               Explore enterprise operational guides, technical documentation, architectural blueprints, and industry best practices designed to optimize field reliability.
             </p>
-
-            {/* Quick Search */}
-            <div className="mt-8 max-w-md mx-auto relative">
-              <input
-                type="text"
-                placeholder="Search guides, docs, or playbooks..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3.5 pl-11 text-sm text-white placeholder:text-white/50 focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400 backdrop-blur-md"
-              />
-              <Search size={18} className="absolute left-3.5 top-4 text-white/50" />
-            </div>
           </Reveal>
         </div>
       </section>
 
       {/* ── Featured Resource Section ── */}
-      <section className="py-16 bg-[#F8FAFC] border-b border-border">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="rounded-2xl border border-border bg-white p-6 sm:p-10 shadow-sm">
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-5">
-                <div className="rounded-xl bg-navy-900 p-6 text-white border border-border shadow-inner">
-                  <div className="flex items-center justify-between text-xs text-gold-400 mb-4">
-                    <span className="font-bold uppercase tracking-wider">FEATURED PLAYBOOK</span>
-                    <span>8 Min Read</span>
-                  </div>
-                  <div className="size-12 rounded-lg bg-gold-500/20 text-gold-400 flex items-center justify-center mb-4">
-                    <Boxes size={24} />
-                  </div>
-                  <h4 className="text-xl font-bold text-white">
-                    Enterprise Asset Lifecycle & Preventive Maintenance Playbook
-                  </h4>
-                  <p className="mt-3 text-xs text-white/70 leading-relaxed">
-                    Key chapters: Structuring Parent-Child Hierarchies, Dynamic PM Triggers, MTBF Optimization, and Inventory Safety Buffers.
-                  </p>
-                  <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-gold-400">
-                    <span>FieldOps Operations Team</span> • <span>Updated Oct 2026</span>
-                  </div>
-                </div>
-              </div>
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#F8FAFC] border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="w-full">
+            <div className="group relative overflow-hidden rounded-2xl lg:rounded-3xl border border-navy-800/40 bg-[#0B1F3B] text-white shadow-xl shadow-navy-950/20 transition-all duration-300 hover:border-gold-500/30 hover:shadow-2xl hover:shadow-navy-950/30">
+              <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                {/* ── Left Column: Refined Editorial Content Panel (approx 50-52%) ── */}
+                <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-between p-6 sm:p-8 md:p-10 lg:p-10 xl:p-12 z-10">
+                  <div>
+                    {/* Eyebrow Badge */}
+                    <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4 sm:mb-5">
+                      <Sparkles size={13} className="text-gold-400" />
+                      FEATURED RESOURCE
+                    </div>
 
-              <div className="lg:col-span-7">
-                <span className="rounded bg-gold-50 text-gold-700 px-2.5 py-1 text-xs font-bold uppercase tracking-wider border border-gold-200">
-                  Featured Resource
-                </span>
-                <h3 className="mt-3 text-2xl sm:text-3xl font-bold text-navy-900">
-                  The Blueprint for Connected Enterprise Maintenance
-                </h3>
-                <p className="mt-4 text-sm sm:text-base text-text-secondary leading-relaxed">
-                  Discover how top industrial and facilities management organizations eliminate unplanned downtime by transitioning from reactive firefighting to precision, data-driven preventive maintenance.
-                </p>
-                <div className="mt-6 grid grid-cols-2 gap-4 text-xs font-medium text-navy-900">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Asset hierarchy standards
+                    {/* Headline */}
+                    <h2 className="text-2xl sm:text-3xl lg:text-[2rem] xl:text-[2.25rem] font-extrabold text-white tracking-tight leading-[1.2] text-balance">
+                      The Blueprint for{" "}
+                      <span className="text-[#F5C451]">Connected Enterprise</span>{" "}
+                      Maintenance
+                    </h2>
+
+                    {/* Description */}
+                    <p className="mt-3.5 sm:mt-4 text-sm sm:text-[14.5px] text-white/70 leading-relaxed max-w-xl text-pretty">
+                      Discover how industrial and facilities management organizations improve asset reliability, reduce unplanned downtime, and transition from reactive repairs to structured, data-driven preventive maintenance.
+                    </p>
+
+                    {/* Key Topics Grid */}
+                    <div className="mt-5 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+                      <div className="flex items-center gap-2.5 text-xs sm:text-[13px] font-medium text-white/90">
+                        <span className="flex size-5 sm:size-5.5 shrink-0 items-center justify-center rounded-full border border-gold-400/35 bg-gold-400/10 text-gold-400">
+                          <Check size={12} strokeWidth={2.5} />
+                        </span>
+                        <span>Asset hierarchy standards</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 text-xs sm:text-[13px] font-medium text-white/90">
+                        <span className="flex size-5 sm:size-5.5 shrink-0 items-center justify-center rounded-full border border-gold-400/35 bg-gold-400/10 text-gold-400">
+                          <Check size={12} strokeWidth={2.5} />
+                        </span>
+                        <span>Predictive telemetry setup</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 text-xs sm:text-[13px] font-medium text-white/90">
+                        <span className="flex size-5 sm:size-5.5 shrink-0 items-center justify-center rounded-full border border-gold-400/35 bg-gold-400/10 text-gold-400">
+                          <Check size={12} strokeWidth={2.5} />
+                        </span>
+                        <span>Technician SLA benchmarks</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 text-xs sm:text-[13px] font-medium text-white/90">
+                        <span className="flex size-5 sm:size-5.5 shrink-0 items-center justify-center rounded-full border border-gold-400/35 bg-gold-400/10 text-gold-400">
+                          <Check size={12} strokeWidth={2.5} />
+                        </span>
+                        <span>Audit checklist models</span>
+                      </div>
+                    </div>
+
+                    {/* Featured Playbook Panel */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={handleReadFeaturedResource}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          handleReadFeaturedResource()
+                        }
+                      }}
+                      className="mt-6 sm:mt-7 group/pb cursor-pointer rounded-xl border border-white/10 bg-[#162A4B]/50 p-4 transition-all duration-300 hover:border-gold-400/40 hover:bg-[#162A4B]/80 hover:shadow-lg hover:shadow-navy-950/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="size-9 rounded-lg bg-gold-500/15 border border-gold-400/25 flex items-center justify-center shrink-0 text-gold-400 transition-transform duration-300 group-hover/pb:scale-105 motion-reduce:transform-none">
+                          <FileText size={17} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10.5px] font-bold uppercase tracking-wider text-gold-400">
+                              FEATURED PLAYBOOK
+                            </span>
+                            <ArrowUpRight size={14} className="text-gold-400/70 transition-transform duration-300 group-hover/pb:translate-x-0.5 group-hover/pb:-translate-y-0.5 motion-reduce:transform-none" />
+                          </div>
+                          <h4 className="mt-1 text-xs sm:text-[13px] font-bold text-white group-hover/pb:text-gold-300 transition-colors leading-snug">
+                            Enterprise Asset Lifecycle & Preventive Maintenance Playbook
+                          </h4>
+                          <p className="mt-1 text-[11px] sm:text-xs text-white/60 leading-relaxed">
+                            Key chapters: Structuring Parent-Child Hierarchies, Dynamic PM Triggers, MTBF Optimization, and Inventory Safety Buffers.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Predictive telemetry setup
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Technician SLA benchmarks
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Audit checklist models
+
+                  {/* Supporting Metadata Footer */}
+                  <div className="mt-6 sm:mt-7 pt-4 border-t border-white/10 flex flex-wrap items-center gap-y-2 gap-x-4 text-xs font-medium text-white/60">
+                    <span className="inline-flex items-center gap-1.5 text-gold-400/90 font-semibold">
+                      <Users size={13} className="text-gold-400" />
+                      FieldOps Operations Team
+                    </span>
+                    <span className="text-white/20">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Calendar size={13} className="text-gold-400/80" />
+                      Updated Oct 2026
+                    </span>
+                    <span className="text-white/20">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock size={13} className="text-gold-400/80" />
+                      8 Min Read
+                    </span>
                   </div>
                 </div>
-                <div className="mt-8">
-                  <button
-                    onClick={() => handleToggleExpand("enterprise-asset-lifecycle")}
-                    className="inline-flex items-center gap-2 rounded-lg bg-navy-900 px-6 py-3 text-xs font-bold text-white transition-colors hover:bg-navy-800"
-                  >
-                    Read Resource <ArrowRight size={14} />
-                  </button>
+
+                {/* ── Right Column: Industrial Maintenance Photograph (approx 48-50%) ── */}
+                <div className="lg:col-span-6 xl:col-span-6 relative min-h-[320px] sm:min-h-[400px] lg:min-h-[520px] overflow-hidden">
+                  <img
+                    src="/featured-maintenance-technician.jpg"
+                    alt="Industrial maintenance technician inspecting plant machinery with a digital tablet"
+                    className="absolute inset-0 size-full object-cover object-center lg:rounded-l-2xl transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transform-none"
+                    loading="lazy"
+                  />
+                  {/* Refined subtle gradient blend on left edge */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B1F3B]/60 via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#0B1F3B] lg:via-[#0B1F3B]/30 lg:to-transparent" />
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ── Category Filter & Grid ── */}
-      <section className="py-20 lg:py-24 bg-white">
+      <section id="resources-discovery" className="scroll-mt-24 py-20 lg:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
@@ -866,7 +929,8 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
               return (
                 <Reveal key={art.slug} delay={idx * 60}>
                   <div
-                    className={`group flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-500 ease-out ${
+                    id={art.slug}
+                    className={`scroll-mt-28 group flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-500 ease-out ${
                       isExpanded
                         ? "border-gold-400 shadow-lg shadow-gold-500/10 sm:col-span-2 lg:col-span-1"
                         : "border-border hover:-translate-y-1.5 hover:border-gold-400 hover:shadow-xl hover:shadow-navy-950/10"

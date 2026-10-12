@@ -128,10 +128,9 @@ export default function NexusScrollFlow() {
           className="absolute -inset-x-3 -inset-y-4 rounded-full bg-[#0B1F3B]/10 dark:bg-[#F5C451]/5 blur-md transition-opacity duration-300"
         />
 
-        {/* Floating Telemetry Stage Label (appears during active scroll or hover on desktop) */}
+        {/* Floating Telemetry Stage Label (appears during active scroll when sufficient screen space exists outside content) */}
         <div
-          className={`absolute right-7 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-2 rounded-full border border-[#0B1F3B]/10 bg-white/90 px-3 py-1 text-[9.5px] font-bold tracking-[0.14em] uppercase text-[#0B1F3B] shadow-[0_4px_16px_rgba(11,31,59,0.08)] backdrop-blur-md transition-all duration-300 ${
-
+          className={`absolute right-7 top-1/2 -translate-y-1/2 hidden min-[1600px]:flex items-center gap-2 rounded-full border border-[#0B1F3B]/10 bg-white/90 px-3 py-1 text-[9.5px] font-bold tracking-[0.14em] uppercase text-[#0B1F3B] shadow-[0_4px_16px_rgba(11,31,59,0.08)] backdrop-blur-md transition-all duration-300 ${
             isScrolling ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"
           }`}
         >
