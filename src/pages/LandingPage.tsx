@@ -1142,7 +1142,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
   // Scroll to top whenever page prop changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo({ top: 0, behavior: "instant" })
   }, [page])
 
   // NOTE: There is intentionally NO IntersectionObserver or scroll-spy here.
@@ -1344,7 +1344,11 @@ export default function LandingPage({ onNavigate, page }: Props) {
                   onClick={() => {
                     closeMega()
                     if (item.page) {
-                      onNavigate(item.page)
+                      if (page === item.page) {
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      } else {
+                        onNavigate(item.page)
+                      }
                     } else if (item.sectionId) {
                       navigateToLandingSection(item.sectionId)
                     }
@@ -1487,7 +1491,11 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       onClick={() => {
                         setMenuOpen(false)
                         if (item.page) {
-                          onNavigate(item.page)
+                          if (page === item.page) {
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                          } else {
+                            onNavigate(item.page)
+                          }
                         } else if (item.sectionId) {
                           navigateToLandingSection(item.sectionId)
                         }
@@ -2145,7 +2153,15 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       <button
                         key={link.label}
                         type="button"
-                        onClick={() => onNavigate(link.page)}
+                        onClick={() => {
+                          if (link.page) {
+                            if (page === link.page) {
+                              window.scrollTo({ top: 0, behavior: "smooth" })
+                            } else {
+                              onNavigate(link.page)
+                            }
+                          }
+                        }}
                         className="w-fit text-left text-sm text-white/45 transition-colors hover:text-gold-400"
                       >
                         {link.label}

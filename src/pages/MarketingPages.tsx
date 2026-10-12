@@ -591,7 +591,6 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
 // ============================================================================
 function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) {
   const [activeCategory, setActiveCategory] = useState("All")
-  const [searchQuery, setSearchQuery] = useState("")
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
 
   const categories = ["All", "Product Guides", "Documentation", "Industry Insights", "Operational Playbooks"]
@@ -730,107 +729,115 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
 
   const filteredArticles = resourceArticles.filter((art) => {
     const matchesCat = activeCategory === "All" || art.category === activeCategory
-    const matchesQuery = searchQuery === "" || art.title.toLowerCase().includes(searchQuery.toLowerCase()) || art.desc.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCat && matchesQuery
+    return matchesCat
   })
 
   const handleToggleExpand = (slug: string) => {
     setExpandedSlug((prev) => (prev === slug ? null : slug))
   }
 
+  const handleReadFeaturedResource = () => {
+    if (activeCategory !== "All" && activeCategory !== "Operational Playbooks") {
+      setActiveCategory("All")
+    }
+    setExpandedSlug("enterprise-asset-lifecycle")
+    setTimeout(() => {
+      const el = document.getElementById("enterprise-asset-lifecycle") || document.getElementById("resources-discovery")
+      if (el) {
+        const navH = 76
+        const top = el.getBoundingClientRect().top + window.scrollY - navH - 16
+        window.scrollTo({ top, behavior: "smooth" })
+      }
+    }, 50)
+  }
+
   return (
-    <div className="w-full bg-white">
+    <div id="resources" className="w-full bg-white">
       {/* ── Hero Section ── */}
-      <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-24 pb-20 lg:pt-32 lg:pb-28">
+      <section className="relative overflow-hidden bg-[#0B1F3B] text-white pt-16 pb-12 sm:pt-20 sm:pb-14 lg:pt-24 lg:pb-18">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-5">
               <BookOpen size={13} className="text-gold-400" />
               FIELDOPS NEXUS RESOURCES
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+            <h1
+              className="font-extrabold tracking-tight leading-[1.1]"
+              style={{ fontSize: "clamp(1.75rem, 4vw + 0.5rem, 3.5rem)" }}
+            >
               Insights and resources for modern field operations.
             </h1>
-            <p className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed">
+            <p className="mt-5 text-[clamp(0.875rem,1.2vw+0.4rem,1.125rem)] text-white/70 leading-relaxed max-w-2xl mx-auto">
               Explore enterprise operational guides, technical documentation, architectural blueprints, and industry best practices designed to optimize field reliability.
             </p>
-
-            {/* Quick Search */}
-            <div className="mt-8 max-w-md mx-auto relative">
-              <input
-                type="text"
-                placeholder="Search guides, docs, or playbooks..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3.5 pl-11 text-sm text-white placeholder:text-white/50 focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400 backdrop-blur-md"
-              />
-              <Search size={18} className="absolute left-3.5 top-4 text-white/50" />
-            </div>
           </Reveal>
         </div>
       </section>
 
       {/* ── Featured Resource Section ── */}
-      <section className="py-16 bg-[#F8FAFC] border-b border-border">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="rounded-2xl border border-border bg-white p-6 sm:p-10 shadow-sm">
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <section className="py-14 sm:py-16 bg-[#F8FAFC] border-b border-border">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-border/80 bg-white p-6 sm:p-8 lg:p-10 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="grid gap-8 lg:gap-10 xl:gap-12 lg:grid-cols-12 lg:items-center">
+              {/* Left Column: Featured Playbook Panel */}
               <div className="lg:col-span-5">
-                <div className="rounded-xl bg-navy-900 p-6 text-white border border-border shadow-inner">
-                  <div className="flex items-center justify-between text-xs text-gold-400 mb-4">
-                    <span className="font-bold uppercase tracking-wider">FEATURED PLAYBOOK</span>
-                    <span>8 Min Read</span>
+                <div className="group/panel rounded-xl bg-navy-900 p-6 sm:p-7 text-white border border-navy-800/80 shadow-md transition-all duration-300 hover:border-gold-500/35 hover:shadow-xl hover:shadow-navy-950/20">
+                  <div className="flex items-center justify-between text-xs text-gold-400 mb-4 font-semibold">
+                    <span className="uppercase tracking-wider">FEATURED PLAYBOOK</span>
+                    <span className="text-gold-400/80 font-medium">8 Min Read</span>
                   </div>
-                  <div className="size-12 rounded-lg bg-gold-500/20 text-gold-400 flex items-center justify-center mb-4">
+                  <div className="size-12 rounded-lg bg-gold-500/15 text-gold-400 flex items-center justify-center mb-4 border border-gold-400/20 transition-transform duration-300 group-hover/panel:scale-105">
                     <Boxes size={24} />
                   </div>
-                  <h4 className="text-xl font-bold text-white">
+                  <h4 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug">
                     Enterprise Asset Lifecycle & Preventive Maintenance Playbook
                   </h4>
-                  <p className="mt-3 text-xs text-white/70 leading-relaxed">
+                  <p className="mt-3 text-xs sm:text-[13px] text-white/70 leading-relaxed">
                     Key chapters: Structuring Parent-Child Hierarchies, Dynamic PM Triggers, MTBF Optimization, and Inventory Safety Buffers.
                   </p>
-                  <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-gold-400">
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-semibold text-gold-400/90">
                     <span>FieldOps Operations Team</span> • <span>Updated Oct 2026</span>
                   </div>
                 </div>
               </div>
 
+              {/* Right Column: Featured Resource Overview */}
               <div className="lg:col-span-7">
                 <span className="rounded bg-gold-50 text-gold-700 px-2.5 py-1 text-xs font-bold uppercase tracking-wider border border-gold-200">
                   Featured Resource
                 </span>
-                <h3 className="mt-3 text-2xl sm:text-3xl font-bold text-navy-900">
+                <h3 className="mt-3.5 text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight leading-tight">
                   The Blueprint for Connected Enterprise Maintenance
                 </h3>
-                <p className="mt-4 text-sm sm:text-base text-text-secondary leading-relaxed">
+                <p className="mt-4 text-sm sm:text-base text-text-secondary leading-relaxed max-w-2xl">
                   Discover how top industrial and facilities management organizations eliminate unplanned downtime by transitioning from reactive firefighting to precision, data-driven preventive maintenance.
                 </p>
-                <div className="mt-6 grid grid-cols-2 gap-4 text-xs font-medium text-navy-900">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Asset hierarchy standards
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs sm:text-sm font-medium text-navy-900">
+                  <div className="flex items-center gap-2.5 text-slate-700">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span>Asset hierarchy standards</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Predictive telemetry setup
+                  <div className="flex items-center gap-2.5 text-slate-700">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span>Predictive telemetry setup</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Technician SLA benchmarks
+                  <div className="flex items-center gap-2.5 text-slate-700">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span>Technician SLA benchmarks</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    Audit checklist models
+                  <div className="flex items-center gap-2.5 text-slate-700">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span>Audit checklist models</span>
                   </div>
                 </div>
-                <div className="mt-8">
+                <div className="mt-8 pt-1">
                   <button
-                    onClick={() => handleToggleExpand("enterprise-asset-lifecycle")}
-                    className="inline-flex items-center gap-2 rounded-lg bg-navy-900 px-6 py-3 text-xs font-bold text-white transition-colors hover:bg-navy-800"
+                    onClick={handleReadFeaturedResource}
+                    className="group inline-flex items-center gap-2.5 rounded-lg bg-navy-900 px-6 py-3.5 text-xs sm:text-sm font-bold text-white transition-all duration-200 hover:bg-navy-800 hover:shadow-lg hover:shadow-navy-950/15 hover:border-gold-500/30 border border-transparent focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2"
                   >
-                    Read Resource <ArrowRight size={14} />
+                    <span>Read Resource</span>
+                    <ArrowRight size={15} className="text-gold-400 transition-transform duration-200 group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
@@ -840,7 +847,7 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
       </section>
 
       {/* ── Category Filter & Grid ── */}
-      <section className="py-20 lg:py-24 bg-white">
+      <section id="resources-discovery" className="scroll-mt-24 py-20 lg:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
@@ -866,7 +873,8 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
               return (
                 <Reveal key={art.slug} delay={idx * 60}>
                   <div
-                    className={`group flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-500 ease-out ${
+                    id={art.slug}
+                    className={`scroll-mt-28 group flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-500 ease-out ${
                       isExpanded
                         ? "border-gold-400 shadow-lg shadow-gold-500/10 sm:col-span-2 lg:col-span-1"
                         : "border-border hover:-translate-y-1.5 hover:border-gold-400 hover:shadow-xl hover:shadow-navy-950/10"
