@@ -556,33 +556,6 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
 
         </div>
       </section>
-
-      {/* ── CTA Section ── */}
-      <section className="py-24 bg-[#0B1F3B] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
-        <Reveal className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Connect your operations with FieldOps Nexus
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-white/70 leading-relaxed">
-            Standardize your assets, service delivery, maintenance schedules, and field workforce under one enterprise cloud platform.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => onNavigate("login")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-4 text-sm font-bold text-navy-950 transition-colors hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/20"
-            >
-              Explore Platform <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={() => window.location.href = "mailto:hello@fieldopsnexus.com?subject=FieldOps%20Nexus%20Demo"}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white/10"
-            >
-              Get Started
-            </button>
-          </div>
-        </Reveal>
-      </section>
     </div>
   )
 }
@@ -1072,29 +1045,26 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
       </section>
 
       {/* ── Resources CTA ── */}
-      <section className="py-24 bg-[#0B1F3B] text-white relative overflow-hidden">
+      <section className="py-20 sm:py-24 lg:py-28 bg-[#0B1F3B] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
+        {/* Subtle ambient gold glow behind center */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-[320px] sm:size-[440px] rounded-full bg-[#F5C451]/5 blur-3xl" />
         <Reveal className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Empower your operations with FieldOps Nexus
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-white text-balance">
+            Empower your operations with{" "}
+            <span className="text-[#F5C451]">FieldOps Nexus</span>
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-white/70 leading-relaxed">
+
+          {/* Thin gold accent line with subtle glow */}
+          <div className="mx-auto my-6 flex items-center justify-center gap-2">
+            <span className="h-[2px] w-12 sm:w-20 rounded-full bg-gradient-to-r from-transparent via-[#F5C451] to-[#F5C451] shadow-[0_0_12px_rgba(245,196,81,0.6)]" />
+            <span className="size-1.5 rounded-full bg-[#F5C451] shadow-[0_0_8px_#F5C451]" />
+            <span className="h-[2px] w-12 sm:w-20 rounded-full bg-gradient-to-l from-transparent via-[#F5C451] to-[#F5C451] shadow-[0_0_12px_rgba(245,196,81,0.6)]" />
+          </div>
+
+          <p className="mx-auto max-w-2xl text-base sm:text-lg text-white/80 leading-relaxed text-pretty">
             Ready to deploy enterprise best practices across your field teams and asset footprint?
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => onNavigate("login")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-4 text-sm font-bold text-navy-950 transition-colors hover:bg-gold-400"
-            >
-              Explore Platform <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={() => onNavigate("features")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white/10"
-            >
-              View Features
-            </button>
-          </div>
         </Reveal>
       </section>
     </div>
