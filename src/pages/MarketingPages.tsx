@@ -41,6 +41,7 @@ import {
   Minus
 } from "lucide-react"
 import type { Page } from "../types"
+import StandardizedPageCTA from "../components/ui/StandardizedPageCTA"
 
 const assetImg = "/asset-telemetry-hero.jpg"
 
@@ -1866,32 +1867,8 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
         </div>
       </section>
 
-      {/* ── Module CTA ── */}
-      <section className="py-24 bg-[#0B1F3B] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
-        <Reveal className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Ready to deploy {data.title}?
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-white/70">
-            Connect this capability with your entire operational ecosystem in FieldOps Nexus.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => onNavigate("login")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-4 text-sm font-bold text-navy-950 transition-colors hover:bg-gold-400"
-            >
-              Explore Platform <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={() => onNavigate("features")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white/10"
-            >
-              All Features
-            </button>
-          </div>
-        </Reveal>
-      </section>
+      {/* ── Standardized FieldOps Nexus CTA ── */}
+      <StandardizedPageCTA />
     </div>
   )
 }
