@@ -41,6 +41,7 @@ import {
   Minus
 } from "lucide-react"
 import type { Page } from "../types"
+import StandardizedPageCTA from "../components/ui/StandardizedPageCTA"
 
 const assetImg = "/asset-telemetry-hero.jpg"
 
@@ -1332,6 +1333,7 @@ interface PageMeta {
   description: string
   metrics: [string, string, string][]
   features: { title: string; desc: string; icon: Icon }[]
+  heroImage: string
   heroVisual: () => ReactNode
 }
 
@@ -1352,6 +1354,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Team & Role Assignment", desc: "Allocate technicians, supervisors, and managers to specific organizational nodes with inherited access control.", icon: Users },
       { title: "Access & Boundary Control", desc: "Role-based visibility rules ensure each team only sees the assets, work orders, and data relevant to their scope.", icon: Lock },
     ],
+    heroImage: "/hero-org-management.jpg",
     heroVisual: () => (
       <UIWindow title="Organization Management">
         <div className="space-y-2 text-xs">
@@ -1391,6 +1394,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Telemetry & Logs", desc: "Real-time vibration, temperature, and operating hours tracking with automated alerts.", icon: Activity },
       { title: "Lifecycle & Depreciation", desc: "Calculate depreciation schedules, track replacement warranties, and budget renewals.", icon: TrendingUp },
     ],
+    heroImage: "/asset-telemetry-hero.jpg",
     heroVisual: () => (
       <UIWindow title="Asset Management Console">
         <div className="space-y-3">
@@ -1435,6 +1439,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Client Portal Access", desc: "Real-time tracking for external stakeholders with digital sign-off and approvals.", icon: Users },
       { title: "First-Time Fix Analytics", desc: "Measure technician efficiency, diagnostic accuracy, and resolution time.", icon: CheckCircle2 },
     ],
+    heroImage: "/workflow-service-requests.jpg",
     heroVisual: () => (
       <UIWindow title="Service Request Queue">
         <div className="space-y-2 text-xs">
@@ -1472,6 +1477,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Mobile Execution", desc: "Native field experience with offline mode, voice-to-text, and camera photo capture.", icon: HardHat },
       { title: "Digital Sign-Off", desc: "Secure electronic sign-offs from supervisors and clients upon completion.", icon: ShieldCheck },
     ],
+    heroImage: "/work-order-technician.jpg",
     heroVisual: () => (
       <UIWindow title="Work Order #WO-8820">
         <div className="space-y-2 text-xs bg-white p-3 rounded-lg border border-border">
@@ -1504,6 +1510,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Part Reservation", desc: "Reserve parts automatically when work orders are scheduled.", icon: CheckCircle2 },
       { title: "Cycle Counting", desc: "Continuous verification workflows with mobile barcode and RFID scanning.", icon: Search },
     ],
+    heroImage: "/workflow-inventory-management.jpg",
     heroVisual: () => (
       <UIWindow title="Inventory Hub">
         <div className="space-y-2 text-xs">
@@ -1541,6 +1548,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Condition Monitoring", desc: "Automate work orders when sensor vibration or thermal readings exceed thresholds.", icon: Activity },
       { title: "Compliance Audits", desc: "Ensure statutory safety and regulatory maintenance requirements are met.", icon: ShieldCheck },
     ],
+    heroImage: "/hero-maintenance-management.jpg",
     heroVisual: () => (
       <UIWindow title="Preventive Maintenance Calendar">
         <div className="space-y-2 text-xs bg-white p-3 rounded-lg border border-border">
@@ -1573,6 +1581,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Mobile First Design", desc: "Zero-clutter interface tailored for outdoor tablets and smartphones.", icon: HardHat },
       { title: "Performance Scorecards", desc: "Track first-time fix rates, average completion time, and client feedback.", icon: BarChart3 },
     ],
+    heroImage: "/workflow-approval.jpg",
     heroVisual: () => (
       <UIWindow title="Field Dispatch Radar">
         <div className="space-y-2 text-xs">
@@ -1610,6 +1619,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "SLA Adherence Reports", desc: "Automate weekly and monthly compliance reports for enterprise clients.", icon: Clock },
       { title: "Custom BI Exports", desc: "Export clean CSV, PDF, and scheduled email reports to leadership.", icon: FileText },
     ],
+    heroImage: "/workflow-insights.jpg",
     heroVisual: () => (
       <UIWindow title="Executive KPI Dashboard">
         <div className="space-y-2 text-xs bg-white p-3 rounded border border-border">
@@ -1642,6 +1652,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Regulatory Compliance", desc: "Pre-configured templates for OSHA, EPA, and ISO facility audits.", icon: FileText },
       { title: "Photo & Document Archive", desc: "Attach before-and-after work photos with immutable timestamps.", icon: Boxes },
     ],
+    heroImage: "/workflow-field-operations.jpg",
     heroVisual: () => (
       <UIWindow title="Audit Trail Ledger">
         <div className="space-y-2 text-xs bg-white p-3 rounded border border-border">
@@ -1672,6 +1683,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Shift Handover Notes", desc: "Structured shift logs ensure incoming maintenance teams have full context.", icon: ClipboardList },
       { title: "Total Productive Maintenance", desc: "Empower line operators to perform autonomous first-level inspections.", icon: CheckCircle2 },
     ],
+    heroImage: "/about-hero-control-room.jpg",
     heroVisual: () => (
       <UIWindow title="Manufacturing Line Monitor">
         <div className="space-y-2 text-xs">
@@ -1703,6 +1715,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Vendor & Contractor Control", desc: "Issue electronic work permits and verify vendor insurance certificates.", icon: Users },
       { title: "Space & Asset Hierarchy", desc: "Map assets by building, floor, zone, and room for instant navigation.", icon: Boxes },
     ],
+    heroImage: "/hero-facilities-management.jpg",
     heroVisual: () => (
       <UIWindow title="Facilities Central Hub">
         <div className="space-y-2 text-xs bg-white p-3 rounded border border-border">
@@ -1731,6 +1744,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
       { title: "Enterprise SLA SLAs", desc: "Define tiered SLA matrix contracts for different facilities and regions.", icon: Clock },
       { title: "Security & Compliance", desc: "SOC 2 Type II certified infrastructure with full cryptographic audit trails.", icon: ShieldCheck },
     ],
+    heroImage: "/hero-enterprise-operations.jpg",
     heroVisual: () => (
       <UIWindow title="Enterprise Multi-Site Map">
         <div className="space-y-2 text-xs">
@@ -1779,7 +1793,7 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
         </div>
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-6">
               <Reveal>
                 <div className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gold-400 mb-6">
                   <Sparkles size={13} className="text-gold-400" />
@@ -1791,29 +1805,23 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
                 <p className="mt-4 text-xl font-medium text-gold-400">
                   {data.tagline}
                 </p>
-                <p className="mt-4 max-w-2xl text-base text-white/75 leading-relaxed">
+                <p className="mt-4 max-w-xl text-base text-white/75 leading-relaxed">
                   {data.description}
                 </p>
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <button
-                    onClick={() => onNavigate("login")}
-                    className="inline-flex items-center gap-2 rounded-lg bg-gold-500 px-6 py-3.5 text-sm font-bold text-navy-950 transition-all hover:bg-gold-400"
-                  >
-                    Explore Module <ArrowRight size={16} />
-                  </button>
-                  <button
-                    onClick={() => onNavigate("features")}
-                    className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                  >
-                    All Features
-                  </button>
-                </div>
               </Reveal>
             </div>
 
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-6">
               <Reveal direction="left" delay={200}>
-                {data.heroVisual()}
+                <div className="relative overflow-hidden rounded-xl shadow-2xl shadow-black/40">
+                  <img
+                    src={data.heroImage}
+                    alt={data.title}
+                    loading="lazy"
+                    className="w-full h-[340px] lg:h-[400px] object-cover object-center block"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0B1F3B]/30 pointer-events-none" />
+                </div>
               </Reveal>
             </div>
           </div>
@@ -1866,32 +1874,8 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
         </div>
       </section>
 
-      {/* ── Module CTA ── */}
-      <section className="py-24 bg-[#0B1F3B] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
-        <Reveal className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Ready to deploy {data.title}?
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-white/70">
-            Connect this capability with your entire operational ecosystem in FieldOps Nexus.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => onNavigate("login")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-4 text-sm font-bold text-navy-950 transition-colors hover:bg-gold-400"
-            >
-              Explore Platform <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={() => onNavigate("features")}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white/10"
-            >
-              All Features
-            </button>
-          </div>
-        </Reveal>
-      </section>
+      {/* ── Standardized FieldOps Nexus CTA ── */}
+      <StandardizedPageCTA />
     </div>
   )
 }
