@@ -50,6 +50,14 @@ import connectedDataImg from "../assets/connected-data.jpg"
 import smarterWorkflowsImg from "../assets/smarter-workflows.jpg"
 import operationalVisibilityImg from "../assets/operational-visibility.jpg"
 import auditTraceabilityImg from "../assets/audit-traceability.jpg"
+import moduleOrgImg from "../assets/module-organization.jpg"
+import moduleAssetImg from "../assets/module-assets.jpg"
+import moduleServiceImg from "../assets/module-service.jpg"
+import moduleWorkOrdersImg from "../assets/module-work-orders.jpg"
+import moduleInventoryImg from "../assets/module-inventory.jpg"
+import moduleWorkforceImg from "../assets/module-workforce.jpg"
+import moduleMaintenanceImg from "../assets/module-maintenance.jpg"
+import moduleAnalyticsImg from "../assets/module-analytics.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -391,54 +399,63 @@ const modules: {
   description: string
   icon: Icon
   page: Page
+  image: string
 }[] = [
   {
     title: "Organization Management",
     description: "Bring sites, teams, and structures into one connected view.",
     icon: Building2,
     page: "organization-management",
+    image: moduleOrgImg,
   },
   {
     title: "Asset Management",
     description: "Know the condition and history of every critical asset.",
     icon: Boxes,
     page: "asset-management",
+    image: moduleAssetImg,
   },
   {
     title: "Service Management",
     description: "Deliver consistent service from intake to resolution.",
     icon: Wrench,
     page: "service-management",
+    image: moduleServiceImg,
   },
   {
     title: "Work Order Management",
     description: "Plan, assign, and track work with complete clarity.",
     icon: ClipboardList,
     page: "work-order-management",
+    image: moduleWorkOrdersImg,
   },
   {
     title: "Inventory Management",
     description: "Keep essential parts and stock moving efficiently.",
     icon: Package,
     page: "inventory-management",
+    image: moduleInventoryImg,
   },
   {
     title: "Workforce Management",
     description: "Give every team the context to do their best work.",
     icon: Users,
     page: "workforce-management",
+    image: moduleWorkforceImg,
   },
   {
     title: "Maintenance Management",
     description: "Stay ahead of downtime with proactive maintenance.",
     icon: Settings2,
     page: "maintenance-management",
+    image: moduleMaintenanceImg,
   },
   {
     title: "Analytics & Reporting",
     description: "Turn operational data into confident decisions.",
     icon: BarChart3,
     page: "analytics-reporting",
+    image: moduleAnalyticsImg,
   },
 ]
 const steps: {
@@ -1811,39 +1828,59 @@ export default function LandingPage({ onNavigate, page }: Props) {
               title="Everything Your Enterprise Needs"
               description="Manage your organization's operational lifecycle through connected modules built for modern enterprise teams."
             />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {modules.map((module, i) => (
                 <Reveal
                   key={module.title}
-                  delay={(i % 4) * 70}
+                  delay={(i % 4) * 80}
                   className="h-full"
                 >
                   <button
                     onClick={() => onNavigate(module.page)}
-                    className="group flex h-full min-h-[238px] w-full flex-col rounded-xl border border-border bg-white p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg hover:shadow-navy-800/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+                    className="module-card group flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-white text-left shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-gold-500/50 hover:shadow-xl hover:shadow-navy-900/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
                     aria-label={`View ${module.title} module`}
                   >
-                    <div className="mb-7 flex items-start justify-between">
-                      <span className="flex size-12 items-center justify-center rounded-lg bg-gold-50 text-gold-600 transition-transform duration-300 group-hover:-translate-y-0.5">
-                        <module.icon size={23} strokeWidth={1.7} />
+                    {/* Industrial Photograph Header */}
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-navy-950">
+                      <img
+                        src={module.image}
+                        alt={`${module.title} - FieldOps Nexus`}
+                        loading="lazy"
+                        className="module-card-img h-full w-full object-cover transition-transform duration-700 ease-out will-change-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-navy-950/20 to-transparent" />
+
+                      {/* Icon Badge */}
+                      <span className="absolute bottom-3 left-4 flex size-9 items-center justify-center rounded-lg bg-white text-gold-600 shadow-md">
+                        <module.icon size={19} strokeWidth={1.8} />
                       </span>
-                      <span className="text-xs font-medium text-text-secondary/50">
+
+                      {/* Module Number Indicator */}
+                      <span className="absolute top-3 right-4 rounded-md bg-navy-900/80 px-2 py-0.5 text-[11px] font-bold text-white/90 backdrop-blur-sm border border-white/10">
                         0{i + 1}
                       </span>
                     </div>
-                    <h3 className="text-base font-bold text-navy-800">
-                      {module.title}
-                    </h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-text-secondary">
-                      {module.description}
-                    </p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-xs font-bold text-gold-600">
-                      View Module{" "}
-                      <ArrowUpRight
-                        size={14}
-                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </span>
+
+                    {/* Card Body */}
+                    <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
+                      <div>
+                        <h3 className="text-base font-bold text-navy-800 transition-colors duration-200 group-hover:text-gold-600">
+                          {module.title}
+                        </h3>
+                        <p className="mt-2 text-[13px] leading-relaxed text-text-secondary">
+                          {module.description}
+                        </p>
+                      </div>
+
+                      {/* View Module Action */}
+                      <span className="mt-5 inline-flex items-center gap-1.5 border-t border-border/70 pt-3 text-xs font-bold text-gold-600 transition-colors duration-200 group-hover:text-gold-500">
+                        View Module{" "}
+                        <ArrowUpRight
+                          size={14}
+                          className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </span>
+                    </div>
                   </button>
                 </Reveal>
               ))}

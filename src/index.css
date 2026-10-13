@@ -310,13 +310,15 @@ input[type="checkbox"] {
   animation-play-state: paused;
 }
 
-/* ─── Benefit Cards Image Zoom & Reduced Motion ───────────────────────────── */
-.benefit-card-img {
+/* ─── Benefit & Module Cards Image Zoom & Reduced Motion ─────────────────── */
+.benefit-card-img,
+.module-card-img {
   transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   will-change: transform;
 }
 
-.benefit-card:hover .benefit-card-img {
+.benefit-card:hover .benefit-card-img,
+.module-card:hover .module-card-img {
   transform: scale(1.05);
 }
 
@@ -326,10 +328,12 @@ input[type="checkbox"] {
     animation: none !important;
     transform: none !important;
   }
-  .benefit-card-img {
+  .benefit-card-img,
+  .module-card-img {
     transition: none !important;
   }
-  .benefit-card:hover .benefit-card-img {
+  .benefit-card:hover .benefit-card-img,
+  .module-card:hover .module-card-img {
     transform: none !important;
   }
 }
