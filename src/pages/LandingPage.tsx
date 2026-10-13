@@ -250,6 +250,7 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Enterprise Operations",
             description: "Unify complex operations across your organization.",
             href: "#solutions",
+            page: "enterprise-operations",
           },
           {
             icon: Gauge,
@@ -290,24 +291,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Organization Management",
             description: "Bring sites, teams, and structures into one connected view.",
             href: "#modules",
+            page: "organization-management",
           },
           {
             icon: Boxes,
             title: "Asset Management",
             description: "Know the condition and history of every critical asset.",
             href: "#modules",
+            page: "asset-management",
           },
           {
             icon: ClipboardList,
             title: "Work Order Management",
             description: "Plan, assign, and track work with complete clarity.",
             href: "#modules",
+            page: "work-order-management",
           },
           {
             icon: FileCheck2,
             title: "Service Requests",
             description: "Structured intake and triage for every service request.",
             href: "#modules",
+            page: "service-management",
           },
         ],
       },
@@ -319,24 +324,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             title: "Maintenance Planning",
             description: "Stay ahead of downtime with proactive maintenance.",
             href: "#modules",
+            page: "maintenance-management",
           },
           {
             icon: Package,
             title: "Inventory & Spare Parts",
             description: "Keep essential parts and stock moving efficiently.",
             href: "#modules",
+            page: "inventory-management",
           },
           {
             icon: Radio,
             title: "Technician Dispatch",
             description: "Assign and track technicians in real time.",
             href: "#modules",
+            page: "workforce-management",
           },
           {
             icon: BarChart3,
             title: "Analytics & Reporting",
             description: "Turn operational data into confident decisions.",
             href: "#modules",
+            page: "analytics-reporting",
           },
         ],
       },
@@ -1021,11 +1030,13 @@ function MegaMenuPanel({
   if (!def) return null
   return (
     <div
+      id={`mega-menu-${menuKey.toLowerCase()}`}
       role="dialog"
       aria-label={`${menuKey} mega menu`}
+      aria-labelledby={`mega-trigger-${menuKey.toLowerCase()}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="mega-menu-panel absolute left-0 right-0 top-full z-40 border-b border-[rgba(248,250,252,0.10)] bg-[#061326] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
+      className="mega-menu-panel absolute left-0 right-0 top-full z-50 border-b border-[rgba(248,250,252,0.10)] bg-[#061328] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
     >
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr_280px]">
@@ -1046,12 +1057,12 @@ function MegaMenuPanel({
                       <a
                         href={item.href}
                         onClick={(e) => {
+                          e.preventDefault()
+                          onClose()
                           if (item.page) {
-                            e.preventDefault()
-                            onClose()
                             onNavigate(item.page)
-                          } else {
-                            onClose()
+                          } else if (item.href?.startsWith("#")) {
+                            onCtaClick(item.href.replace("#", ""))
                           }
                         }}
                         className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-[#162A4B]"
@@ -1147,6 +1158,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
   // Timer ref for the delayed close — prevents flicker when cursor moves
   // from a trigger button into the mega panel (or between triggers).
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const clickedMegaRef = useRef<string | null>(null)
   const workflow = useInView()
 
   // Scroll to top whenever page prop changes
@@ -1195,6 +1207,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
     if (page === "resources")  return "Resources"
     if (page === "about")      return "About"
     if (
+      page === "organization-management" ||
       page === "asset-management"      ||
       page === "service-management"    ||
       page === "work-order-management" ||
@@ -1233,6 +1246,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
   const scheduleClose = useCallback(() => {
     cancelClose()
     closeTimerRef.current = setTimeout(() => {
+      clickedMegaRef.current = null
       setActiveMega(null)
       closeTimerRef.current = null
     }, 200)
@@ -1241,18 +1255,53 @@ export default function LandingPage({ onNavigate, page }: Props) {
   // Hard close (ESC, link click, etc.) — immediate, no delay.
   const closeMega = useCallback(() => {
     cancelClose()
+    clickedMegaRef.current = null
     setActiveMega(null)
   }, [cancelClose])
 
-  // ESC key support
+  // ESC key support: closes open mega dropdown or mobile navigation
   useEffect(() => {
-    if (!activeMega) return
+    if (!activeMega && !menuOpen) return
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMega()
+      if (e.key === "Escape") {
+        closeMega()
+        setMenuOpen(false)
+        setMobileExpanded(null)
+      }
     }
     document.addEventListener("keydown", handleKey)
     return () => document.removeEventListener("keydown", handleKey)
-  }, [activeMega, closeMega])
+  }, [activeMega, menuOpen, closeMega])
+
+  // Click outside support: clicking outside active mega menu or mobile nav closes it
+  useEffect(() => {
+    if (!activeMega && !menuOpen) return
+
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement | null
+      if (!target) return
+
+      if (activeMega) {
+        const insidePanel = target.closest(".mega-menu-panel")
+        const insideTrigger = target.closest(".mega-trigger")
+        if (!insidePanel && !insideTrigger) {
+          closeMega()
+        }
+      }
+
+      if (menuOpen && headerRef.current && !headerRef.current.contains(target)) {
+        setMenuOpen(false)
+        setMobileExpanded(null)
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown)
+    document.addEventListener("touchstart", handlePointerDown)
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown)
+      document.removeEventListener("touchstart", handlePointerDown)
+    }
+  }, [activeMega, menuOpen, closeMega])
 
   // Clean up timer on unmount
   useEffect(() => () => { if (closeTimerRef.current !== null) clearTimeout(closeTimerRef.current) }, [])
@@ -1306,19 +1355,22 @@ export default function LandingPage({ onNavigate, page }: Props) {
                   <button
                     key={item.label}
                     type="button"
+                    id={`mega-trigger-${item.label.toLowerCase()}`}
                     aria-expanded={isMegaOpen}
                     aria-haspopup="dialog"
+                    aria-controls={isMegaOpen ? `mega-menu-${item.label.toLowerCase()}` : undefined}
                     // Hover → open; hover-leave → schedule close
                     onMouseEnter={() => openMega(item.label)}
                     onMouseLeave={scheduleClose}
-                    // Click: toggle mega panel open/closed; also scroll to the
-                    // corresponding landing section when the panel is already open
-                    // (i.e. second click) or when no panel is open.
+                    // Click: toggle mega panel open/closed without navigating away
                     onClick={() => {
-                      const alreadyOpen = activeMega === item.label
-                      setActiveMega(alreadyOpen ? null : item.label)
-                      if (alreadyOpen && item.sectionId) {
-                        navigateToLandingSection(item.sectionId)
+                      cancelClose()
+                      if (clickedMegaRef.current === item.label) {
+                        clickedMegaRef.current = null
+                        setActiveMega(null)
+                      } else {
+                        clickedMegaRef.current = item.label
+                        setActiveMega(item.label)
                       }
                     }}
                     className={`mega-trigger group relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] transition-colors duration-180 ease-out ${
@@ -1440,6 +1492,9 @@ export default function LandingPage({ onNavigate, page }: Props) {
                     <>
                       <button
                         type="button"
+                        id={`mobile-trigger-${item.label.toLowerCase()}`}
+                        aria-expanded={mobileExpanded === item.label}
+                        aria-controls={`mobile-menu-${item.label.toLowerCase()}`}
                         onClick={() =>
                           setMobileExpanded((prev) =>
                             prev === item.label ? null : item.label
@@ -1448,7 +1503,6 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         className={`flex w-full items-center justify-between border-b border-border/60 py-3 text-sm font-medium transition-colors duration-180 ${
                           isMobileActive ? "text-[#0B1F3B] font-semibold" : "text-[#162A4B] hover:text-[#B88A00]"
                         }`}
-                        aria-expanded={mobileExpanded === item.label}
                       >
                         {item.label}
                         <ChevronDown
@@ -1459,7 +1513,12 @@ export default function LandingPage({ onNavigate, page }: Props) {
                         />
                       </button>
                       {mobileExpanded === item.label && megaMenus[item.label] && (
-                        <div className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4">
+                        <div
+                          id={`mobile-menu-${item.label.toLowerCase()}`}
+                          role="region"
+                          aria-labelledby={`mobile-trigger-${item.label.toLowerCase()}`}
+                          className="mb-2 ml-2 border-l-2 border-gold-500/30 pl-4"
+                        >
                           {megaMenus[item.label].columns.map((col, ci) => (
                             <div key={ci} className="mt-3">
                               <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#B88A00]">
