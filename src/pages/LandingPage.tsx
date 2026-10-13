@@ -123,6 +123,7 @@ interface MegaMenuFeatured {
   description: string
   cta: string
   ctaHref: string
+  page?: Page
 }
 interface MegaMenuDef {
   columns: MegaMenuColumn[]
@@ -139,28 +140,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Boxes,
             title: "Asset Management",
             description: "Know the condition and history of every critical asset.",
-            href: "#modules",
+            href: "/products/asset-management",
             page: "asset-management",
           },
           {
             icon: Wrench,
             title: "Service Management",
             description: "Deliver consistent service from intake to resolution.",
-            href: "#modules",
+            href: "/products/service-management",
             page: "service-management",
           },
           {
             icon: ClipboardList,
             title: "Work Order Management",
             description: "Plan, assign, and track work with complete clarity.",
-            href: "#modules",
+            href: "/products/work-order-management",
             page: "work-order-management",
           },
           {
             icon: Package,
             title: "Inventory Management",
             description: "Keep essential parts and stock moving efficiently.",
-            href: "#modules",
+            href: "/products/inventory-management",
             page: "inventory-management",
           },
         ],
@@ -172,28 +173,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Settings2,
             title: "Maintenance Management",
             description: "Stay ahead of downtime with proactive maintenance.",
-            href: "#modules",
+            href: "/products/maintenance-management",
             page: "maintenance-management",
           },
           {
             icon: Users,
             title: "Workforce Management",
             description: "Give every team the context to do their best work.",
-            href: "#modules",
+            href: "/products/workforce-management",
             page: "workforce-management",
           },
           {
             icon: BarChart3,
             title: "Analytics & Reporting",
             description: "Turn operational data into confident decisions.",
-            href: "#modules",
+            href: "/products/analytics-reporting",
             page: "analytics-reporting",
           },
           {
             icon: ShieldCheck,
             title: "Audit & Traceability",
             description: "Maintain a complete history of all operational activities.",
-            href: "#modules",
+            href: "/products/audit-traceability",
             page: "audit-traceability",
           },
         ],
@@ -204,7 +205,8 @@ const megaMenus: Record<string, MegaMenuDef> = {
       subtitle: "Enterprise ERP",
       description: "Connected service, asset, and field operations in one enterprise platform.",
       cta: "Explore Platform",
-      ctaHref: "#product",
+      ctaHref: "/products",
+      page: "products-overview",
     },
   },
   Solutions: {
@@ -216,29 +218,29 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Factory,
             title: "Manufacturing",
             description: "Keep production-critical assets and operations moving.",
-            href: "#solutions",
+            href: "/solutions/manufacturing",
             page: "manufacturing",
           },
           {
             icon: Building2,
             title: "Facilities Management",
             description: "Coordinate spaces, people, and service delivery.",
-            href: "#solutions",
+            href: "/solutions/facilities",
             page: "facilities",
           },
           {
             icon: Wrench,
             title: "Service & Maintenance",
             description: "Deliver responsive service wherever work happens.",
-            href: "#solutions",
-            page: "maintenance-management",
+            href: "/solutions/service-maintenance",
+            page: "service-maintenance",
           },
           {
             icon: HardHat,
-            title: "Enterprise Operations",
+            title: "Infrastructure & Utilities",
             description: "Maintain the systems that communities depend on.",
-            href: "#solutions",
-            page: "enterprise-operations",
+            href: "/solutions/infrastructure",
+            page: "infrastructure",
           },
         ],
       },
@@ -249,26 +251,29 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Warehouse,
             title: "Enterprise Operations",
             description: "Unify complex operations across your organization.",
-            href: "#solutions",
+            href: "/solutions/enterprise-operations",
             page: "enterprise-operations",
           },
           {
             icon: Gauge,
             title: "SLA Management",
             description: "Monitor and enforce service level agreements at scale.",
-            href: "#solutions",
+            href: "/solutions/sla-management",
+            page: "sla-management",
           },
           {
             icon: Layers3,
             title: "Multi-Site Management",
             description: "Bring sites, teams, and structures into one connected view.",
-            href: "#solutions",
+            href: "/solutions/multi-site-management",
+            page: "multi-site-management",
           },
           {
             icon: Database,
             title: "Connected Data",
             description: "Connect operational information across teams and locations.",
-            href: "#solutions",
+            href: "/solutions/connected-data",
+            page: "connected-data",
           },
         ],
       },
@@ -278,7 +283,8 @@ const megaMenus: Record<string, MegaMenuDef> = {
       subtitle: "Enterprise Solutions",
       description: "Purpose-built flexibility for the environments where reliability matters most.",
       cta: "View All Solutions",
-      ctaHref: "#solutions",
+      ctaHref: "/solutions",
+      page: "solutions-overview",
     },
   },
   Modules: {
@@ -290,28 +296,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Building2,
             title: "Organization Management",
             description: "Bring sites, teams, and structures into one connected view.",
-            href: "#modules",
+            href: "/modules/organization-management",
             page: "organization-management",
           },
           {
             icon: Boxes,
             title: "Asset Management",
             description: "Know the condition and history of every critical asset.",
-            href: "#modules",
+            href: "/modules/asset-management",
             page: "asset-management",
           },
           {
             icon: ClipboardList,
             title: "Work Order Management",
             description: "Plan, assign, and track work with complete clarity.",
-            href: "#modules",
+            href: "/modules/work-order-management",
             page: "work-order-management",
           },
           {
             icon: FileCheck2,
             title: "Service Requests",
             description: "Structured intake and triage for every service request.",
-            href: "#modules",
+            href: "/modules/service-management",
             page: "service-management",
           },
         ],
@@ -323,28 +329,28 @@ const megaMenus: Record<string, MegaMenuDef> = {
             icon: Settings2,
             title: "Maintenance Planning",
             description: "Stay ahead of downtime with proactive maintenance.",
-            href: "#modules",
+            href: "/modules/maintenance-management",
             page: "maintenance-management",
           },
           {
             icon: Package,
             title: "Inventory & Spare Parts",
             description: "Keep essential parts and stock moving efficiently.",
-            href: "#modules",
+            href: "/modules/inventory-management",
             page: "inventory-management",
           },
           {
             icon: Radio,
             title: "Technician Dispatch",
             description: "Assign and track technicians in real time.",
-            href: "#modules",
+            href: "/modules/workforce-management",
             page: "workforce-management",
           },
           {
             icon: BarChart3,
             title: "Analytics & Reporting",
             description: "Turn operational data into confident decisions.",
-            href: "#modules",
+            href: "/modules/analytics-reporting",
             page: "analytics-reporting",
           },
         ],
@@ -355,7 +361,8 @@ const megaMenus: Record<string, MegaMenuDef> = {
       subtitle: "8 Connected Modules",
       description: "Manage your organization's operational lifecycle through connected modules built for modern enterprise teams.",
       cta: "See All Modules",
-      ctaHref: "#modules",
+      ctaHref: "/modules",
+      page: "modules-overview",
     },
   },
 }
@@ -1220,7 +1227,10 @@ export default function LandingPage({ onNavigate, page }: Props) {
     if (
       page === "manufacturing"        ||
       page === "facilities"           ||
-      page === "enterprise-operations"
+      page === "enterprise-operations" ||
+      page === "sla-management"       ||
+      page === "multi-site-management" ||
+      page === "connected-data"
     ) return "Solutions"
     // Home page (landing) and any unrecognised page: nothing is active.
     return null
