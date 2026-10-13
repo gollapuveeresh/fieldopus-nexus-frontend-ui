@@ -1689,22 +1689,16 @@ export default function LandingPage({ onNavigate, page }: Props) {
             <div className="mt-14 border-t border-border pt-8">
               <ConnectedOperationsHeading />
 
-              {/* Overflow container with subtle edge masks, background connector line, and paused-on-hover interaction */}
+              {/* Overflow container with background connector line */}
               <div
-                className="group relative overflow-hidden py-4 -my-4"
+                className="relative overflow-hidden py-4 -my-4"
                 aria-label="Connected operations capability cards"
               >
-                {/* Left & right edge fade masks */}
-                <div className="pointer-events-none absolute inset-y-0 left-0 z-30 w-16 sm:w-28 bg-gradient-to-r from-white via-white/80 to-transparent" />
-                <div className="pointer-events-none absolute inset-y-0 right-0 z-30 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
-
                 {/* Subtle continuous gold connector line running horizontally behind cards */}
                 <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#F5C451]/25 z-0" />
 
                 {/* Continuous LEFT → RIGHT moving card track */}
-                <div
-                  className="ops-cards-marquee-ltr group-hover:[animation-play-state:paused] active:[animation-play-state:paused]"
-                >
+                <div className="ops-cards-marquee-ltr">
                   {/* SET A */}
                   <div className="flex gap-6 shrink-0 pr-6">
                     {connectedOperations.map((op, i) => {
