@@ -162,26 +162,27 @@ input[type="checkbox"] {
 .landing-button svg { transition: transform 220ms ease; }
 .landing-button:hover svg { transform: translateX(3px); }
 
-.landing-timeline-line::after {
-  content: '';
+.landing-timeline-line {
   position: absolute;
-  inset: 0;
-  background: var(--color-gold-500);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 700ms cubic-bezier(.2,.7,.2,1);
+  background-color: var(--color-border);
 }
-.is-visible > .landing-timeline-line::after { transform: scaleY(1); }
-@media (min-width: 768px) {
-  .landing-timeline-line::after { transform: scaleX(0); transform-origin: left; }
-  .is-visible > .landing-timeline-line::after { transform: scaleX(1); }
+
+/* ─── Workflow Steps Scroll-Synchronized Styles ─── */
+.landing-step-item {
+  will-change: transform;
 }
+
+.landing-step-pill {
+  transition: opacity 300ms ease, box-shadow 300ms ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .landing-reveal, .landing-reveal-left, .landing-reveal-scale,
   .landing-reveal.is-visible { opacity: 1; transform: none; transition: none; }
   .landing-hero-enter { animation: none; }
-  .landing-timeline-line::after, .is-visible > .landing-timeline-line::after { transform: none; transition: none; }
   .landing-button, .landing-button svg, .landing-nav-link::after { transition: none; }
+  .landing-step-item { transform: none !important; transition: none !important; }
+  .landing-step-pill { transition: none !important; }
 }
 
 /* Mega menu panel entrance animation */
@@ -201,23 +202,6 @@ input[type="checkbox"] {
 }
 @media (prefers-reduced-motion: reduce) {
   .mega-menu-panel { animation: none; }
-}
-
-/* ─── Assets Video Section ───────────────────────────────────────────────── */
-/* Opacity-only fade: no transform = no competing stacking context during animation */
-@keyframes assets-video-enter {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.assets-video-section-enter {
-  animation: assets-video-enter 600ms ease both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .assets-video-section-enter {
-    animation: none;
-  }
 }
 
 /* ─── About Hero Industrial Photograph ─────────────────────────────────────── */
@@ -338,3 +322,80 @@ input[type="checkbox"] {
   }
 }
 
+
+/* ─── Connected Operations Industrial Section ─────────────────────────────── */
+@keyframes co-bg-reveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes co-line-draw {
+  from { stroke-dashoffset: 2000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes co-node-pop {
+  0%   { opacity: 0; transform: scale(0.6); }
+  70%  { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes co-label-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes co-glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px #F5C451); }
+  50%       { filter: drop-shadow(0 0 10px #F5C451) drop-shadow(0 0 20px rgba(245,196,81,0.5)); }
+}
+
+.co-network-line {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+.co-section-visible .co-network-line {
+  animation: co-line-draw 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.co-node {
+  opacity: 0;
+  transform-origin: center;
+  transform: scale(0.6);
+}
+
+.co-section-visible .co-node {
+  animation: co-node-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.co-label {
+  opacity: 0;
+}
+
+.co-section-visible .co-label {
+  animation: co-label-rise 0.4s ease forwards;
+}
+
+.co-section-visible .co-glow-dot {
+  animation: co-glow-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-section-visible .co-network-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .co-section-visible .co-node {
+    animation: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+  .co-section-visible .co-label {
+    animation: none;
+    opacity: 1;
+  }
+  .co-section-visible .co-glow-dot {
+    animation: none;
+  }
+}

@@ -6,7 +6,7 @@ interface OperationalStage {
   threshold: number
 }
 
-const STAGES: OperationalStage[] = [
+const GLOBAL_STAGES: OperationalStage[] = [
   { id: "init", label: "SIGNAL INITIATED", threshold: 0.05 },
   { id: "ops", label: "CONNECTED OPERATIONS", threshold: 0.28 },
   { id: "modules", label: "MODULE ECOSYSTEM", threshold: 0.52 },
@@ -14,10 +14,36 @@ const STAGES: OperationalStage[] = [
   { id: "sync", label: "NETWORK SYNCHRONIZED", threshold: 0.96 },
 ]
 
-export default function NexusScrollFlow() {
+const WORKFLOW_STAGES: OperationalStage[] = [
+  { id: "wf-1", label: "REQUEST RAISED", threshold: 0 / 6 },
+  { id: "wf-2", label: "TRIAGE", threshold: 1 / 6 },
+  { id: "wf-3", label: "WORK ORDER", threshold: 2 / 6 },
+  { id: "wf-4", label: "TECHNICIAN ASSIGNMENT", threshold: 3 / 6 },
+  { id: "wf-5", label: "EXECUTION", threshold: 4 / 6 },
+  { id: "wf-6", label: "SUPERVISOR APPROVAL", threshold: 5 / 6 },
+  { id: "wf-7", label: "CLOSURE", threshold: 6 / 6 },
+]
+
+export interface NexusScrollFlowProps {
+  workflowProgress?: number
+  activeWorkflowStep?: number
+  isInWorkflow?: boolean
+}
+
+
+
+
+
+
+export default function NexusScrollFlow({
+  workflowProgress,
+  activeWorkflowStep,
+  isInWorkflow,
+}: NexusScrollFlowProps) {
   const [reducedMotion, setReducedMotion] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const [activeStageIndex, setActiveStageIndex] = useState(0)
+  const [inWorkflowMode, setInWorkflowMode] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   const progressRef = useRef(0)
@@ -25,10 +51,26 @@ export default function NexusScrollFlow() {
   const rafIdRef = useRef<number | null>(null)
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // DOM refs for direct GPU transform manipulation (avoids React re-renders on every scroll tick)
+  // DOM refs for direct GPU transform manipulation
   const railGlowRef = useRef<HTMLDivElement>(null)
   const signalHeadRef = useRef<HTMLDivElement>(null)
   const progressLineRef = useRef<HTMLDivElement>(null)
+
+  // Sync external workflow props when provided
+  useEffect(() => {
+    if (isInWorkflow) {
+      setInWorkflowMode(true)
+      if (typeof workflowProgress === "number") {
+        targetProgressRef.current = workflowProgress
+        progressRef.current = workflowProgress
+      }
+      if (typeof activeWorkflowStep === "number") {
+        setActiveStageIndex(activeWorkflowStep)
+      }
+    } else {
+      setInWorkflowMode(false)
+    }
+  }, [isInWorkflow, workflowProgress, activeWorkflowStep])
 
   useEffect(() => {
     setMounted(true)
@@ -41,13 +83,55 @@ export default function NexusScrollFlow() {
     mediaQuery.addEventListener?.("change", motionHandler)
 
     const updateScrollTarget = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (docHeight <= 0) {
-        targetProgressRef.current = 0
-        return
+      // Check if user is scrolling through workflow section
+      const workflowEl = document.getElementById("workflow")
+      let localInWorkflow = false
+      let localWfProgress = 0
+      let localWfStep = 0
+
+      if (workflowEl) {
+        const rect = workflowEl.getBoundingClientRect()
+        const vh = window.innerHeight
+
+        const startOffset = vh * 0.70
+        const endOffset = vh * 0.25
+        const totalDistance = rect.height + (startOffset - endOffset)
+        const currentDistance = startOffset - rect.top
+
+        if (rect.top < vh * 0.90 && rect.bottom > vh * 0.10) {
+          localInWorkflow = true
+          localWfProgress = Math.min(Math.max(currentDistance / totalDistance, 0), 1)
+          localWfStep = Math.min(Math.max(Math.floor(localWfProgress * 6 + 0.5), 0), 6)
+        }
       }
-      const rawProgress = Math.min(Math.max(window.scrollY / docHeight, 0), 1)
-      targetProgressRef.current = rawProgress
+
+      const activeWorkflow = isInWorkflow ?? localInWorkflow
+      setInWorkflowMode(activeWorkflow)
+
+      if (activeWorkflow) {
+        const p = typeof workflowProgress === "number" ? workflowProgress : localWfProgress
+        const s = typeof activeWorkflowStep === "number" ? activeWorkflowStep : localWfStep
+        targetProgressRef.current = p
+        progressRef.current = p
+        setActiveStageIndex(s)
+      } else {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        if (docHeight <= 0) {
+          targetProgressRef.current = 0
+          return
+        }
+        const rawProgress = Math.min(Math.max(window.scrollY / docHeight, 0), 1)
+        targetProgressRef.current = rawProgress
+
+        let currentStage = 0
+        for (let i = GLOBAL_STAGES.length - 1; i >= 0; i--) {
+          if (rawProgress >= GLOBAL_STAGES[i].threshold - 0.08) {
+            currentStage = i
+            break
+          }
+        }
+        setActiveStageIndex(currentStage)
+      }
 
       // Manage scrolling active state
       setIsScrolling(true)
@@ -55,29 +139,22 @@ export default function NexusScrollFlow() {
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false)
       }, 1200)
-
-      // Determine active stage
-      let currentStage = 0
-      for (let i = STAGES.length - 1; i >= 0; i--) {
-        if (rawProgress >= STAGES[i].threshold - 0.08) {
-          currentStage = i
-          break
-        }
-      }
-      setActiveStageIndex(currentStage)
     }
 
-    // Animation Loop with smooth physics (lerp)
+    // Animation loop: direct 1:1 GPU update in workflow mode, smooth lerp on full document
     const animate = () => {
-      const diff = targetProgressRef.current - progressRef.current
-      if (Math.abs(diff) > 0.0002) {
-        progressRef.current += diff * 0.12 // Smooth fluid easing
-      } else {
+      if (inWorkflowMode) {
         progressRef.current = targetProgressRef.current
+      } else {
+        const diff = targetProgressRef.current - progressRef.current
+        if (Math.abs(diff) > 0.0002) {
+          progressRef.current += diff * 0.16
+        } else {
+          progressRef.current = targetProgressRef.current
+        }
       }
 
       const p = progressRef.current
-      const percentage = p * 100
 
       // Update direct DOM styles via transform & scale for 60fps GPU performance
       if (progressLineRef.current) {
@@ -109,11 +186,12 @@ export default function NexusScrollFlow() {
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
     }
-  }, [])
+  }, [isInWorkflow, workflowProgress, activeWorkflowStep])
 
   if (!mounted) return null
 
-  const currentStage = STAGES[activeStageIndex]
+  const currentStages = inWorkflowMode ? WORKFLOW_STAGES : GLOBAL_STAGES
+  const currentStage = currentStages[activeStageIndex] || currentStages[0]
 
   return (
     <aside
@@ -128,7 +206,7 @@ export default function NexusScrollFlow() {
           className="absolute -inset-x-3 -inset-y-4 rounded-full bg-[#0B1F3B]/10 dark:bg-[#F5C451]/5 blur-md transition-opacity duration-300"
         />
 
-        {/* Floating Telemetry Stage Label (appears during active scroll when sufficient screen space exists outside content) */}
+        {/* Floating Telemetry Stage Label */}
         <div
           className={`absolute right-7 top-1/2 -translate-y-1/2 hidden min-[1600px]:flex items-center gap-2 rounded-full border border-[#0B1F3B]/10 bg-white/90 px-3 py-1 text-[9.5px] font-bold tracking-[0.14em] uppercase text-[#0B1F3B] shadow-[0_4px_16px_rgba(11,31,59,0.08)] backdrop-blur-md transition-all duration-300 ${
             isScrolling ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"
@@ -154,10 +232,10 @@ export default function NexusScrollFlow() {
           />
 
           {/* Operational Stage Node Pips */}
-          {STAGES.map((stage, idx) => {
+          {currentStages.map((stage, idx) => {
             const isReached = idx <= activeStageIndex
             const isCurrent = idx === activeStageIndex
-            const nodeTop = (idx / (STAGES.length - 1)) * 220
+            const nodeTop = (idx / (currentStages.length - 1)) * 220
 
             return (
               <div

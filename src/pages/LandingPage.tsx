@@ -636,7 +636,7 @@ const rightColumnCards: WorkflowCard[] = [
 ]
 
 
-function useInView() {
+function useInView(options?: IntersectionObserverInit) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
@@ -653,7 +653,7 @@ function useInView() {
           observer.disconnect()
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -24px 0px" },
+      options || { threshold: 0.08, rootMargin: "0px 0px -24px 0px" },
     )
     observer.observe(element)
     return () => observer.disconnect()
@@ -729,208 +729,290 @@ function AssetsVideoSection() {
 }
 
 
-export function HeroOperationalIntelligence() {
-  const [reducedMotion, setReducedMotion] = useState(false)
-  const [isEntered, setIsEntered] = useState(false)
+// ─── Connected Operations Section ───────────────────────────────────────────
+const CO_NODES = [
+  {
+    id: 'assets',
+    label: 'ASSETS',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        <path d="M4.93 4.93a10 10 0 0 0 0 14.14"/>
+      </svg>
+    ),
+    // SVG canvas 1400×700 — positions as fraction of width/height
+    cx: 0.09, cy: 0.31,
+  },
+  {
+    id: 'service-requests',
+    label: 'SERVICE\nREQUESTS',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
+      </svg>
+    ),
+    cx: 0.25, cy: 0.52,
+  },
+  {
+    id: 'work-orders',
+    label: 'WORK\nORDERS',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+    ),
+    cx: 0.42, cy: 0.36,
+  },
+  {
+    id: 'field-execution',
+    label: 'FIELD\nEXECUTION',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    ),
+    cx: 0.58, cy: 0.58,
+  },
+  {
+    id: 'inventory',
+    label: 'INVENTORY',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+      </svg>
+    ),
+    cx: 0.74, cy: 0.44,
+  },
+  {
+    id: 'approvals',
+    label: 'APPROVALS',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <polyline points="9,12 11,14 15,10"/>
+      </svg>
+    ),
+    cx: 0.91, cy: 0.32,
+  },
+]
+
+function ConnectedOperationsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setReducedMotion(mediaQuery.matches)
-
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
-    mediaQuery.addEventListener?.("change", handler)
-
-    // Trigger one-time entrance transition on mount
-    const timer = setTimeout(() => setIsEntered(true), 80)
-
-    return () => {
-      mediaQuery.removeEventListener?.("change", handler)
-      clearTimeout(timer)
-    }
+    const el = sectionRef.current
+    if (!el) return
+    if (!('IntersectionObserver' in window)) { setVisible(true); return }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect() } },
+      { threshold: 0.08 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
+  // SVG canvas dimensions (viewBox units)
+  const VW = 1400
+  const VH = 700
+
+  // Compute node pixel coords from fractions
+  const nodes = CO_NODES.map(n => ({
+    ...n,
+    px: n.cx * VW,
+    py: n.cy * VH,
+  }))
+
+  // Build a smooth cubic bezier path through all 6 nodes
+  const pathD = (() => {
+    const pts = nodes.map(n => [n.px, n.py])
+    if (pts.length < 2) return ''
+    let d = `M ${pts[0][0]},${pts[0][1]}`
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [x0, y0] = pts[i]
+      const [x1, y1] = pts[i + 1]
+      const cpx1 = x0 + (x1 - x0) * 0.5
+      const cpy1 = y0
+      const cpx2 = x0 + (x1 - x0) * 0.5
+      const cpy2 = y1
+      d += ` C ${cpx1},${cpy1} ${cpx2},${cpy2} ${x1},${y1}`
+    }
+    return d
+  })()
+
   return (
-    <div
-      className="landing-hero-enter landing-hero-delay-2 mt-10 w-full max-w-5xl lg:max-w-6xl select-none"
-      role="region"
-      aria-label="FieldOps Nexus Operational Intelligence"
+    <section
+      ref={sectionRef}
+      aria-label="Connected Operations industrial network"
+      className={`relative w-full overflow-hidden ${visible ? 'co-section-visible' : ''}`}
+      style={{ height: 'clamp(520px, 70vw, 920px)', minHeight: 520, maxHeight: 920 }}
     >
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/[0.12] bg-gradient-to-b from-[#102445]/90 via-[#0B1F3B]/95 to-[#061224]/98 p-5 sm:p-7 md:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] backdrop-blur-xl ring-1 ring-inset ring-white/[0.06]">
-        {/* Subtle grid background texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #FFFFFF 1px, transparent 0)`,
-            backgroundSize: "24px 24px",
-          }}
-        />
+      {/* ── Industrial background ── */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('/connected-ops-industrial.jpg')` }}
+        role="img"
+        aria-label="Industrial refinery and manufacturing facility at dusk"
+      />
 
-        {/* Ambient background illumination */}
-        <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 size-96 rounded-full bg-[#F5C451]/[0.07] blur-3xl" />
+      {/* ── Dark gradient overlay — preserves text readability ── */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(7,20,38,0.72) 0%, rgba(7,20,38,0.45) 45%, rgba(7,20,38,0.60) 100%)',
+        }}
+      />
+      {/* Extra top gradient for text region */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-56"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(7,20,38,0.85) 0%, transparent 100%)',
+        }}
+      />
 
-        {/* ── Header ── */}
-        <div className="relative mb-6 sm:mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.09] pb-4 sm:pb-5">
-          <div className="flex items-center gap-3">
-            <span className="relative flex size-2.5">
-              {!reducedMotion && (
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F5C451] opacity-75" />
-              )}
-              <span className="relative inline-flex size-2.5 rounded-full bg-[#F5C451] shadow-[0_0_10px_#F5C451]" />
-            </span>
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-white/95">
-              Operational Intelligence
-            </span>
-            <span className="hidden sm:inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium tracking-wide text-white/50">
-              CORE CAPABILITIES
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-white/80">
-            <span className="text-[11px] font-medium text-white/60">LIVE SYSTEM</span>
-            <span className="relative flex size-2">
-              {!reducedMotion && (
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10B981] opacity-75" />
-              )}
-              <span className="relative inline-flex size-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981]" />
-            </span>
-          </div>
+      {/* ── Content ── */}
+      <div className="relative z-10 flex flex-col items-center pt-10 sm:pt-14 px-5">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3 mb-5">
+          <span className="h-px w-8" style={{ background: '#F5C451' }} />
+          <span
+            className="text-xs font-bold tracking-[0.20em] uppercase"
+            style={{ color: '#F5C451' }}
+          >
+            Connected Operations
+          </span>
+          <span className="h-px w-8" style={{ background: '#F5C451' }} />
         </div>
 
-        {/* ── 3-Panel Convergent GateSphere-Inspired Composition ── */}
-        <div className="relative z-10 w-full py-2">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-5 items-center">
-            
-            {/* LEFT SUPPORTING VISUAL (Span 3) */}
-            <div
-              className={`md:col-span-3 transition-all duration-1000 cubic-bezier(0.22, 1, 0.36, 1) ${
-                reducedMotion || isEntered
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-8"
-              }`}
-            >
-              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
-                  <img
-                    src={serviceRequestInspection}
-                    alt="Service Request & Inspection"
-                    className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (!target.dataset.failed) {
-                        target.dataset.failed = "true";
-                        target.src = "/fieldops-workflow/service-request-inspection.png";
-                      }
-                    }}
-                  />
-                  {/* UI Overlay badge */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between rounded-lg border border-white/10 bg-[#0B1F3B]/80 px-2.5 py-1.5 backdrop-blur-md">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#F5C451]">
-                      SERVICE REQUEST
-                    </span>
-                    <span className="size-1.5 rounded-full bg-[#F5C451]" />
-                  </div>
-                  <div className="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-[#061224]/85 p-2 backdrop-blur-md">
-                    <p className="text-[11px] font-bold text-white tracking-wide">Inspection & Triage</p>
-                    <p className="text-[9.5px] text-white/60">Asset ID: GEN-401</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Main heading */}
+        <h2
+          className="text-center font-bold leading-[1.10] tracking-tight text-white mb-5"
+          style={{ fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', maxWidth: '780px' }}
+        >
+          One operational view.<br />
+          Every{' '}
+          <span style={{ color: '#F5C451' }}>critical connection.</span>
+        </h2>
 
-            {/* CENTER HERO MAIN VISUAL (Span 6) */}
-            <div
-              className={`md:col-span-6 transition-all duration-1000 delay-100 cubic-bezier(0.22, 1, 0.36, 1) ${
-                reducedMotion || isEntered
-                  ? "opacity-100 scale-100"
-                  : "opacity-0 scale-[0.96]"
-              }`}
-            >
-              <div className="group relative overflow-hidden rounded-2xl border border-[#F5C451]/30 bg-[#162A4B]/70 p-2.5 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-300 hover:border-[#F5C451]/60 hover:shadow-[0_20px_50px_rgba(245,196,81,0.15)]">
-                <div className="relative aspect-[16/11] overflow-hidden rounded-xl bg-[#061224]">
-                  <img
-                    src={fieldOpsCommandDashboard}
-                    alt="FieldOps Nexus Command Dashboard"
-                    className="w-full h-full object-cover opacity-95 transition-all duration-500 group-hover:scale-[1.02] group-hover:opacity-100"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (!target.dataset.failed) {
-                        target.dataset.failed = "true";
-                        target.src = "/fieldops-workflow/fieldops-command-dashboard.png";
-                      }
-                    }}
-                  />
-                  {/* Subtle inner framing gold line */}
-                  <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/10 group-hover:border-[#F5C451]/40 transition-colors duration-300" />
-
-                  {/* Center Hero Overlay Tag */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2 rounded-lg border border-[#F5C451]/40 bg-[#0B1F3B]/90 px-3 py-1.5 backdrop-blur-md shadow-md">
-                    <span className="size-2 rounded-full bg-[#F5C451] shadow-[0_0_8px_#F5C451]" />
-                    <span className="text-[11px] font-bold tracking-wider uppercase text-white">
-                      FieldOps Nexus Command
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT SUPPORTING VISUAL (Span 3) */}
-            <div
-              className={`md:col-span-3 transition-all duration-1000 cubic-bezier(0.22, 1, 0.36, 1) ${
-                reducedMotion || isEntered
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-8"
-              }`}
-            >
-              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.1] bg-[#162A4B]/50 p-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[#F5C451]/40 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#061224]">
-                  <img
-                    src={workOrderSupervisorReview}
-                    alt="Work Order Completion & Supervisor Review"
-                    className="w-full h-full object-cover opacity-85 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (!target.dataset.failed) {
-                        target.dataset.failed = "true";
-                        target.src = "/fieldops-workflow/work-order-supervisor-review.png";
-                      }
-                    }}
-                  />
-                  {/* UI Overlay badge */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between rounded-lg border border-white/10 bg-[#0B1F3B]/80 px-2.5 py-1.5 backdrop-blur-md">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#10B981]">
-                      WORK ORDER CLOSED
-                    </span>
-                    <span className="size-1.5 rounded-full bg-[#10B981]" />
-                  </div>
-                  <div className="absolute bottom-3 left-3 right-3 rounded-lg border border-white/10 bg-[#061224]/85 p-2 backdrop-blur-md">
-                    <p className="text-[11px] font-bold text-white tracking-wide">Supervisor Review</p>
-                    <p className="text-[9.5px] text-white/60">Verification Completed</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ── Bottom Subdued System Signal ── */}
-        <div className="relative mt-6 sm:mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-4 text-xs text-white/40">
-          <div className="flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-[#F5C451] shadow-[0_0_6px_#F5C451]" />
-            <span className="font-medium tracking-wide">
-              Unified Operational Intelligence Platform
-            </span>
-          </div>
-          <div className="font-mono text-[11px] text-white/35">
-            CONNECTED CAPABILITIES &bull; FIELD TO ENTERPRISE
-          </div>
-        </div>
+        {/* Supporting text */}
+        <p
+          className="text-center text-white/75 leading-relaxed"
+          style={{ fontSize: 'clamp(0.9rem, 1.4vw, 1.05rem)', maxWidth: '560px' }}
+        >
+          Connect your people, assets, service operations, and business workflows
+          across every site — in one unified ecosystem.
+        </p>
       </div>
-    </div>
+
+      {/* ── Gold Network SVG (full-width overlay over the photo) ── */}
+      <div className="pointer-events-none absolute inset-0 z-20">
+        <svg
+          viewBox={`0 0 ${VW} ${VH}`}
+          preserveAspectRatio="xMidYMid meet"
+          className="w-full h-full"
+          aria-hidden="true"
+        >
+          {/* Network connection line */}
+          <path
+            d={pathD}
+            fill="none"
+            stroke="#F5C451"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity="0.85"
+            className="co-network-line"
+          />
+          {/* Glow duplicate */}
+          <path
+            d={pathD}
+            fill="none"
+            stroke="#F5C451"
+            strokeWidth="5"
+            strokeLinecap="round"
+            opacity="0.18"
+            className="co-network-line"
+            style={{ filter: 'blur(3px)' }}
+          />
+
+          {/* Nodes */}
+          {nodes.map((node, i) => {
+            const r = 28 // circle radius
+            const delayBase = 0.5 + i * 0.28
+            return (
+              <g
+                key={node.id}
+                className="co-node"
+                style={{ animationDelay: `${delayBase}s` }}
+              >
+                {/* Outer glow ring */}
+                <circle
+                  cx={node.px} cy={node.py}
+                  r={r + 8}
+                  fill="rgba(245,196,81,0.08)"
+                  stroke="#F5C451"
+                  strokeWidth="0.5"
+                  opacity="0.6"
+                />
+                {/* Main circle */}
+                <circle
+                  cx={node.px} cy={node.py}
+                  r={r}
+                  fill="rgba(7,20,38,0.82)"
+                  stroke="#F5C451"
+                  strokeWidth="1.5"
+                />
+                {/* Icon — centered */}
+                <foreignObject
+                  x={node.px - 11} y={node.py - 11}
+                  width="22" height="22"
+                  style={{ color: '#F5C451', overflow: 'visible' }}
+                >
+                  <div
+                    style={{ color: '#F5C451', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    {node.icon}
+                  </div>
+                </foreignObject>
+
+                {/* Connection dot on path */}
+                <circle
+                  cx={node.px} cy={node.py}
+                  r="4"
+                  fill="#F5C451"
+                  className="co-glow-dot"
+                  style={{ animationDelay: `${delayBase + 0.1}s` }}
+                />
+
+                {/* Label below node */}
+                {node.label.split('\n').map((line, li) => (
+                  <text
+                    key={li}
+                    x={node.px}
+                    y={node.py + r + 18 + li * 14}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="11"
+                    fontWeight="700"
+                    letterSpacing="0.12em"
+                    fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+                    className="co-label"
+                    style={{ animationDelay: `${delayBase + 0.2}s` }}
+                  >
+                    {line}
+                  </text>
+                ))}
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+    </section>
   )
 }
-
 
 export function Reveal({
   children,
@@ -1020,15 +1102,19 @@ function SectionHeading({
   title,
   description,
   centered = false,
+  className = "",
 }: {
   eyebrow: string
   title: string
   description: string
   centered?: boolean
+  className?: string
 }) {
   return (
     <Reveal
-      className={`mb-12 lg:mb-16 ${
+      className={`${
+        className ? className : "mb-12 lg:mb-16"
+      } ${
         centered ? "mx-auto max-w-2xl text-center" : "max-w-2xl"
       }`}
     >
@@ -1192,7 +1278,67 @@ export default function LandingPage({ onNavigate, page }: Props) {
   // from a trigger button into the mega panel (or between triggers).
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const clickedMegaRef = useRef<string | null>(null)
-  const workflow = useInView()
+  const [workflowProgress, setWorkflowProgress] = useState(0)
+  const [activeWorkflowStep, setActiveWorkflowStep] = useState(0)
+  const [isInWorkflow, setIsInWorkflow] = useState(false)
+  const connectingLineFillRef = useRef<HTMLDivElement>(null)
+
+  // Scroll-synchronized calculation relative to the workflow section
+  useEffect(() => {
+    let ticking = false
+
+    const handleWorkflowScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const section = document.getElementById("workflow")
+          if (!section) {
+            ticking = false
+            return
+          }
+
+          const rect = section.getBoundingClientRect()
+          const vh = window.innerHeight
+
+          // Progress calculated smoothly relative to the workflow section
+          const startOffset = vh * 0.70
+          const endOffset = vh * 0.25
+          const totalDistance = rect.height + (startOffset - endOffset)
+          const currentDistance = startOffset - rect.top
+
+          const rawProgress = currentDistance / totalDistance
+          const clamped = Math.min(Math.max(rawProgress, 0), 1)
+          const inView = rect.top < vh * 0.90 && rect.bottom > vh * 0.10
+
+          // Direct 60fps GPU transform for connecting line
+          if (connectingLineFillRef.current) {
+            const isDesktop = window.innerWidth >= 768
+            connectingLineFillRef.current.style.transform = isDesktop
+              ? `scaleX(${clamped})`
+              : `scaleY(${clamped})`
+          }
+
+          setWorkflowProgress(clamped)
+          setIsInWorkflow(inView)
+
+          // 7 steps: indices 0 through 6, activated smoothly as the line arrives
+          const stepIdx = Math.min(Math.max(Math.floor(clamped * 6 + 0.5), 0), 6)
+          setActiveWorkflowStep(stepIdx)
+
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener("scroll", handleWorkflowScroll, { passive: true })
+    window.addEventListener("resize", handleWorkflowScroll, { passive: true })
+    handleWorkflowScroll()
+
+    return () => {
+      window.removeEventListener("scroll", handleWorkflowScroll)
+      window.removeEventListener("resize", handleWorkflowScroll)
+    }
+  }, [])
 
   // Scroll to top whenever page prop changes
   useEffect(() => {
@@ -1345,7 +1491,11 @@ export default function LandingPage({ onNavigate, page }: Props) {
   return (
     <div className="min-w-0 overflow-x-clip bg-white font-sans text-text-primary scroll-smooth">
       {/* ── Global Nexus Flow Operational Scroll Telemetry ── */}
-      <NexusScrollFlow />
+      <NexusScrollFlow
+        workflowProgress={workflowProgress}
+        activeWorkflowStep={activeWorkflowStep}
+        isInWorkflow={isInWorkflow}
+      />
 
       <header
         ref={headerRef}
@@ -1643,32 +1793,8 @@ export default function LandingPage({ onNavigate, page }: Props) {
         {/* ── Assets Video Section ── */}
         <AssetsVideoSection />
 
-        <section
-          className="relative isolate overflow-hidden bg-navy-900 text-white"
-          aria-labelledby="hero-title"
-        >
-          <div className="pointer-events-none absolute -bottom-60 left-1/4 size-[500px] rounded-full bg-navy-500/15 blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
-              <div className="landing-hero-enter">
-                <Eyebrow light>Enterprise operations platform</Eyebrow>
-              </div>
-              <h1
-                id="hero-title"
-                className="landing-hero-enter mt-6 max-w-3xl text-[clamp(2.7rem,5vw,4.6rem)] font-bold leading-[1.08] tracking-tight"
-              >
-                Enterprise Operations.
-                <br />
-                <span className="text-gold-400">Connected.</span> Simplified.
-              </h1>
-              <p className="landing-hero-enter landing-hero-delay-1 mt-7 max-w-xl text-base leading-relaxed text-white/65 lg:text-lg">
-                A unified ERP platform designed to connect organizations,
-                assets, people, service operations, and business workflows in
-                one centralized system.
-              </p>
-              <HeroOperationalIntelligence />
-
-          </div>
-        </section>
+        {/* ── Connected Operations — Full-Width Industrial Section ── */}
+        <ConnectedOperationsSection />
 
         <section
           id="about"
@@ -1820,7 +1946,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
         <section
           id="modules"
-          className="scroll-mt-24 bg-surface py-20 lg:py-28"
+          className="scroll-mt-24 bg-surface pt-16 pb-10 lg:pt-20 lg:pb-12"
         >
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
@@ -1888,48 +2014,92 @@ export default function LandingPage({ onNavigate, page }: Props) {
           </div>
         </section>
 
-        <section id="workflow" className="scroll-mt-24 bg-white py-20 lg:py-28">
+        <section id="workflow" className="scroll-mt-24 bg-white pt-10 pb-12 lg:pt-12 lg:pb-14">
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
               eyebrow="How it works"
               title="From Request to Resolution"
               description="A clear, connected path from the first service request to the final sign-off. Every handoff accounted for."
               centered
+              className="mb-8 lg:mb-10"
             />
+            <div className="relative grid gap-0 pl-2 md:grid-cols-7 md:pl-0">
+              {/* Horizontal (desktop) / Vertical (mobile) Gold Connecting Line precisely centered on icons */}
+              <div className="landing-timeline-line absolute bottom-10 left-[27px] top-10 w-[2px] bg-[#E2E8F0] md:bottom-auto md:left-[calc(100%/14)] md:right-[calc(100%/14)] md:top-[31px] md:h-[2px] md:w-auto overflow-hidden">
+                <div
+                  ref={connectingLineFillRef}
+                  className="h-full w-full bg-[#F5C451] origin-top md:origin-left will-change-transform"
+                  style={{
+                    transform: `scaleX(${workflowProgress})`,
+                    transition: "none",
+                  }}
+                />
+              </div>
+
+              {steps.map((step, i) => {
+                const isActive = activeWorkflowStep === i
+                const isCompleted = i < activeWorkflowStep
+                const isUpcoming = i > activeWorkflowStep
+
+                return (
+                  <div
+                    key={step.title}
+                    className="landing-step-item relative flex items-center gap-5 py-3 md:flex-col md:gap-0 md:py-0 md:text-center transition-all duration-300"
+                  >
+                    <span
+                      className={`relative z-10 flex size-14 shrink-0 items-center justify-center rounded-xl border md:mx-auto md:size-16 transition-all duration-300 ${
+                        isActive
+                          ? "border-[#F5C451] bg-[#0B1F3B] text-[#F5C451] shadow-[0_0_24px_rgba(245,196,81,0.50)] ring-4 ring-[#F5C451]/30 scale-110 -translate-y-1"
+                          : isCompleted
+                          ? "border-[#F5C451] bg-white text-[#0B1F3B] shadow-sm scale-100 translate-y-0"
+                          : "border-border bg-white text-navy-800/40 opacity-60 scale-100 translate-y-0"
+                      }`}
+                    >
+                      <step.icon
+                        size={isActive ? 25 : 23}
+                        strokeWidth={isActive ? 2.2 : 1.7}
+                        className={`transition-all duration-300 ${
+                          isActive
+                            ? "text-[#F5C451]"
+                            : isCompleted
+                            ? "text-[#0B1F3B]"
+                            : "text-navy-800/40"
+                        }`}
+                      />
+                    </span>
+                    <div className="md:mt-5 transition-all duration-300">
+                      <span
+                        className={`text-[10px] tracking-widest transition-colors duration-200 ${
+                          isActive
+                            ? "text-[#F5C451] font-extrabold text-[11px]"
+                            : isCompleted
+                            ? "text-[#B88A00] font-semibold"
+                            : "text-navy-800/35 font-medium"
+                        }`}
+                      >
+                        0{i + 1}
+                      </span>
+                      <h3
+                        className={`mt-1 max-w-[150px] text-sm leading-snug transition-all duration-200 md:mx-auto ${
+                          isActive
+                            ? "text-[#0B1F3B] font-bold"
+                            : isCompleted
+                            ? "text-[#162A4B] font-semibold"
+                            : "text-navy-800/40 font-normal"
+                        }`}
+                      >
+                        {step.title}
+                      </h3>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
             <div
-              ref={workflow.ref}
-              className={`relative grid gap-0 pl-2 md:grid-cols-7 md:pl-0 ${
-                workflow.visible ? "is-visible" : ""
+              className={`landing-step-pill mx-auto mt-8 lg:mt-10 max-w-max rounded-full bg-gold-50 px-5 py-2 text-xs font-semibold text-gold-600 transition-all duration-300 ${
+                workflowProgress >= 0.95 ? "ring-2 ring-gold-400/40 opacity-100" : "opacity-90"
               }`}
             >
-              <div className="landing-timeline-line absolute bottom-10 left-[29px] top-10 w-px bg-border md:bottom-auto md:left-[7%] md:right-[7%] md:top-8 md:h-px md:w-auto" />
-              {steps.map((step, i) => (
-                <Reveal
-                  key={step.title}
-                  delay={i * 75}
-                  className="relative flex items-center gap-5 py-3 md:flex-col md:gap-0 md:py-0 md:text-center"
-                >
-                  <span
-                    className={`relative z-10 flex size-14 shrink-0 items-center justify-center rounded-xl border shadow-sm md:mx-auto md:size-16 ${
-                      i === 0 || i === 6
-                        ? "border-navy-800 bg-navy-800 text-gold-400"
-                        : "border-border bg-white text-navy-800"
-                    }`}
-                  >
-                    <step.icon size={23} strokeWidth={1.7} />
-                  </span>
-                  <div className="md:mt-6">
-                    <span className="text-[10px] font-bold tracking-widest text-gold-600">
-                      0{i + 1}
-                    </span>
-                    <h3 className="mt-1 max-w-[150px] text-sm font-semibold leading-snug text-navy-800 md:mx-auto">
-                      {step.title}
-                    </h3>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-            <div className="mx-auto mt-14 max-w-max rounded-full bg-gold-50 px-5 py-2 text-xs font-semibold text-gold-600">
               One continuous, traceable service lifecycle
             </div>
           </div>
@@ -1937,7 +2107,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
 
         <section
           id="product"
-          className="relative py-20 lg:py-28 bg-navy-800 text-white overflow-hidden"
+          className="relative pt-14 pb-18 lg:pt-16 lg:pb-24 bg-navy-800 text-white overflow-hidden"
         >
           <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 lg:grid-cols-[.85fr_1.15fr] lg:gap-14 lg:px-8">
             <Reveal direction="left">
