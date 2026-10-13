@@ -310,10 +310,26 @@ input[type="checkbox"] {
   animation-play-state: paused;
 }
 
+/* ─── Benefit Cards Image Zoom & Reduced Motion ───────────────────────────── */
+.benefit-card-img {
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+
+.benefit-card:hover .benefit-card-img {
+  transform: scale(1.05);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nexus-workflow-col-marquee-left,
   .nexus-workflow-col-marquee-right {
     animation: none !important;
+    transform: none !important;
+  }
+  .benefit-card-img {
+    transition: none !important;
+  }
+  .benefit-card:hover .benefit-card-img {
     transform: none !important;
   }
 }

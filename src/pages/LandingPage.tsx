@@ -46,6 +46,10 @@ import workflowFieldOperations from "../assets/workflow-field-operations.jpg"
 import workflowInventoryManagement from "../assets/workflow-inventory-management.jpg"
 import workflowApproval from "../assets/workflow-approval.jpg"
 import workflowInsights from "../assets/workflow-insights.jpg"
+import connectedDataImg from "../assets/connected-data.jpg"
+import smarterWorkflowsImg from "../assets/smarter-workflows.jpg"
+import operationalVisibilityImg from "../assets/operational-visibility.jpg"
+import auditTraceabilityImg from "../assets/audit-traceability.jpg"
 import NexusScrollFlow from "../components/NexusScrollFlow"
 
 
@@ -454,12 +458,14 @@ const benefits: {
   description: string
   icon: Icon
   number: string
+  image: string
 }[] = [
   {
     title: "Connected Data",
     description: "Connect operational information across teams and locations.",
     icon: Database,
     number: "01",
+    image: connectedDataImg,
   },
   {
     title: "Smarter Workflows",
@@ -467,6 +473,7 @@ const benefits: {
       "Reduce manual processes through structured workflows and automation.",
     icon: Layers3,
     number: "02",
+    image: smarterWorkflowsImg,
   },
   {
     title: "Operational Visibility",
@@ -474,6 +481,7 @@ const benefits: {
       "Understand what is happening across assets, teams, and service operations.",
     icon: Gauge,
     number: "03",
+    image: operationalVisibilityImg,
   },
   {
     title: "Audit & Traceability",
@@ -481,6 +489,7 @@ const benefits: {
       "Maintain a complete history of operational activities and decisions.",
     icon: ShieldCheck,
     number: "04",
+    image: auditTraceabilityImg,
   },
 ]
 const industries: {
@@ -2063,29 +2072,53 @@ export default function LandingPage({ onNavigate, page }: Props) {
               title="Built for Modern Enterprise Operations"
               description="The intelligence and structure to make complex operations feel effortless."
             />
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2">
               {benefits.map((item, i) => (
                 <Reveal
                   key={item.title}
-                  delay={(i % 2) * 90}
+                  delay={i * 90}
                   className="h-full"
                 >
-                  <div className="group flex h-full min-h-[210px] flex-col justify-between rounded-xl border border-border bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg hover:shadow-navy-800/5 sm:p-8">
-                    <div className="flex items-start justify-between">
-                      <span className="flex size-12 items-center justify-center rounded-lg bg-surface text-gold-600">
-                        <item.icon size={23} strokeWidth={1.7} />
+                  <div className="benefit-card group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-gold-500/50 hover:shadow-xl hover:shadow-navy-900/5">
+                    {/* Premium Photographic Card Header */}
+                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-navy-950">
+                      <img
+                        src={item.image}
+                        alt={`${item.title} - FieldOps Nexus`}
+                        loading="lazy"
+                        className="benefit-card-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-navy-950/20 to-transparent" />
+
+                      {/* Icon Badge */}
+                      <span className="absolute bottom-3.5 left-5 flex size-11 items-center justify-center rounded-xl bg-white text-gold-600 shadow-md sm:left-6">
+                        <item.icon size={22} strokeWidth={1.8} />
                       </span>
-                      <span className="text-xs font-medium text-text-secondary/50">
-                        {item.number} / 04
+
+                      {/* Sequence Counter */}
+                      <span className="absolute top-3.5 right-5 rounded-md bg-navy-900/80 px-2.5 py-1 text-xs font-semibold text-white/90 backdrop-blur-sm border border-white/10 sm:right-6">
+                        {item.number} <span className="text-white/40">/</span> <span className="text-gold-400">04</span>
                       </span>
                     </div>
-                    <div className="mt-7">
-                      <h3 className="text-xl font-bold text-navy-800">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 max-w-md text-sm leading-relaxed text-text-secondary">
-                        {item.description}
-                      </p>
+
+                    {/* Card Body */}
+                    <div className="flex flex-1 flex-col justify-between p-6 sm:p-7">
+                      <div>
+                        <h3 className="text-xl font-bold tracking-tight text-navy-800 transition-colors duration-200 group-hover:text-gold-600">
+                          {item.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* Enterprise Capability Accent */}
+                      <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-[10px] font-semibold uppercase tracking-wider text-text-secondary/60">
+                        <span className="transition-colors duration-200 group-hover:text-navy-800">
+                          Enterprise Capability
+                        </span>
+                        <span className="size-1.5 rounded-full bg-border transition-colors duration-200 group-hover:bg-gold-500" />
+                      </div>
                     </div>
                   </div>
                 </Reveal>
