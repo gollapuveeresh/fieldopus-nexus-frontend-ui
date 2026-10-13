@@ -42,6 +42,15 @@ import {
 } from "lucide-react"
 import type { Page } from "../types"
 import StandardizedPageCTA from "../components/ui/StandardizedPageCTA"
+import SLAManagementPage from "./SLAManagementPage"
+import MultiSiteManagementPage from "./MultiSiteManagementPage"
+import ConnectedDataPage from "./ConnectedDataPage"
+import EnterpriseOperationsPage from "./EnterpriseOperationsPage"
+import SolutionsOverviewPage from "./SolutionsOverviewPage"
+import ModulesOverviewPage from "./ModulesOverviewPage"
+import ProductsOverviewPage from "./ProductsOverviewPage"
+import ServiceMaintenancePage from "./ServiceMaintenancePage"
+import InfrastructureSolutionPage from "./InfrastructureSolutionPage"
 
 const assetImg = "/asset-telemetry-hero.jpg"
 
@@ -1760,11 +1769,110 @@ const PAGE_DATA: Record<string, PageMeta> = {
       </UIWindow>
     ),
   },
+  "sla-management": {
+    title: "SLA Management",
+    subtitle: "Service-Level Obligations & Compliance",
+    tagline: "Enforce commitments, eliminate response bottlenecks, and maintain audit-ready visibility.",
+    description: "Monitor service-level commitments, track response and resolution performance, and maintain visibility into operational service obligations.",
+    metrics: [
+      ["99.4%", "First-Response Adherence", "Across critical P1 and P2 incidents"],
+      ["42 min", "Mean Time to Resolution", "18% reduction over 90 days"],
+      ["0.4%", "Breach Exception Rate", "Full root-cause audit logging"],
+    ],
+    features: [
+      { title: "Tiered SLA Policies", desc: "Configure 24/7 mission-critical, extended, and standard business-hours coverage.", icon: Clock },
+      { title: "Automated Clock Pauses", desc: "Smartly hold the timer during customer approval delays or parts lead times.", icon: ShieldCheck },
+      { title: "Predictive Breach Alerts", desc: "Automated alerts notify dispatchers and supervisors before timers expire.", icon: AlertCircle },
+      { title: "Audit-Ready Certificates", desc: "Generate compliance certificates for customer contract reconciliation.", icon: FileCheck2 },
+    ],
+    heroImage: "/hero-sla-management.jpg",
+    heroVisual: () => (
+      <UIWindow title="Live SLA Command Center">
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Critical Breakdown (P1)</span>
+            <span className="text-emerald-600 font-bold">99.8% Compliant</span>
+          </div>
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Degraded Production (P2)</span>
+            <span className="text-emerald-600 font-bold">99.2% Compliant</span>
+          </div>
+        </div>
+      </UIWindow>
+    ),
+  },
+  "multi-site-management": {
+    title: "Multi-Site Management",
+    subtitle: "Distributed Operations & Facility Governance",
+    tagline: "Bring sites, teams, assets, and service operations into one connected operational view.",
+    description: "Bring sites, teams, assets, and service operations into one connected operational view.",
+    metrics: [
+      ["14 Sites", "Unified Under One Platform", "Plants, logistics hubs, and campuses"],
+      ["100%", "Regional Governance", "Consistent SOPs and safety compliance"],
+      ["38%", "Reduced Redundancy", "Shared mobile technicians and parts pools"],
+    ],
+    features: [
+      { title: "Location Master Registry", desc: "Standardize site profiles, timezone offsets, and emergency protocols.", icon: Building2 },
+      { title: "Building & Bay Mapping", desc: "Drill down into buildings, production bays, and utility vaults.", icon: Layers3 },
+      { title: "Fleet Radar Console", desc: "Compare plant uptime, open WOs, and on-duty technicians in real time.", icon: Globe },
+      { title: "Cross-Site Workforce", desc: "Deploy specialized mobile teams between neighboring plants during peaks.", icon: Users },
+    ],
+    heroImage: "/hero-multisite-management.jpg",
+    heroVisual: () => (
+      <UIWindow title="Multi-Site Fleet Command">
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Chicago Plant (412 Assets)</span>
+            <span className="text-emerald-600 font-bold">99.4% Uptime</span>
+          </div>
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Munich Campus (285 Assets)</span>
+            <span className="text-emerald-600 font-bold">99.8% Uptime</span>
+          </div>
+        </div>
+      </UIWindow>
+    ),
+  },
+  "connected-data": {
+    title: "Connected Data",
+    subtitle: "Unified Service & Operational Information",
+    tagline: "Connect operational information across teams, locations, assets, service requests, and work orders to support a consistent view of service operations.",
+    description: "Connect operational information across teams, locations, assets, service requests, and work orders to support a consistent view of service operations.",
+    metrics: [
+      ["0 Silos", "Unified Operational Schema", "Assets, requests, work orders & spares"],
+      ["100%", "Complete Record Traceability", "From sensor alert to cryptographic closure"],
+      ["3.4x", "Faster Information Lookup", "Full machine pedigree instantly available"],
+    ],
+    features: [
+      { title: "Relational Operational Graph", desc: "Every work order and part directly links back to the asset's history.", icon: Database },
+      { title: "Zero Double-Entry", desc: "Diagnostic notes flow from intake to work order and customer sign-off.", icon: Workflow },
+      { title: "Mobile Pedigree Access", desc: "Technicians scan equipment QR codes for instant complete history.", icon: Boxes },
+      { title: "Cryptographic Audit Ledger", desc: "Tamper-evident logs with GPS timestamps satisfy ISO & OSHA audits.", icon: ShieldCheck },
+    ],
+    heroImage: "/hero-connected-data.jpg",
+    heroVisual: () => (
+      <UIWindow title="Operational Data Explorer">
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Asset #CH-04 → WO-8840</span>
+            <span className="text-emerald-600 font-bold">Linked ✓</span>
+          </div>
+          <div className="flex justify-between items-center bg-white p-2.5 rounded border border-border">
+            <span className="font-bold text-navy-800">Parts SKU #BEAR-9400 Deducted</span>
+            <span className="text-emerald-600 font-bold">Verified ✓</span>
+          </div>
+        </div>
+      </UIWindow>
+    ),
+  },
 }
 
 // ─── Generic Module Page Component ──────────────────────────────────────────
 function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (page: Page) => void }) {
   const data = PAGE_DATA[page] || PAGE_DATA["asset-management"]
+  const isSolution = page === "manufacturing" || page === "facilities" || page === "service-maintenance" || page === "infrastructure" || page === "enterprise-operations" || page === "sla-management" || page === "multi-site-management" || page === "connected-data"
+  const categoryLabel = isSolution ? "Solutions" : "Modules"
+  const categoryPage = isSolution ? ("solutions-overview" as Page) : ("modules-overview" as Page)
 
   return (
     <div className="w-full bg-white">
@@ -1782,10 +1890,10 @@ function ModulePageContent({ page, onNavigate }: { page: string; onNavigate: (pa
             </button>
             <ChevronRight size={11} className="text-white/30 shrink-0" />
             <button
-              onClick={() => onNavigate("landing")}
+              onClick={() => onNavigate(categoryPage)}
               className="hover:text-white/80 transition-colors"
             >
-              Modules
+              {categoryLabel}
             </button>
             <ChevronRight size={11} className="text-white/30 shrink-0" />
             <span className="text-white/80">{data.title}</span>
@@ -1894,6 +2002,42 @@ export default function MarketingPages({ page, onNavigate }: { page: Page; onNav
 
   if (page === "about") {
     return <AboutPageContent onNavigate={onNavigate} />
+  }
+
+  if (page === "enterprise-operations") {
+    return <EnterpriseOperationsPage onNavigate={onNavigate} />
+  }
+
+  if (page === "solutions-overview") {
+    return <SolutionsOverviewPage onNavigate={onNavigate} />
+  }
+
+  if (page === "modules-overview") {
+    return <ModulesOverviewPage onNavigate={onNavigate} />
+  }
+
+  if (page === "products-overview") {
+    return <ProductsOverviewPage onNavigate={onNavigate} />
+  }
+
+  if (page === "service-maintenance") {
+    return <ServiceMaintenancePage onNavigate={onNavigate} />
+  }
+
+  if (page === "infrastructure") {
+    return <InfrastructureSolutionPage onNavigate={onNavigate} />
+  }
+
+  if (page === "sla-management") {
+    return <SLAManagementPage onNavigate={onNavigate} />
+  }
+
+  if (page === "multi-site-management") {
+    return <MultiSiteManagementPage onNavigate={onNavigate} />
+  }
+
+  if (page === "connected-data") {
+    return <ConnectedDataPage onNavigate={onNavigate} />
   }
 
   // Fallback / standard module & solution pages

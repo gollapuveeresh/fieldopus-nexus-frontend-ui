@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Page, Role, UserSession } from './types';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -40,6 +40,82 @@ const APP_PAGES: Page[] = [
   'client-portal', 'reports', 'audit', 'audit-logs', 'audit-closures', 'audit-history', 'audit-evidence', 'audit-reports',
   'notifications', 'profile', 'settings',
 ];
+
+const SOLUTIONS_PAGES = new Set<Page>([
+  'enterprise-operations',
+  'sla-management',
+  'multi-site-management',
+  'connected-data',
+  'manufacturing',
+  'facilities',
+  'service-maintenance',
+  'infrastructure',
+]);
+
+const MODULES_PAGES = new Set<Page>([
+  'organization-management',
+  'asset-management',
+  'service-management',
+  'work-order-management',
+  'inventory-management',
+  'maintenance-management',
+  'workforce-management',
+  'analytics-reporting',
+  'audit-traceability',
+]);
+
+const PUBLIC_PAGES = new Set<Page>([
+  'landing',
+  'features',
+  'resources',
+  'about',
+  'solutions-overview',
+  'modules-overview',
+  'products-overview',
+  ...SOLUTIONS_PAGES,
+  ...MODULES_PAGES,
+]);
+
+const ALL_KNOWN_PAGES = new Set<Page>([
+  ...PUBLIC_PAGES,
+  'login',
+  'client-register',
+  'forgot-password',
+  ...APP_PAGES,
+]);
+
+function getPathForPage(p: Page): string {
+  if (p === 'landing') return '/';
+  if (p === 'solutions-overview') return '/solutions';
+  if (p === 'modules-overview') return '/modules';
+  if (p === 'products-overview') return '/products';
+  if (SOLUTIONS_PAGES.has(p)) return `/solutions/${p}`;
+  if (MODULES_PAGES.has(p)) return `/modules/${p}`;
+  return `/${p}`;
+}
+
+function getPageFromUrl(): Page | null {
+  if (typeof window === 'undefined') return null;
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  if (!path || path === '' || path === 'landing') return 'landing';
+
+  if (path === 'solutions') return 'solutions-overview';
+  if (path === 'modules') return 'modules-overview';
+  if (path === 'products' || path === 'platform') return 'products-overview';
+
+  const segments = path.split('/');
+  const prefix = segments[0];
+  const target = segments[segments.length - 1];
+
+  if (prefix === 'solutions' && target === 'service-maintenance') {
+    return 'service-maintenance';
+  }
+
+  if (ALL_KNOWN_PAGES.has(target as Page)) {
+    return target as Page;
+  }
+  return null;
+}
 
 const SESSION_KEY = 'fieldops_session';
 const AUDIT_PAGES = new Set<Page>([
@@ -109,13 +185,33 @@ export default function App() {
   // Restore session from localStorage; if one exists start on their home page
   const [storedSession] = useState<StoredSession>(() => loadSession());
   const [session, setSession] = useState<UserSession | null>(storedSession.session);
-  const [page, setPage] = useState<Page>(() =>
-    storedSession.invalid ? 'login' : storedSession.session?.homePage ?? 'landing'
-  );
+  const [page, setPage] = useState<Page>(() => {
+    const urlPage = getPageFromUrl();
+    if (urlPage) return urlPage;
+    return storedSession.invalid ? 'login' : storedSession.session?.homePage ?? 'landing';
+  });
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state?.page && ALL_KNOWN_PAGES.has(e.state.page)) {
+        setPage(e.state.page);
+      } else {
+        const fromPath = getPageFromUrl();
+        if (fromPath) setPage(fromPath);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const navigate = (target: Page) => {
     setPage(target);
     setMobileMenuOpen(false);
+    const newPath = getPathForPage(target);
+    if (window.location.pathname !== newPath) {
+      window.history.pushState({ page: target }, '', newPath);
+    }
   };
 
   const handleLogin = (s: UserSession) => {
@@ -142,25 +238,6 @@ export default function App() {
     if (session?.role === 'auditor' && !AUDIT_PAGES.has(page)) return 'audit';
     return page;
   })();
-
-  const PUBLIC_PAGES = new Set<Page>([
-    'landing',
-    'features',
-    'resources',
-    'about',
-    'organization-management',
-    'asset-management',
-    'service-management',
-    'work-order-management',
-    'inventory-management',
-    'maintenance-management',
-    'workforce-management',
-    'analytics-reporting',
-    'audit-traceability',
-    'manufacturing',
-    'facilities',
-    'enterprise-operations',
-  ]);
 
   if (PUBLIC_PAGES.has(resolvedPage)) return <LandingPage page={resolvedPage} onNavigate={navigate} />;
   if (resolvedPage === 'login') return <LoginPage onLogin={handleLogin} onNavigate={navigate} />;
