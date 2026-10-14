@@ -23,8 +23,10 @@ import {
   Gauge,
   HardHat,
   Layers3,
+  Mail,
   MapPin,
   Menu,
+  MessageSquare,
   Package,
   Radio,
   Settings2,
@@ -291,10 +293,10 @@ const megaMenus: Record<string, MegaMenuDef> = {
       },
     ],
     featured: {
-      title: "Built for Complex Operations",
+      title: "Industry & Operations Suite",
       subtitle: "Enterprise Solutions",
-      description: "Purpose-built flexibility for the environments where reliability matters most.",
-      cta: "View All Solutions",
+      description: "Purpose-built architectures for complex industrial and multi-site environments.",
+      cta: "Explore Platform",
       ctaHref: "/solutions",
       page: "solutions-overview",
     },
@@ -307,7 +309,7 @@ const megaMenus: Record<string, MegaMenuDef> = {
           {
             icon: Building2,
             title: "Organization Management",
-            description: "Bring sites, teams, and structures into one connected view.",
+            description: "Enterprise hierarchies, sites, and multi-facility structures.",
             href: "/modules/organization-management",
             page: "organization-management",
           },
@@ -327,34 +329,34 @@ const megaMenus: Record<string, MegaMenuDef> = {
           },
           {
             icon: FileCheck2,
-            title: "Service Requests",
-            description: "Structured intake and triage for every service request.",
+            title: "Service Management",
+            description: "Structured intake, triage, and resolution tracking.",
             href: "/modules/service-management",
             page: "service-management",
+          },
+          {
+            icon: Package,
+            title: "Inventory Management",
+            description: "Keep essential parts, stock, and replenishment moving.",
+            href: "/modules/inventory-management",
+            page: "inventory-management",
           },
         ],
       },
       {
-        heading: "Operations",
+        heading: "Operations & Governance",
         items: [
           {
             icon: Settings2,
-            title: "Maintenance Planning",
+            title: "Maintenance Management",
             description: "Stay ahead of downtime with proactive maintenance.",
             href: "/modules/maintenance-management",
             page: "maintenance-management",
           },
           {
-            icon: Package,
-            title: "Inventory & Spare Parts",
-            description: "Keep essential parts and stock moving efficiently.",
-            href: "/modules/inventory-management",
-            page: "inventory-management",
-          },
-          {
-            icon: Radio,
-            title: "Technician Dispatch",
-            description: "Assign and track technicians in real time.",
+            icon: Users,
+            title: "Workforce Management",
+            description: "Give every field team the context to do their best work.",
             href: "/modules/workforce-management",
             page: "workforce-management",
           },
@@ -365,14 +367,21 @@ const megaMenus: Record<string, MegaMenuDef> = {
             href: "/modules/analytics-reporting",
             page: "analytics-reporting",
           },
+          {
+            icon: ShieldCheck,
+            title: "Audit & Traceability",
+            description: "Maintain a complete history of all operational activities.",
+            href: "/modules/audit-traceability",
+            page: "audit-traceability",
+          },
         ],
       },
     ],
     featured: {
-      title: "Everything Your Enterprise Needs",
-      subtitle: "8 Connected Modules",
-      description: "Manage your organization's operational lifecycle through connected modules built for modern enterprise teams.",
-      cta: "See All Modules",
+      title: "Connected Modules Suite",
+      subtitle: "Modular Ecosystem",
+      description: "Manage your operational lifecycle through integrated, purpose-built modules.",
+      cta: "Explore Platform",
       ctaHref: "/modules",
       page: "modules-overview",
     },
@@ -1155,112 +1164,144 @@ function MegaMenuPanel({
       aria-labelledby={`mega-trigger-${menuKey.toLowerCase()}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="mega-menu-panel absolute left-0 right-0 top-full z-50 border-b border-[rgba(248,250,252,0.10)] bg-[#061328] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.5)]"
+      className="mega-menu-panel absolute left-0 right-0 top-full z-50 border-b border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.65)]"
     >
-      <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1fr_280px]">
+      <div className="mx-auto max-w-7xl px-5 py-7 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr_300px] items-stretch">
           {/* Columns */}
           {def.columns.map((col, ci) => (
             <div
               key={ci}
-              className={ci < def.columns.length ? "lg:pr-8 lg:border-r lg:border-[rgba(248,250,252,0.10)]" : ""}
+              className="lg:pr-8 lg:border-r lg:border-[rgba(248,250,252,0.10)] flex flex-col justify-between"
             >
-              <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
-                {col.heading}
-              </p>
-              <ul className="space-y-1" role="list">
-                {col.items.map((item) => {
-                  const ItemIcon = item.icon as Icon
-                  return (
-                    <li key={item.title}>
-                      <a
-                        href={item.href}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          onClose()
-                          if (item.page) {
-                            onNavigate(item.page)
-                          } else if (item.href?.startsWith("#")) {
-                            onCtaClick(item.href.replace("#", ""))
-                          }
-                        }}
-                        className="mega-menu-item group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all duration-150 hover:bg-[#162A4B]"
-                      >
-                        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-[rgba(248,250,252,0.10)] bg-[#162A4B] text-[#CBD5E1] transition-colors duration-150 group-hover:border-[#F5C451]/40 group-hover:text-[#F5C451]">
-                          <ItemIcon size={17} strokeWidth={1.7} />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-[13.5px] font-semibold leading-snug text-[#F8FAFC]">
-                            {item.title}
+              <div>
+                <p className="mb-3.5 text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
+                  {col.heading}
+                </p>
+                <ul className="space-y-1" role="list">
+                  {col.items.map((item) => {
+                    const ItemIcon = item.icon as Icon
+                    return (
+                      <li key={item.title}>
+                        <a
+                          href={item.href}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            onClose()
+                            if (item.page) {
+                              onNavigate(item.page)
+                            } else if (item.href?.startsWith("#")) {
+                              onCtaClick(item.href.replace("#", ""))
+                            }
+                          }}
+                          className="mega-menu-item group flex items-start gap-3 rounded-xl px-3 py-2 transition-all duration-150 hover:bg-[#162A4B]"
+                        >
+                          <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-[rgba(248,250,252,0.10)] bg-[#162A4B] text-[#CBD5E1] transition-colors duration-150 group-hover:border-[#F5C451]/40 group-hover:text-[#F5C451]">
+                            <ItemIcon size={17} strokeWidth={1.7} />
                           </span>
-                          <span className="mt-0.5 block text-xs leading-relaxed text-[#94A3B8]">
-                            {item.description}
+                          <span className="min-w-0">
+                            <span className="block text-[13.5px] font-semibold leading-snug text-[#F8FAFC]">
+                              {item.title}
+                            </span>
+                            <span className="mt-0.5 block text-xs leading-relaxed text-[#94A3B8]">
+                              {item.description}
+                            </span>
                           </span>
-                        </span>
-                        <span className="ml-auto mt-1 shrink-0 text-[#F5C451] opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
-                          <ArrowRight size={13} />
-                        </span>
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
+                          <span className="ml-auto mt-1 shrink-0 text-[#F5C451] opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
+                            <ArrowRight size={13} />
+                          </span>
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
             </div>
           ))}
 
-          {/* Featured */}
-          <div className="flex flex-col justify-between rounded-xl border border-[rgba(248,250,252,0.12)] bg-[#162A4B] p-5">
+          {/* Reusable Standardized Right-Side Preview Card */}
+          <div className="flex flex-col justify-between rounded-2xl border border-[rgba(248,250,252,0.12)] bg-[#162A4B] p-5 shadow-xl">
             <div>
-              <span className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
-                <span className="h-px w-4 bg-[#F5C451]" />
-                {def.featured.subtitle}
-              </span>
-              <h3 className="mt-2 text-base font-bold leading-snug text-[#F8FAFC]">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="h-[2px] w-4 rounded-full bg-[#F5C451]" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#F5C451]">
+                  {def.featured.subtitle}
+                </span>
+              </div>
+              <h3 className="text-base font-bold leading-snug text-[#F8FAFC] sm:text-[17px]">
                 {def.featured.title}
               </h3>
-              <p className="mt-2 text-xs leading-relaxed text-[#94A3B8]">
+              <p className="mt-1.5 text-xs leading-relaxed text-[#94A3B8]">
                 {def.featured.description}
               </p>
             </div>
-            {/* Mini platform preview */}
-            <div className="my-4 overflow-hidden rounded-lg border border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] p-3 shadow-inner">
+
+            {/* Compact Dashboard Preview */}
+            <div className="my-3.5 overflow-hidden rounded-xl border border-[rgba(248,250,252,0.10)] bg-[#0B1F3B] p-3 shadow-inner">
               <div className="mb-2 flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-white/20" />
-                <span className="size-1.5 rounded-full bg-white/20" />
-                <span className="size-1.5 rounded-full bg-white/20" />
-                <span className="ml-2 text-[9px] font-bold text-[#F8FAFC]">
-                  FieldOps <span className="text-[#F5C451]">Nexus</span>
+                <span className="size-1.5 rounded-full bg-white/25" />
+                <span className="size-1.5 rounded-full bg-white/25" />
+                <span className="size-1.5 rounded-full bg-white/25" />
+                <span className="ml-2 text-[9.5px] font-semibold text-[#F8FAFC]">
+                  FieldOps <span className="font-bold text-[#F5C451]">Nexus</span>
                 </span>
               </div>
-              <div className="grid grid-cols-3 gap-1">
-                {[["Assets", "2,846"], ["Open WO", "128"], ["SLA", "98%"]].map(([lbl, val]) => (
-                  <div key={lbl} className="rounded border border-[rgba(248,250,252,0.06)] bg-[#162A4B] p-1.5 text-center">
-                    <p className="text-[8px] text-[#94A3B8]">{lbl}</p>
-                    <p className="text-[10px] font-bold text-[#F8FAFC]">{val}</p>
+
+              {/* 3 Metric Tiles */}
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { label: "Assets", val: "2,846" },
+                  { label: "Open WO", val: "128" },
+                  { label: "SLA", val: "98%" },
+                ].map((m) => (
+                  <div
+                    key={m.label}
+                    className="rounded-lg border border-[rgba(248,250,252,0.06)] bg-[#162A4B] p-1.5 text-center"
+                  >
+                    <p className="text-[8.5px] font-medium text-[#94A3B8]">{m.label}</p>
+                    <p className="mt-0.5 text-xs font-bold text-[#F8FAFC]">{m.val}</p>
                   </div>
                 ))}
               </div>
-              <div className="mt-2 flex h-8 items-end gap-0.5">
-                {[40, 55, 45, 70, 60, 85, 65].map((h, i) => (
+
+              {/* Mini Bar Chart */}
+              <div className="mt-2.5 flex h-7 items-end gap-1 px-0.5">
+                {[35, 48, 40, 65, 52, 88, 58].map((h, i) => (
                   <span
                     key={i}
-                    className={`flex-1 rounded-t-sm ${i === 5 ? "bg-[#F5C451]" : "bg-white/10"}`}
+                    className={`flex-1 rounded-t-sm transition-all ${
+                      i === 5
+                        ? "bg-[#F5C451] shadow-[0_0_8px_rgba(245,196,81,0.35)]"
+                        : "bg-white/10"
+                    }`}
                     style={{ height: `${h}%` }}
                   />
                 ))}
               </div>
             </div>
-            <a
-              href={def.featured.ctaHref}
-              onClick={(e) => {
-                e.preventDefault()
+
+            {/* Exactly One Primary Explore Platform CTA */}
+            <button
+              type="button"
+              onClick={() => {
                 onClose()
-                onCtaClick(def.featured.ctaHref.replace("#", ""))
+                if (def.featured.page) {
+                  onNavigate(def.featured.page)
+                } else if (def.featured.ctaHref?.startsWith("#")) {
+                  onCtaClick(def.featured.ctaHref.replace("#", ""))
+                } else if (menuKey === "Product") {
+                  onNavigate("products-overview")
+                } else if (menuKey === "Solutions") {
+                  onNavigate("solutions-overview")
+                } else if (menuKey === "Modules") {
+                  onNavigate("modules-overview")
+                }
               }}
-              className="landing-button inline-flex items-center justify-center gap-2 rounded-lg bg-[#F5C451] px-4 py-2.5 text-xs font-bold text-[#0B1F3B] transition-colors hover:bg-gold-400"
+              className="landing-button flex w-full items-center justify-center gap-2 rounded-xl bg-[#F5C451] px-4 py-2.5 text-xs font-bold text-[#0B1F3B] shadow-[0_2px_12px_rgba(245,196,81,0.25)] transition-all hover:bg-gold-400"
             >
-              {def.featured.cta} <ArrowRight size={13} className="text-[#0B1F3B]" />
-            </a>
+              <span>{def.featured.cta || "Explore Platform"}</span>
+              <ArrowRight size={13} className="stroke-[2.5]" />
+            </button>
           </div>
         </div>
       </div>
@@ -1270,6 +1311,7 @@ function MegaMenuPanel({
 
 export default function LandingPage({ onNavigate, page }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
 
   const [activeMega, setActiveMega] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
@@ -1385,25 +1427,30 @@ export default function LandingPage({ onNavigate, page }: Props) {
     if (page === "features")   return "Features"
     if (page === "resources")  return "Resources"
     if (page === "about")      return "About"
+    if (page === "products-overview") return "Product"
     if (
-      page === "organization-management" ||
-      page === "asset-management"      ||
-      page === "service-management"    ||
-      page === "work-order-management" ||
-      page === "inventory-management"  ||
-      page === "maintenance-management" ||
-      page === "workforce-management"  ||
-      page === "analytics-reporting"   ||
-      page === "audit-traceability"
-    ) return "Product"
-    if (
+      page === "solutions-overview"   ||
       page === "manufacturing"        ||
       page === "facilities"           ||
       page === "enterprise-operations" ||
       page === "sla-management"       ||
       page === "multi-site-management" ||
-      page === "connected-data"
+      page === "connected-data"       ||
+      page === "service-maintenance"  ||
+      page === "infrastructure"
     ) return "Solutions"
+    if (
+      page === "modules-overview"        ||
+      page === "organization-management" ||
+      page === "asset-management"         ||
+      page === "service-management"       ||
+      page === "work-order-management"    ||
+      page === "inventory-management"     ||
+      page === "maintenance-management"   ||
+      page === "workforce-management"     ||
+      page === "analytics-reporting"      ||
+      page === "audit-traceability"
+    ) return "Modules"
     // Home page (landing) and any unrecognised page: nothing is active.
     return null
   })()
@@ -1491,11 +1538,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
   return (
     <div className="min-w-0 overflow-x-clip bg-white font-sans text-text-primary scroll-smooth">
       {/* ── Global Nexus Flow Operational Scroll Telemetry ── */}
-      <NexusScrollFlow
-        workflowProgress={workflowProgress}
-        activeWorkflowStep={activeWorkflowStep}
-        isInWorkflow={isInWorkflow}
-      />
+      <NexusScrollFlow />
 
       <header
         ref={headerRef}
@@ -2416,15 +2459,19 @@ export default function LandingPage({ onNavigate, page }: Props) {
         <MarketingPages page={page} onNavigate={onNavigate} />
       )}
 
-      <footer className="bg-navy-950 text-white">
+      <footer className="bg-[#0B1F3B] text-white border-t border-white/10">
         <div className="mx-auto max-w-7xl px-5 pb-8 pt-16 lg:px-8">
           <div className="grid gap-12 border-b border-white/10 pb-14 sm:grid-cols-2 lg:grid-cols-[2fr_repeat(4,1fr)]">
             <div>
               <Brand light />
-              <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/45">
+              <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/50">
                 The connected enterprise platform for assets, service,
                 maintenance, and the people behind it all.
               </p>
+              <div className="mt-6 flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#10B981] animate-pulse" />
+                <span className="text-xs font-medium text-white/60">Platform Status: All Systems Operational</span>
+              </div>
             </div>
             {[
               {
@@ -2475,7 +2522,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                             }
                           }
                         }}
-                        className="w-fit text-left text-sm text-white/45 transition-colors hover:text-gold-400"
+                        className="w-fit text-left text-sm text-white/50 transition-colors hover:text-[#F5C451]"
                       >
                         {link.label}
                       </button>
@@ -2483,7 +2530,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
                       <a
                         key={link.label}
                         href={link.href}
-                        className="w-fit text-sm text-white/45 transition-colors hover:text-gold-400"
+                        className="w-fit text-sm text-white/50 transition-colors hover:text-[#F5C451]"
                       >
                         {link.label}
                       </a>
@@ -2494,21 +2541,133 @@ export default function LandingPage({ onNavigate, page }: Props) {
             ))}
             <div>
               <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-white/80">
-                Contact
+                Contact & Support
               </h3>
-              <div className="flex flex-col gap-3 text-sm text-white/45">
-                <a href={contactLink} className="hover:text-gold-400">
+              <div className="flex flex-col gap-3 text-sm text-white/50">
+                <a href={contactLink} className="hover:text-[#F5C451] transition-colors">
                   Email our team
+                </a>
+                <a href="mailto:support@fieldopsnexus.com" className="hover:text-[#F5C451] transition-colors">
+                  Enterprise Support
+                </a>
+                <a href="mailto:compliance@fieldopsnexus.com" className="hover:text-[#F5C451] transition-colors">
+                  Compliance Inquiries
                 </a>
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-between gap-4 pt-7 text-xs text-white/35 sm:flex-row">
+
+          {/* Legal Navigation Bar */}
+          <div className="pt-8 pb-4 border-b border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2.5 text-xs">
+              {[
+                { label: "Privacy Policy", page: "privacy-policy" as Page },
+                { label: "Terms & Conditions", page: "terms-and-conditions" as Page },
+                { label: "Disclaimer", page: "disclaimer" as Page },
+                { label: "Cookie Policy", page: "cookie-policy" as Page },
+              ].map((legal) => (
+                <button
+                  key={legal.label}
+                  type="button"
+                  onClick={() => {
+                    if (page === legal.page) {
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    } else {
+                      onNavigate(legal.page)
+                    }
+                  }}
+                  className={`transition-colors cursor-pointer ${
+                    page === legal.page
+                      ? "text-[#F5C451] font-semibold underline underline-offset-4"
+                      : "text-white/50 hover:text-[#F5C451]"
+                  }`}
+                >
+                  {legal.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="text-xs text-white/40 lg:text-right font-medium tracking-wide">
+              Built for Professional Standards
+            </div>
+          </div>
+
+          {/* Copyright row */}
+          <div className="flex flex-col justify-between gap-3 pt-6 text-xs text-white/35 sm:flex-row">
             <span>© 2026 FieldOps Nexus. All rights reserved.</span>
-            <span>Built for the work that matters.</span>
+            <span>Enterprise Operations Platform Architecture</span>
           </div>
         </div>
       </footer>
+
+      {/* ── Existing Gold Circular Floating Chat Button ── */}
+      <div className="fixed bottom-6 right-6 z-40 select-none">
+        {chatOpen && (
+          <div className="mb-3 w-80 sm:w-96 rounded-2xl border border-white/10 bg-[#0B1F3B] p-5 text-white shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#10B981] animate-pulse" />
+                <h4 className="text-sm font-bold text-white">FieldOps Nexus Concierge</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setChatOpen(false)}
+                className="text-white/60 hover:text-white transition-colors"
+                aria-label="Close chat"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <p className="mt-3 text-xs text-white/70 leading-relaxed">
+              Welcome to FieldOps Nexus. How can our operations advisory team assist your organization today?
+            </p>
+
+            <div className="mt-4 flex flex-col gap-2">
+              <a
+                href={demoLink}
+                onClick={() => setChatOpen(false)}
+                className="flex items-center justify-between rounded-lg border border-white/10 bg-[#162A4B] px-3 py-2.5 text-xs font-semibold text-white hover:border-[#F5C451]/50 hover:bg-[#162A4B]/80 transition-all"
+              >
+                <span>Request Platform Architecture Demo</span>
+                <ArrowRight size={13} className="text-[#F5C451]" />
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  setChatOpen(false)
+                  onNavigate("sla-management")
+                }}
+                className="flex items-center justify-between rounded-lg border border-white/10 bg-[#162A4B] px-3 py-2.5 text-xs font-semibold text-white hover:border-[#F5C451]/50 hover:bg-[#162A4B]/80 transition-all"
+              >
+                <span>Review SLA Profiles & Commitments</span>
+                <ArrowRight size={13} className="text-[#F5C451]" />
+              </button>
+              <a
+                href="mailto:support@fieldopsnexus.com"
+                className="flex items-center justify-between rounded-lg border border-white/10 bg-[#162A4B] px-3 py-2.5 text-xs font-semibold text-white hover:border-[#F5C451]/50 hover:bg-[#162A4B]/80 transition-all"
+              >
+                <span>Email Direct Support (24/7)</span>
+                <Mail size={13} className="text-[#F5C451]" />
+              </a>
+            </div>
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setChatOpen(!chatOpen)}
+          aria-label="Open support and inquiry chat"
+          className="group relative flex size-12 sm:size-14 items-center justify-center rounded-full bg-[#F5C451] text-[#0B1F3B] shadow-[0_4px_24px_rgba(245,196,81,0.45)] transition-all duration-200 hover:scale-105 hover:bg-gold-400 focus:outline-none focus:ring-4 focus:ring-[#F5C451]/40"
+        >
+          <span className="absolute -inset-1 rounded-full bg-[#F5C451]/30 blur-sm animate-ping opacity-40 pointer-events-none" />
+          {chatOpen ? (
+            <X size={24} className="stroke-[2.5] relative z-10" />
+          ) : (
+            <MessageSquare size={24} className="fill-[#0B1F3B] stroke-[1.5] relative z-10" />
+          )}
+        </button>
+      </div>
     </div>
   )
 }

@@ -64,6 +64,13 @@ const MODULES_PAGES = new Set<Page>([
   'audit-traceability',
 ]);
 
+const LEGAL_PAGES = new Set<Page>([
+  'privacy-policy',
+  'terms-and-conditions',
+  'disclaimer',
+  'cookie-policy',
+]);
+
 const PUBLIC_PAGES = new Set<Page>([
   'landing',
   'features',
@@ -74,6 +81,7 @@ const PUBLIC_PAGES = new Set<Page>([
   'products-overview',
   ...SOLUTIONS_PAGES,
   ...MODULES_PAGES,
+  ...LEGAL_PAGES,
 ]);
 
 const ALL_KNOWN_PAGES = new Set<Page>([
@@ -91,6 +99,7 @@ function getPathForPage(p: Page): string {
   if (p === 'products-overview') return '/products';
   if (SOLUTIONS_PAGES.has(p)) return `/solutions/${p}`;
   if (MODULES_PAGES.has(p)) return `/modules/${p}`;
+  if (LEGAL_PAGES.has(p)) return `/${p}`;
   return `/${p}`;
 }
 
