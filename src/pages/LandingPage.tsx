@@ -1491,11 +1491,7 @@ export default function LandingPage({ onNavigate, page }: Props) {
   return (
     <div className="min-w-0 overflow-x-clip bg-white font-sans text-text-primary scroll-smooth">
       {/* ── Global Nexus Flow Operational Scroll Telemetry ── */}
-      <NexusScrollFlow
-        workflowProgress={workflowProgress}
-        activeWorkflowStep={activeWorkflowStep}
-        isInWorkflow={isInWorkflow}
-      />
+      <NexusScrollFlow />
 
       <header
         ref={headerRef}
