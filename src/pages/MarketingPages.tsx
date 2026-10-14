@@ -51,6 +51,12 @@ import ModulesOverviewPage from "./ModulesOverviewPage"
 import ProductsOverviewPage from "./ProductsOverviewPage"
 import ServiceMaintenancePage from "./ServiceMaintenancePage"
 import InfrastructureSolutionPage from "./InfrastructureSolutionPage"
+import {
+  PrivacyPolicyPage,
+  TermsAndConditionsPage,
+  DisclaimerPage,
+  CookiePolicyPage,
+} from "./LegalPages"
 
 const assetImg = "/asset-telemetry-hero.jpg"
 
@@ -2038,6 +2044,23 @@ export default function MarketingPages({ page, onNavigate }: { page: Page; onNav
 
   if (page === "connected-data") {
     return <ConnectedDataPage onNavigate={onNavigate} />
+  }
+
+  // Legal Pages
+  if (page === "privacy-policy") {
+    return <PrivacyPolicyPage onNavigate={onNavigate} />
+  }
+
+  if (page === "terms-and-conditions") {
+    return <TermsAndConditionsPage onNavigate={onNavigate} />
+  }
+
+  if (page === "disclaimer") {
+    return <DisclaimerPage onNavigate={onNavigate} />
+  }
+
+  if (page === "cookie-policy") {
+    return <CookiePolicyPage onNavigate={onNavigate} />
   }
 
   // Fallback / standard module & solution pages
