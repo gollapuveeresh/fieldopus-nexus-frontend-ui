@@ -161,7 +161,7 @@ export default function ServiceMaintenancePage({ onNavigate }: Props) {
                   Deliver responsive service, proactive maintenance execution, and asset reliability wherever work happens.
                 </p>
                 <p className="mt-4 max-w-xl text-base text-white/75 leading-relaxed">
-                  Bridge the gap between work order intake, technician dispatch, van inventory, and verified completion with zero downtime surprises.
+                  Bridge the gap between work order intake, technician dispatch, van inventory, and verified completion to minimize operational disruptions.
                 </p>
 
                 {/* Capability Badges */}
@@ -200,7 +200,7 @@ export default function ServiceMaintenancePage({ onNavigate }: Props) {
                         Live Field Service Dispatch
                       </span>
                       <span className="rounded-full bg-gold-400/20 border border-gold-400/40 px-2.5 py-0.5 font-bold text-gold-300">
-                        99.4% SLA Adherence
+                        Active SLA Tracking
                       </span>
                     </div>
                   </div>
@@ -236,19 +236,19 @@ export default function ServiceMaintenancePage({ onNavigate }: Props) {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <Reveal delay={0} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">99.4%</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Multi-Tier</p>
               <p className="text-sm font-bold text-navy-800 mt-1">SLA Contract Adherence</p>
-              <p className="text-xs text-text-secondary mt-0.5">Across critical emergency repairs and scheduled servicing</p>
+              <p className="text-xs text-text-secondary mt-0.5">Configurable policies across emergency repairs and scheduled servicing</p>
             </Reveal>
             <Reveal delay={100} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">32% Faster</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">First-Time Fix Rate (FTFR)</p>
-              <p className="text-xs text-text-secondary mt-0.5">Pre-staged spare parts and digital mobile manuals</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Pre-Staged</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">First-Time Fix Support</p>
+              <p className="text-xs text-text-secondary mt-0.5">Linked spare parts staging and mobile digital manuals</p>
             </Reveal>
             <Reveal delay={200} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">42 min</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">Average Incident MTTR</p>
-              <p className="text-xs text-text-secondary mt-0.5">Smart technician geo-routing and rapid intake triage</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Tracked</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Incident MTTR Governance</p>
+              <p className="text-xs text-text-secondary mt-0.5">Automated timer tracking from initial triage to supervisor sign-off</p>
             </Reveal>
           </div>
         </div>
@@ -279,7 +279,7 @@ export default function ServiceMaintenancePage({ onNavigate }: Props) {
               {
                 icon: Users,
                 title: "Skill-Based Dispatching",
-                desc: "Match service requests with certified technicians holding the right manufacturer clearances and safety badges.",
+                desc: "Match service requests with qualified technicians holding the required skills, clearances, and training records.",
               },
               {
                 icon: Package,

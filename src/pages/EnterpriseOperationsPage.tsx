@@ -179,7 +179,7 @@ export default function EnterpriseOperationsPage({ onNavigate }: Props) {
                   </div>
                   <div className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/85">
                     <Lock size={14} className="text-amber-400" />
-                    <span>SOC 2 Type II Certified</span>
+                    <span>Role-Based Access Governance</span>
                   </div>
                 </div>
               </Reveal>
@@ -259,9 +259,9 @@ export default function EnterpriseOperationsPage({ onNavigate }: Props) {
               <p className="text-xs text-text-secondary mt-0.5">SAML 2.0, Okta, Azure AD, and Active Directory federation</p>
             </Reveal>
             <Reveal delay={200} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">99.99%</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">High Availability Cloud SLA</p>
-              <p className="text-xs text-text-secondary mt-0.5">Multi-region redundancy with disaster recovery guaranteed</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">High Uptime</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Resilient Cloud Architecture</p>
+              <p className="text-xs text-text-secondary mt-0.5">Designed for multi-region redundancy and failover support</p>
             </Reveal>
           </div>
         </div>
@@ -301,8 +301,8 @@ export default function EnterpriseOperationsPage({ onNavigate }: Props) {
               },
               {
                 icon: ShieldCheck,
-                title: "SOC 2 Type II Security",
-                desc: "Complete cryptographic audit logs, encrypted data at rest and in transit, and immutable compliance records.",
+                title: "Enterprise Access Governance",
+                desc: "Granular operational audit logging, configurable role boundaries, and structured compliance records.",
               },
             ].map((card, i) => {
               const CardIcon = card.icon

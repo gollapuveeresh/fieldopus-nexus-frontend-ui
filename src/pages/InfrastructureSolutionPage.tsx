@@ -141,14 +141,14 @@ export default function InfrastructureSolutionPage({ onNavigate }: Props) {
               <p className="text-xs text-text-secondary mt-0.5">Automated telemetry alerts for electrical substations and pump stations</p>
             </Reveal>
             <Reveal delay={100} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">100%</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">Public Safety Compliance</p>
-              <p className="text-xs text-text-secondary mt-0.5">Automated statutory inspection logging for EPA, DOT, and OSHA audits</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Structured</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Safety & Inspection Governance</p>
+              <p className="text-xs text-text-secondary mt-0.5">Digital inspection checklists and structured logging for equipment audits</p>
             </Reveal>
             <Reveal delay={200} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">45%</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">Faster Emergency Dispatch</p>
-              <p className="text-xs text-text-secondary mt-0.5">Automated crew mobilization during severe weather and power events</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Rapid</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Emergency Dispatch Coordination</p>
+              <p className="text-xs text-text-secondary mt-0.5">Configurable crew mobilization during severe weather and utility events</p>
             </Reveal>
           </div>
         </div>

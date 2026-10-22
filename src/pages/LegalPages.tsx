@@ -259,12 +259,12 @@ export function PrivacyPolicyPage({ onNavigate }: { onNavigate: (page: Page) => 
           <ul className="list-disc pl-5 space-y-2">
             <li>Providing core work order lifecycle routing, automated triage, and dispatch execution.</li>
             <li>Calculating mean-time-to-repair (MTTR), service level agreement (SLA) conformance, and maintenance schedule compliance.</li>
-            <li>Enforcing cryptographic tenant isolation, preventing unauthorized lateral access, and verifying multi-factor access credentials.</li>
+            <li>Supporting tenant isolation, access boundaries, and credential authentication.</li>
             <li>Generating audit reports, regulatory compliance packages, and automated equipment telemetry insights.</li>
             <li>Transmitting transactional service alerts, SLA breach warnings, and work order assignment notifications.</li>
           </ul>
           <div className="rounded-lg border border-[#E2E8F0] bg-slate-50 p-4 text-xs">
-            <strong>Zero Commercial Monetization Guarantee:</strong> FieldOps Nexus does not monetize, sell, lease, or rent customer personal or industrial operational data to data brokers, third-party advertising networks, or unauthorized aggregators under any circumstances.
+            <strong>Commercial Data Policy:</strong> FieldOps Nexus does not sell or rent customer personal or operational data to third-party data brokers or advertising networks.
           </div>
         </>
       ),
@@ -275,14 +275,13 @@ export function PrivacyPolicyPage({ onNavigate }: { onNavigate: (page: Page) => 
       content: (
         <>
           <p>
-            FieldOps Nexus implements multi-layered technological and organizational controls designed to protect enterprise data from unauthorized access, accidental loss, alteration, or disclosure:
+            FieldOps Nexus is designed with multi-layered technical and organizational controls to protect enterprise data:
           </p>
           <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Encryption at Rest:</strong> All stored database clusters, object storage buckets, and automated backups are encrypted using AES-256 standard encryption.</li>
-            <li><strong>Encryption in Transit:</strong> External and internal service communication requires Transport Layer Security (TLS 1.3/1.2) with strict HTTP Strict Transport Security (HSTS) headers.</li>
-            <li><strong>Tenant Isolation:</strong> Logical separation enforced through multi-tenant database partitioning and tenant-scoped identity tokens.</li>
-            <li><strong>Access Controls:</strong> Role-based access control (RBAC), multi-factor authentication enforcement, and immutable administrative audit logging.</li>
-            <li><strong>Cloud Infrastructure:</strong> Primary data centers hosted in secure SOC-2 Type II certified cloud facilities located in <span className="font-semibold text-[#0B1F3B]">[PLACEHOLDER "” CONFIRM BEFORE PUBLICATION: Data Center Region, e.g., US-East / EU-Central]</span>.</li>
+            <li><strong>Data Protection Measures:</strong> Production deployments are designed to utilize industry-standard storage controls and transport security (such as TLS).</li>
+            <li><strong>Tenant Scoping:</strong> Logical boundaries designed to separate organizational tenant data.</li>
+            <li><strong>Access Controls:</strong> Configurable role-based permissions and administrative activity logging.</li>
+            <li><strong>Hosting Infrastructure:</strong> Production hosting infrastructure specifications are defined in applicable customer enterprise agreements and deployment documentation.</li>
           </ul>
         </>
       ),
@@ -432,7 +431,7 @@ export function TermsAndConditionsPage({ onNavigate }: { onNavigate: (page: Page
       content: (
         <>
           <p>
-            FieldOps Nexus targets a monthly production platform availability of <span className="font-semibold text-[#0B1F3B]">[PLACEHOLDER "” CONFIRM BEFORE PUBLICATION: e.g., 99.9% Uptime Commitment]</span>, excluding scheduled maintenance windows announced in advance.
+            Target service availability metrics, maintenance windows, and service credits (if any) are governed by the applicable enterprise Service Level Agreement (SLA) executed between the parties.
           </p>
           <p>
             FieldOps Nexus is not liable for service interruptions caused by third-party cellular outages, local hardware failures, or force majeure events beyond reasonable commercial control.
