@@ -164,7 +164,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
       icon: Wrench,
       description: "Deliver predictable, high-touch field service from automated ticket intake to rapid first-time resolution.",
       tag: "SLA Assurance",
-      stat: "99.4% SLA Compliance",
+      stat: "SLA Priority Tiers",
     },
     {
       title: "Work Order Management",
@@ -180,7 +180,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
       icon: Package,
       description: "Keep essential spare parts, tooling, and consumables synchronized across central warehouses and technician vans.",
       tag: "Parts & Stock",
-      stat: "99.8% Accuracy",
+      stat: "Stock Balances",
     },
     {
       title: "Maintenance Management",
@@ -188,7 +188,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
       icon: Settings2,
       description: "Prevent unexpected equipment downtime through automated PM schedules, inspection triggers, and calibration cycles.",
       tag: "Preventive Ops",
-      stat: "42% Less Downtime",
+      stat: "PM Schedules",
     },
     {
       title: "Workforce Management",
@@ -210,9 +210,9 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
       title: "Audit & Traceability",
       page: "audit-traceability" as Page,
       icon: ShieldCheck,
-      description: "Maintain an immutable, timestamped audit trail of every signature, part consumption, and compliance sign-off.",
+      description: "Maintain a structured, timestamped audit trail of every signature, part consumption, and verification sign-off.",
       tag: "Compliance",
-      stat: "100% Traceability",
+      stat: "Activity Traceability",
     },
   ]
 
@@ -220,7 +220,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
     { title: "Asset Monitored", icon: Boxes, role: "Telemetry / Sensor", desc: "Sensors or operators trigger an operational alert or scheduled maintenance event." },
     { title: "Service Request", icon: FileCheck2, role: "Client / Dispatch", desc: "Ticket automatically prioritized with SLA tracking and equipment history attached." },
     { title: "Work Order", icon: ClipboardList, role: "Maintenance Planner", desc: "Job scope formulated with required skills, SOP checklists, and estimated hours." },
-    { title: "Technician Dispatch", icon: Users, role: "Field Technician", desc: "Nearest certified technician is assigned via geo-routing and mobile app notification." },
+    { title: "Technician Dispatch", icon: Users, role: "Field Technician", desc: "Qualified technician is assigned via skill matching, availability, and mobile app notification." },
     { title: "Spare Parts Allocated", icon: Package, role: "Warehouse / Van Stock", desc: "Components verified and reserved from central inventory or vehicle stock." },
     { title: "Supervisor Review", icon: ShieldCheck, role: "Field Supervisor", desc: "Completed checklist, photo evidence, and test measurements verified." },
     { title: "Client Confirmation", icon: CircleCheck, role: "Client Representative", desc: "Digital sign-off captured on mobile device with automated service receipt." },
@@ -273,16 +273,16 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
               {/* Quick stats strip */}
               <div className="mt-12 grid grid-cols-3 gap-4 sm:gap-8 border-t border-white/10 pt-8 max-w-lg mx-auto w-full text-center">
                 <div className="flex flex-col items-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">99.4%</p>
-                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">SLA Adherence</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">Tiered</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">SLA Governance</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-white">42%</p>
-                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">Faster MTTR</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white">Tracked</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">MTTR Governance</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">100%</p>
-                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">Audit Compliance</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gold-400">Structured</p>
+                  <p className="text-[10px] sm:text-xs text-white/60 mt-0.5">Audit Logging</p>
                 </div>
               </div>
             </Reveal>
@@ -440,7 +440,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                     </div>
                     <div className="flex justify-between text-white/80">
                       <span className="text-white/50">Audit State:</span>
-                      <span className="font-mono font-semibold text-gold-300">Cryptographically Signed</span>
+                      <span className="font-mono font-semibold text-gold-300">Timestamp Logged</span>
                     </div>
                   </div>
                 </div>
@@ -547,7 +547,7 @@ function FeaturesPageContent({ onNavigate }: { onNavigate: (page: Page) => void 
                 <ul className="mt-6 space-y-3 text-sm font-medium text-navy-900">
                   <li className="flex items-center gap-3">
                     <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                    Automated technician dispatch matched to certified skills &amp; proximity
+                    Automated technician dispatch matched to verified skills &amp; proximity
                   </li>
                   <li className="flex items-center gap-3">
                     <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
@@ -610,14 +610,14 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
       category: "Product Guides",
       title: "Optimizing Mobile Technician Dispatch & Route Scheduling",
       desc: "How modern operations teams reduce travel time and elevate first-time fix rates using skills-based dispatch algorithms.",
-      expandedDesc: "Dispatch inefficiency is one of the largest hidden costs in field service operations. When the wrong technician is sent to a job—one without the required certifications, tools, or proximity—the result is a wasted trip, a delayed resolution, and a frustrated customer. Modern skills-based dispatch systems eliminate this problem by automatically matching work orders to the best available technician based on a multi-factor scoring model including certifications, GPS proximity, workload balance, and van stock availability.",
+      expandedDesc: "Dispatch inefficiency is one of the largest hidden costs in field service operations. When the wrong technician is sent to a job—one without the required qualifications, tools, or proximity—the result is a wasted trip, a delayed resolution, and a frustrated customer. Modern skills-based dispatch systems eliminate this problem by automatically matching work orders to the best available technician based on a multi-factor scoring model including verified skills, GPS proximity, workload balance, and van stock availability.",
       readTime: "6 min read",
       date: "September 2026",
       tag: "Field Workforce",
       image: "/work-order-technician.jpg",
       imageAlt: "Field technician inspecting industrial pump assembly with mobile device",
       takeaways: [
-        "Skills-based technician assignment with certification matching",
+        "Skills-based technician assignment with qualification matching",
         "Route optimization and travel time reduction for multi-stop routes",
         "Real-time scheduling and dynamic rescheduling via live GPS",
         "Mobile app workflows for technicians with offline capability",
@@ -646,15 +646,15 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
       slug: "continuous-audit-readiness",
       category: "Industry Insights",
       title: "Continuous Audit Readiness: Eliminating Paper Compliance Gaps",
-      desc: "Why cryptographic timestamps and immutable operational ledgers protect heavy industrial and facilities operators during audits.",
-      expandedDesc: "Audit preparation has traditionally been one of the most labor-intensive activities in heavy industrial and facilities management. Teams spend weeks manually compiling maintenance records, collecting technician sign-off sheets, and reconciling paper checklists. FieldOps Nexus addresses these gaps through immutable digital audit logging where every action is recorded with a server-generated timestamp that cannot be retroactively altered, eliminating paper-based compliance vulnerabilities.",
+      desc: "Why structured digital timestamps and centralized operational logs assist industrial and facilities operators during audits.",
+      expandedDesc: "Audit preparation has traditionally been one of the most labor-intensive activities in heavy industrial and facilities management. Teams spend weeks manually compiling maintenance records, collecting technician sign-off sheets, and reconciling paper checklists. FieldOps Nexus addresses these gaps through centralized digital audit logging where actions are recorded with system timestamps and structured actor history, reducing paper-based administrative gaps.",
       readTime: "5 min read",
       date: "July 2026",
       tag: "Compliance",
       image: "/workflow-approval.jpg",
       imageAlt: "Supervisor reviewing and approving field service compliance documentation",
       takeaways: [
-        "Immutable audit logs with cryptographic timestamps",
+        "Structured audit logs with system timestamps",
         "Mandatory photo capture for high-risk work order types",
         "Digital technician and supervisor dual sign-off workflows",
         "Automated weekly audit log summaries for compliance teams",
@@ -713,7 +713,7 @@ function ResourcesPageContent({ onNavigate }: { onNavigate: (page: Page) => void
     },
     {
       q: "What level of audit traceability is maintained?",
-      a: "Every work order update, status transition, part allocation, signature, and checklist entry is permanently logged with an immutable timestamp and user identifier.",
+      a: "Key work order updates, status transitions, part allocations, signatures, and checklist entries are recorded in the audit log with timestamps and user identifiers.",
     },
   ]
 
@@ -1103,9 +1103,9 @@ function AboutPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) 
       desc: "Every stakeholder, from the shop floor technician to executive leadership, sees accurate, real-time status without waiting on manual reports.",
     },
     {
-      title: "Traceability & Compliance",
+      title: "Traceability & Governance",
       icon: ShieldCheck,
-      desc: "Complete audit trails, cryptographic timestamps, and mandatory photo verification protect operational integrity at scale.",
+      desc: "Structured audit trails, system timestamps, and supervisor photo verification support operational integrity at scale.",
     },
     {
       title: "Workflow Precision",
@@ -1122,12 +1122,12 @@ function AboutPageContent({ onNavigate }: { onNavigate: (page: Page) => void }) 
   const ecosystemEntities = [
     { label: "Organizations", desc: "Multi-site enterprise hierarchy", icon: Building2 },
     { label: "Assets", desc: "Critical machinery & components", icon: Boxes },
-    { label: "Technicians", desc: "Certified mobile field workforce", icon: Users },
+    { label: "Technicians", desc: "Mobile field workforce & crews", icon: Users },
     { label: "Service Requests", desc: "Client & sensor intake channel", icon: FileCheck2 },
     { label: "Work Orders", desc: "Structured dispatch & execution", icon: ClipboardList },
     { label: "Inventory", desc: "Warehouses & van stock ledger", icon: Package },
-    { label: "Analytics", desc: "Real-time MTTR & SLA reports", icon: BarChart3 },
-    { label: "Audit Trail", desc: "Immutable compliance history", icon: ShieldCheck },
+    { label: "Analytics", desc: "Operational MTTR & SLA reports", icon: BarChart3 },
+    { label: "Audit Trail", desc: "Structured operational history", icon: ShieldCheck },
   ]
 
   return (
@@ -1360,7 +1360,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Define and manage your entire organizational structure — from enterprise groups and regional divisions down to individual sites, departments, and teams. Control access boundaries, asset ownership, and workforce allocation with precision.",
     metrics: [
       ["12+", "Org Levels Supported", "From enterprise to sub-department"],
-      ["100%", "Role-Based Visibility", "Every team sees what matters to them"],
+      ["Configured", "Role-Based Visibility", "Every team sees what matters to them"],
       ["Multi-Site", "Hierarchy Control", "Sites, zones, and buildings unified"],
     ],
     features: [
@@ -1400,8 +1400,8 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Track physical assets across complex enterprise sites, maintain granular parent-child hierarchies, and monitor live operational telemetry with zero blind spots.",
     metrics: [
       ["2,846", "Active Assets Monitored", "Across 14 facilities"],
-      ["99.4%", "Asset Uptime", "+2.4% vs last quarter"],
-      ["$1.4M", "Downtime Prevented", "Estimated annual savings"],
+      ["Telemetry", "Condition Monitoring", "Vibration, runtime, and threshold tracking"],
+      ["Lifecycle", "TCO & Depreciation", "Depreciation schedules and warranty tracking"],
     ],
     features: [
       { title: "Parent-Child Hierarchy", desc: "Build multi-tier asset trees from regional sites down to individual components.", icon: Boxes },
@@ -1482,13 +1482,13 @@ const PAGE_DATA: Record<string, PageMeta> = {
     tagline: "Plan, assign, and track work orders with absolute clarity.",
     description: "Equip planners and technicians with clear digital work orders, parts staging, safety checklists, and audit-ready digital signatures.",
     metrics: [
-      ["142", "Active Work Orders", "88% on schedule"],
-      ["3.2 hrs", "Average Turnaround", "38% improvement"],
-      ["100%", "Checklist Compliance", "Mandatory safety verification"],
+      ["Active Queue", "Work Order Dispatch", "Prioritized dispatch and stage tracking"],
+      ["SOP Guided", "Task Checklists", "Step-by-step procedures and safety checks"],
+      ["Verified", "Supervisor Sign-Off", "Documented verification upon completion"],
     ],
     features: [
       { title: "Digital Work Packages", desc: "Complete job instructions, required tools, parts list, and hazard notes.", icon: ClipboardList },
-      { title: "Skills-Based Dispatch", desc: "Match orders to technician certifications, vehicle loadout, and GPS location.", icon: Radio },
+      { title: "Skills-Based Dispatch", desc: "Match orders to technician skills, vehicle loadout, and location.", icon: Radio },
       { title: "Mobile Execution", desc: "Native field experience with offline mode, voice-to-text, and camera photo capture.", icon: HardHat },
       { title: "Digital Sign-Off", desc: "Secure electronic sign-offs from supervisors and clients upon completion.", icon: ShieldCheck },
     ],
@@ -1501,7 +1501,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
             <span className="bg-gold-500 text-navy-950 font-bold px-2 py-0.5 rounded text-[10px]">In Progress</span>
           </div>
           <div className="text-[11px] space-y-1 text-text-secondary">
-            <p>Technician: Marcus Chen (Certified Tier 3)</p>
+            <p>Technician: Marcus Chen (Senior Specialist)</p>
             <p>Parts: Bearings Kit #BK-400 (Allocated from Van 2)</p>
             <p className="text-emerald-600 font-semibold">✓ Safety Lockout Tagout Verified</p>
           </div>
@@ -1515,9 +1515,9 @@ const PAGE_DATA: Record<string, PageMeta> = {
     tagline: "Keep essential parts moving without overstocking.",
     description: "Eliminate stockouts and delays with multi-location inventory tracking, automated min/max reordering, and barcode scanning.",
     metrics: [
-      ["99.8%", "Inventory Accuracy", "Verified by cycle counts"],
-      ["0", "Stockout Delays", "Across critical Tier 1 components"],
-      ["$450K", "Working Capital Saved", "Optimized reorder points"],
+      ["Multi-Store", "Stock Balances", "Central stores, site cribs, and van stock"],
+      ["Automated", "Threshold Alerts", "Reorder triggers on min/max levels"],
+      ["Cycle Counts", "Inventory Audits", "Physical verification and discrepancy logging"],
     ],
     features: [
       { title: "Multi-Site Warehousing", desc: "Track central warehouses, regional distribution hubs, and mobile van inventories.", icon: Package },
@@ -1587,11 +1587,11 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Coordinate technician schedules, track real-time job progression, and empower field teams with intuitive mobile tools.",
     metrics: [
       ["68", "Field Technicians", "Fully coordinated via mobile app"],
-      ["28%", "Increase in Capacity", "More jobs completed per technician"],
-      ["99.2%", "Time Card Accuracy", "Automated GPS geofence clock-in"],
+      ["Skill Matched", "Dispatch Allocation", "Jobs routed by technician qualification"],
+      ["Mobile App", "Field Connectivity", "Direct job access from phones and tablets"],
     ],
     features: [
-      { title: "Skill & Certification Matrix", desc: "Ensure high-voltage or confined-space jobs are only assigned to certified techs.", icon: Users },
+      { title: "Skill & Qualification Matrix", desc: "Ensure specialized jobs are routed to technicians with matching qualifications.", icon: Users },
       { title: "Live Dispatch Map", desc: "Visualize technician locations, active routes, and nearest emergencies in real time.", icon: Radio },
       { title: "Mobile First Design", desc: "Zero-clutter interface tailored for outdoor tablets and smartphones.", icon: HardHat },
       { title: "Performance Scorecards", desc: "Track first-time fix rates, average completion time, and client feedback.", icon: BarChart3 },
@@ -1625,7 +1625,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Gain full executive visibility into equipment MTTR, technician utilization, parts spend, and SLA performance across all enterprise locations.",
     metrics: [
       ["18", "Pre-Built Dashboards", "Executive, operational, and audit"],
-      ["100%", "Real-Time Data", "No manual batch exports required"],
+      ["Direct", "Operational Data", "Unified reporting across active modules"],
       ["360°", "Operational View", "Assets, service, inventory, and cost"],
     ],
     features: [
@@ -1653,19 +1653,19 @@ const PAGE_DATA: Record<string, PageMeta> = {
   },
   "audit-traceability": {
     title: "Audit & Traceability",
-    subtitle: "Immutable Operational Records",
+    subtitle: "Operational Activity & Verification History",
     tagline: "Maintain a complete history of all operational activities.",
-    description: "Satisfy rigorous regulatory audits and ISO compliance with tamper-evident digital records, photo proof, and timestamped supervisor sign-offs.",
+    description: "Maintain clear operational history for internal reviews with digital activity records, photographic attachments, and timestamped supervisor sign-offs.",
     metrics: [
-      ["100%", "Audit Readiness", "Instant electronic log generation"],
-      ["Zero", "Missing Sign-Offs", "Enforced digital gatekeeper rules"],
-      ["ISO 55000", "Aligned Architecture", "Physical asset management ready"],
+      ["Timestamped", "Operational Records", "System-recorded activity history"],
+      ["Structured", "Sign-Off Workflows", "Supervisor review and confirmation"],
+      ["Centralized", "Audit Log Archive", "Searchable events across all modules"],
     ],
     features: [
-      { title: "Immutable Audit Log", desc: "Every status change, technician note, and part consumed is permanently recorded.", icon: ShieldCheck },
-      { title: "Digital Signature Capture", desc: "Touchscreen sign-offs with GPS location and cryptographic hash.", icon: CheckCircle2 },
-      { title: "Regulatory Compliance", desc: "Pre-configured templates for OSHA, EPA, and ISO facility audits.", icon: FileText },
-      { title: "Photo & Document Archive", desc: "Attach before-and-after work photos with immutable timestamps.", icon: Boxes },
+      { title: "Operational Audit Log", desc: "Key status changes, technician notes, and parts allocations recorded with timestamps.", icon: ShieldCheck },
+      { title: "Digital Signature Capture", desc: "Touchscreen sign-offs with technician identity and recorded timestamps.", icon: CheckCircle2 },
+      { title: "Inspection Templates", desc: "Configurable digital checklist templates for preventive maintenance and safety inspections.", icon: FileText },
+      { title: "Photo & Document Archive", desc: "Attach before-and-after work photos and documentation directly to work order records.", icon: Boxes },
     ],
     heroImage: "/workflow-field-operations.jpg",
     heroVisual: () => (
@@ -1677,7 +1677,7 @@ const PAGE_DATA: Record<string, PageMeta> = {
           </div>
           <p className="text-[10px] text-text-secondary font-mono">Timestamp: 2026-10-04T05:14:22Z</p>
           <p className="text-[10px] text-text-secondary font-mono">Supervisor: Sarah Jenkins (ID #882)</p>
-          <p className="text-[10px] text-gold-600 font-mono">Hash: 8f4a9b2c...09e1</p>
+          <p className="text-[10px] text-gold-600 font-mono">Ref: AUD-8820-VERIFIED</p>
         </div>
       </UIWindow>
     ),
@@ -1688,9 +1688,9 @@ const PAGE_DATA: Record<string, PageMeta> = {
     tagline: "Keep production-critical assets and lines running without downtime.",
     description: "Maintain assembly lines, stamping presses, and robotic cells with precision preventive maintenance schedules and rapid breakdown dispatch.",
     metrics: [
-      ["$2.1M", "Downtime Prevented", "Average per plant deployment"],
-      ["99.6%", "Line Availability", "Production output protected"],
-      ["15 min", "First Response to Fault", "Automated PLC alert routing"],
+      ["Preventive", "PM Schedules", "Automated cycles to protect line productivity"],
+      ["Critical Alerts", "Rapid Fault Response", "Automated alert routing to on-duty technicians"],
+      ["Shift Logs", "Handover Continuity", "Structured notes between operating shifts"],
     ],
     features: [
       { title: "Line Stoppage Alarms", desc: "Integrate SCADA/PLC alarms to trigger emergency work orders automatically.", icon: Factory },
@@ -1720,9 +1720,9 @@ const PAGE_DATA: Record<string, PageMeta> = {
     tagline: "Coordinate spaces, people, and tenant service delivery.",
     description: "Manage HVAC chillers, elevators, fire suppression systems, and occupant work requests across multi-tenant commercial real estate.",
     metrics: [
-      ["12M+", "Sq. Ft. Managed", "Across corporate campuses"],
-      ["35%", "Faster Work Order Closure", "Tenant request satisfaction"],
-      ["18%", "Energy Reduction", "Optimized HVAC maintenance cycles"],
+      ["Multi-Facility", "Campus Structures", "Buildings, floors, zones, and tenant spaces"],
+      ["Tenant Portal", "Service Intake", "Direct request submission and tracking"],
+      ["Lifecycle", "Equipment Inspections", "Periodic maintenance for HVAC and critical systems"],
     ],
     features: [
       { title: "Tenant Request Portal", desc: "Simple web portal for building tenants to submit and track maintenance requests.", icon: Building2 },
@@ -1751,13 +1751,13 @@ const PAGE_DATA: Record<string, PageMeta> = {
     metrics: [
       ["100+", "Sites Synchronized", "Under one enterprise tenant"],
       ["Global", "Role-Based Security", "Enterprise SSO & Active Directory"],
-      ["24/7", "High Availability", "99.99% cloud uptime SLA"],
+      ["Resilient", "High Availability", "Designed for scalable enterprise workloads"],
     ],
     features: [
       { title: "Multi-Entity Architecture", desc: "Segregate business units while maintaining corporate roll-up reporting.", icon: Building2 },
       { title: "Custom Integrations", desc: "Connect with SAP, Oracle, NetSuite, and existing IoT sensor streams.", icon: Database },
       { title: "Enterprise SLA SLAs", desc: "Define tiered SLA matrix contracts for different facilities and regions.", icon: Clock },
-      { title: "Security & Compliance", desc: "SOC 2 Type II certified infrastructure with full cryptographic audit trails.", icon: ShieldCheck },
+      { title: "Security & Governance", desc: "Granular role-based access controls with comprehensive operational audit trails.", icon: ShieldCheck },
     ],
     heroImage: "/hero-enterprise-operations.jpg",
     heroVisual: () => (
@@ -1781,15 +1781,15 @@ const PAGE_DATA: Record<string, PageMeta> = {
     tagline: "Enforce commitments, eliminate response bottlenecks, and maintain audit-ready visibility.",
     description: "Monitor service-level commitments, track response and resolution performance, and maintain visibility into operational service obligations.",
     metrics: [
-      ["99.4%", "First-Response Adherence", "Across critical P1 and P2 incidents"],
-      ["42 min", "Mean Time to Resolution", "18% reduction over 90 days"],
-      ["0.4%", "Breach Exception Rate", "Full root-cause audit logging"],
+      ["Tiered", "Response Targets", "Configurable policies for P1 through P4 incidents"],
+      ["Monitored", "Resolution Timers", "Active tracking against defined target windows"],
+      ["Escalations", "Early Breach Warnings", "Root-cause capture and supervisor alerts"],
     ],
     features: [
       { title: "Tiered SLA Policies", desc: "Configure 24/7 mission-critical, extended, and standard business-hours coverage.", icon: Clock },
       { title: "Automated Clock Pauses", desc: "Smartly hold the timer during customer approval delays or parts lead times.", icon: ShieldCheck },
       { title: "Predictive Breach Alerts", desc: "Automated alerts notify dispatchers and supervisors before timers expire.", icon: AlertCircle },
-      { title: "Audit-Ready Certificates", desc: "Generate compliance certificates for customer contract reconciliation.", icon: FileCheck2 },
+      { title: "Service Reports", desc: "Generate SLA performance summaries for customer review and reconciliation.", icon: FileCheck2 },
     ],
     heroImage: "/hero-sla-management.jpg",
     heroVisual: () => (
@@ -1814,8 +1814,8 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Bring sites, teams, assets, and service operations into one connected operational view.",
     metrics: [
       ["14 Sites", "Unified Under One Platform", "Plants, logistics hubs, and campuses"],
-      ["100%", "Regional Governance", "Consistent SOPs and safety compliance"],
-      ["38%", "Reduced Redundancy", "Shared mobile technicians and parts pools"],
+      ["Standardized", "Regional Governance", "Consistent SOPs and operational guidelines"],
+      ["Shared Pools", "Resource Allocation", "Coordinated technician dispatch and spare parts"],
     ],
     features: [
       { title: "Location Master Registry", desc: "Standardize site profiles, timezone offsets, and emergency protocols.", icon: Building2 },
@@ -1846,14 +1846,14 @@ const PAGE_DATA: Record<string, PageMeta> = {
     description: "Connect operational information across teams, locations, assets, service requests, and work orders to support a consistent view of service operations.",
     metrics: [
       ["0 Silos", "Unified Operational Schema", "Assets, requests, work orders & spares"],
-      ["100%", "Complete Record Traceability", "From sensor alert to cryptographic closure"],
-      ["3.4x", "Faster Information Lookup", "Full machine pedigree instantly available"],
+      ["Connected", "Lifecycle Traceability", "From initial intake to verified completion"],
+      ["Direct", "Information Lookup", "Equipment history accessible directly in the field"],
     ],
     features: [
       { title: "Relational Operational Graph", desc: "Every work order and part directly links back to the asset's history.", icon: Database },
       { title: "Zero Double-Entry", desc: "Diagnostic notes flow from intake to work order and customer sign-off.", icon: Workflow },
       { title: "Mobile Pedigree Access", desc: "Technicians scan equipment QR codes for instant complete history.", icon: Boxes },
-      { title: "Cryptographic Audit Ledger", desc: "Tamper-evident logs with GPS timestamps satisfy ISO & OSHA audits.", icon: ShieldCheck },
+      { title: "Operational Audit Trail", desc: "Structured logs with timestamps and actor tracking to support internal audits.", icon: ShieldCheck },
     ],
     heroImage: "/hero-connected-data.jpg",
     heroVisual: () => (

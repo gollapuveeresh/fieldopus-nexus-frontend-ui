@@ -111,7 +111,7 @@ export default function ModulesOverviewPage({ onNavigate }: Props) {
       icon: FileCheck2,
       tag: "Intake",
       description: "Structured customer and internal ticket intake, automated triage, and SLA priority routing without manual handoffs.",
-      stat: "99.4% SLA Adherence",
+      stat: "SLA Priority Tiers",
     },
   ]
 
@@ -122,7 +122,7 @@ export default function ModulesOverviewPage({ onNavigate }: Props) {
       icon: Settings2,
       tag: "Preventive Ops",
       description: "Prevent downtime through recurring PM schedules, inspection triggers, and automated calibration routines.",
-      stat: "42% Less Downtime",
+      stat: "PM Schedules",
     },
     {
       title: "Inventory & Spare Parts",
@@ -130,7 +130,7 @@ export default function ModulesOverviewPage({ onNavigate }: Props) {
       icon: Package,
       tag: "Parts & Stock",
       description: "Keep critical spare parts, tooling, and consumables synchronized across central warehouses and technician vans.",
-      stat: "99.8% Inventory Accuracy",
+      stat: "Stock Balances",
     },
     {
       title: "Technician Dispatch",
@@ -153,8 +153,8 @@ export default function ModulesOverviewPage({ onNavigate }: Props) {
       page: "audit-traceability" as Page,
       icon: ShieldCheck,
       tag: "Compliance",
-      description: "Maintain an immutable, timestamped audit trail of every signature, part consumption, and compliance sign-off.",
-      stat: "100% Traceability",
+      description: "Maintain a structured, timestamped audit trail of every signature, part consumption, and verification sign-off.",
+      stat: "Activity Traceability",
     },
   ]
 

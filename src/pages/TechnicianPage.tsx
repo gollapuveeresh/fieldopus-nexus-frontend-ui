@@ -46,7 +46,7 @@ const JOBS: Job[] = [
     priority:'High', scheduledTime:'14:00 – 16:00', status:'assigned',
     sla:'08:00 remaining', slaAt:'safe',
     checklistTotal:6, checklistDone:0,
-    description:'Perform NFPA 72 annual compliance inspection. Test all detection zones, verify panel functions, check battery backup. Submit compliance certificate.',
+    description:'Perform annual safety inspection. Test all detection zones, verify panel functions, check battery backup. Submit inspection report.',
     lastMaint:'24 Sep 2025', warranty:'Valid until 15 Jun 2027',
   },
   {

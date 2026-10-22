@@ -167,7 +167,7 @@ const PAGE_DETAILS: Partial<Record<Page, AuditPageDetail>> = {
   "audit-logs": {
     title: "Audit Logs",
     subtitle:
-      "Search immutable activity, actor traceability, authentication events and system outcomes.",
+      "Search system activity, actor traceability, authentication events and operational outcomes.",
   },
   "audit-closures": {
     title: "Closure Approvals",
@@ -348,7 +348,7 @@ function AuditControls({
         )}
         <span className="inline-flex items-center gap-1.5 rounded bg-surface-2 px-2 py-1 text-xs text-text-secondary">
           <LockKeyhole size={13} />
-          Immutable · Read only
+          Preserved records · Read only
         </span>
         <span className="inline-flex items-center gap-1.5 rounded bg-surface-2 px-2 py-1 text-xs text-text-secondary">
           <AlertTriangle size={13} />
@@ -452,7 +452,7 @@ function AuditLogs() {
       <div className="xl:col-span-2">
         <Section
           title="Primary Audit History"
-          description="Searchable, filterable and immutable system history, including actor traceability and authentication-related activity."
+          description="Searchable, filterable system history, including actor traceability and authentication-related activity."
         >
           <DataTable
             columns={AUDIT_COLUMNS}
@@ -659,7 +659,7 @@ export default function AuditPage({ currentPage = "audit" }: AuditPageProps) {
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-lg border border-border bg-white p-4 text-xs text-text-secondary">
           <span className="inline-flex items-center gap-1.5">
             <Shield size={13} className="text-gold-500" />
-            Audit & Compliance is immutable and read only
+            Audit & Compliance records are read-only
           </span>
           <span className="inline-flex items-center gap-1.5">
             <CheckCircle2 size={13} />

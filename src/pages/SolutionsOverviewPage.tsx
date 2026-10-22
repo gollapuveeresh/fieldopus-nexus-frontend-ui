@@ -88,7 +88,7 @@ export default function SolutionsOverviewPage({ onNavigate }: Props) {
       icon: Factory,
       tag: "Heavy Industry",
       description: "Keep production-critical assets, robotics cells, and assembly lines moving without unscheduled downtime.",
-      stat: "99.6% Line Availability",
+      stat: "Production Line PM",
       image: "/about-hero-control-room.jpg",
     },
     {
@@ -97,7 +97,7 @@ export default function SolutionsOverviewPage({ onNavigate }: Props) {
       icon: Building2,
       tag: "Commercial Campuses",
       description: "Coordinate spaces, tenant request dispatching, chillers, and building lifecycle compliance across properties.",
-      stat: "12M+ Sq. Ft. Managed",
+      stat: "Campus & Building Trees",
       image: "/hero-facilities-management.jpg",
     },
     {
@@ -106,7 +106,7 @@ export default function SolutionsOverviewPage({ onNavigate }: Props) {
       icon: Wrench,
       tag: "Field Service",
       description: "Deliver responsive service, scheduled PM execution, and technician routing wherever critical equipment lives.",
-      stat: "99.4% SLA Adherence",
+      stat: "SLA Priority Routing",
       image: "/featured-maintenance-technician.jpg",
     },
     {
@@ -115,7 +115,7 @@ export default function SolutionsOverviewPage({ onNavigate }: Props) {
       icon: HardHat,
       tag: "Critical Infrastructure",
       description: "Maintain the public systems, energy assets, water networks, and utility infrastructure that communities depend on.",
-      stat: "24/7 Continuous Reliability",
+      stat: "Continuous Monitoring",
       image: "/about-hero-industrial.jpg",
     },
   ]
@@ -136,7 +136,7 @@ export default function SolutionsOverviewPage({ onNavigate }: Props) {
       icon: Gauge,
       tag: "Contract Assurance",
       description: "Monitor service-level commitments, track response and resolution performance, and maintain visibility into operational service obligations.",
-      stat: "42 min Mean MTTR",
+      stat: "MTTR & Resolution Timers",
       image: "/hero-sla-management.jpg",
     },
     {

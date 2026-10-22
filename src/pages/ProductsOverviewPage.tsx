@@ -96,7 +96,7 @@ export default function ProductsOverviewPage({ onNavigate }: Props) {
       icon: Wrench,
       tag: "Field Service",
       description: "Deliver predictable, high-touch field service from automated ticket intake to rapid first-time resolution.",
-      stat: "99.4% SLA Adherence",
+      stat: "SLA Priority Tiers",
     },
     {
       title: "Work Order Management",
@@ -112,7 +112,7 @@ export default function ProductsOverviewPage({ onNavigate }: Props) {
       icon: Package,
       tag: "Parts & Materials",
       description: "Keep essential spare parts, tooling, and consumables synchronized across central warehouses and technician vans.",
-      stat: "99.8% Accuracy",
+      stat: "Stock Balances",
     },
     {
       title: "Maintenance Management",
@@ -120,7 +120,7 @@ export default function ProductsOverviewPage({ onNavigate }: Props) {
       icon: Settings2,
       tag: "Preventive Care",
       description: "Prevent unexpected equipment downtime through automated PM schedules, inspection triggers, and calibration cycles.",
-      stat: "42% Less Downtime",
+      stat: "PM Schedules",
     },
     {
       title: "Workforce Management",
@@ -143,8 +143,8 @@ export default function ProductsOverviewPage({ onNavigate }: Props) {
       page: "audit-traceability" as Page,
       icon: ShieldCheck,
       tag: "Compliance",
-      description: "Maintain an immutable, timestamped audit trail of every signature, part consumption, and compliance sign-off.",
-      stat: "100% Traceability",
+      description: "Maintain a structured, timestamped audit trail of every signature, part consumption, and verification sign-off.",
+      stat: "Activity Traceability",
     },
   ]
 

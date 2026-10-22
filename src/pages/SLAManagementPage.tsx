@@ -300,7 +300,7 @@ export default function SLAManagementPage({ onNavigate }: Props) {
                         Live Industrial Response Telemetry
                       </span>
                       <span className="rounded-full bg-gold-400/20 border border-gold-400/40 px-2.5 py-0.5 font-bold text-gold-300">
-                        99.4% Contract Adherence
+                        Active SLA Governance
                       </span>
                     </div>
                   </div>
@@ -348,17 +348,17 @@ export default function SLAManagementPage({ onNavigate }: Props) {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <Reveal delay={0} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">99.4%</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Tiered</p>
               <p className="text-sm font-bold text-navy-800 mt-1">First-Response Adherence</p>
-              <p className="text-xs text-text-secondary mt-0.5">Across critical P1 and P2 breakdown incidents</p>
+              <p className="text-xs text-text-secondary mt-0.5">Configurable policies for critical P1 through P4 incidents</p>
             </Reveal>
             <Reveal delay={100} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">42 min</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Monitored</p>
               <p className="text-sm font-bold text-navy-800 mt-1">Mean Time to Resolution (MTTR)</p>
-              <p className="text-xs text-text-secondary mt-0.5">18% reduction achieved over 90 days across facilities</p>
+              <p className="text-xs text-text-secondary mt-0.5">Active timer tracking from triage to supervisor closure</p>
             </Reveal>
             <Reveal delay={200} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">0.4%</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Tracked</p>
               <p className="text-sm font-bold text-navy-800 mt-1">Breach Exception Rate</p>
               <p className="text-xs text-text-secondary mt-0.5">Automated root-cause logging with supervisor audit trail</p>
             </Reveal>
@@ -525,7 +525,7 @@ export default function SLAManagementPage({ onNavigate }: Props) {
               SLA Status & Early Breach Warning System
             </h2>
             <p className="mt-4 text-base text-text-secondary leading-relaxed">
-              Never get caught off guard by an unexpected breach. Dynamic threshold alerts trigger automated notifications well before contractual deadlines lapse.
+              Early warning notifications provide visibility before contractual deadlines lapse. Dynamic threshold alerts help dispatchers prioritize at-risk service requests.
             </p>
           </Reveal>
 

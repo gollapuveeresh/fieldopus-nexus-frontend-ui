@@ -152,10 +152,10 @@ export default function ConnectedDataPage({ onNavigate }: Props) {
     },
     {
       step: "05",
-      name: "Supervisor Verification & Audit Ledger",
-      entity: "Cryptographic Audit Ledger",
-      desc: "Supervisor validates photo evidence, sign-off signature is captured, and the immutable audit record is permanently written to the ledger.",
-      dataCaptured: "SHA-256 Hash #8f4a9b2c...09e1, GPS Coordinates, Digital Signature Verified",
+      name: "Supervisor Verification & Audit Log",
+      entity: "Audit & Activity Log",
+      desc: "Supervisor validates photo documentation, records sign-off, and logs the completed verification event.",
+      dataCaptured: "Verification Ref #AUD-9400, Timestamp, GPS Coordinates, Digital Sign-Off",
       icon: ShieldCheck,
     },
   ]
@@ -227,7 +227,7 @@ export default function ConnectedDataPage({ onNavigate }: Props) {
                   </div>
                   <div className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/85">
                     <Lock size={14} className="text-amber-400" />
-                    <span>Immutable Audit Trails</span>
+                    <span>Structured Audit Trails</span>
                   </div>
                 </div>
               </Reveal>
@@ -282,7 +282,7 @@ export default function ConnectedDataPage({ onNavigate }: Props) {
                         </div>
                       </div>
                       <div className="rounded bg-black/30 p-2 text-[10px] font-mono text-gold-300/90 flex items-center justify-between">
-                        <span>Ledger Hash: 0x9a8f...4e1b</span>
+                        <span>Audit Ref: AUD-8840-CLOSED</span>
                         <span className="text-emerald-400">Verified ✓</span>
                       </div>
                     </div>
@@ -304,14 +304,14 @@ export default function ConnectedDataPage({ onNavigate }: Props) {
               <p className="text-xs text-text-secondary mt-0.5">Assets, work orders, inventory, and audit unified into one relational graph</p>
             </Reveal>
             <Reveal delay={100} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">100%</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">End-to-End Traceability</p>
-              <p className="text-xs text-text-secondary mt-0.5">Every technician note, timestamp, and replacement part cryptographically linked</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Connected</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Operational Traceability</p>
+              <p className="text-xs text-text-secondary mt-0.5">Technician notes, activity timestamps, and replacement parts linked across the lifecycle</p>
             </Reveal>
             <Reveal delay={200} className="border-l-2 border-gold-500 pl-5">
-              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">3.4x</p>
-              <p className="text-sm font-bold text-navy-800 mt-1">Faster Context Lookup</p>
-              <p className="text-xs text-text-secondary mt-0.5">Field technicians instantly access full equipment history on their mobile device</p>
+              <p className="text-3xl font-extrabold tracking-tight text-navy-900 sm:text-4xl">Unified</p>
+              <p className="text-sm font-bold text-navy-800 mt-1">Rapid Context Retrieval</p>
+              <p className="text-xs text-text-secondary mt-0.5">Field technicians access equipment records and service history directly from mobile devices</p>
             </Reveal>
           </div>
         </div>
@@ -346,8 +346,8 @@ export default function ConnectedDataPage({ onNavigate }: Props) {
               },
               {
                 icon: ShieldCheck,
-                title: "Immutable Compliance Traceability",
-                desc: "Satisfy rigorous regulatory audits for ISO 55000, OSHA, and EPA with an unbroken electronic paper trail of every maintenance action and supervisor verification.",
+                title: "Audit & Operational Traceability",
+                desc: "Support internal audits and equipment compliance reviews with a connected electronic activity trail of maintenance actions and supervisor sign-offs.",
               },
             ].map((card, i) => {
               const CardIcon = card.icon
